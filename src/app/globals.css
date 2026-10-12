@@ -1,149 +1,99 @@
 @import "tailwindcss";
 
-/* Raw palette from the refero Vercel style. Components use the semantic tokens below, never these. */
-:root {
-  --vercel-paper-white: #fafafa;
-  --vercel-pure-white: #ffffff;
-  --vercel-hairline: #ebebeb;
-  --vercel-ash: #c9c9c9;
-  --vercel-smoke: #a8a8a8;
-  --vercel-graphite: #8f8f8f;
-  --vercel-slate: #7d7d7d;
-  --vercel-stone: #666666;
-  --vercel-charcoal: #4d4d4d;
-  --vercel-obsidian: #171717;
-  --vercel-carbon: #000000;
-  --vercel-terminal-green: #297a3a;
-}
-
 /* Semantic tokens, light. `.scheme-light` re-pins them so /print stays light under a dark OS. */
 :root,
 .scheme-light {
-  --canvas: var(--vercel-paper-white);
-  --surface: var(--vercel-pure-white);
-  --inverted: var(--vercel-obsidian);
-  --on-inverted: var(--vercel-pure-white);
-  --on-inverted-muted: #a1a1a1;
-  --inverted-hairline: #333333;
-  --fg: var(--vercel-obsidian);
-  --fg-muted: var(--vercel-charcoal);
-  --fg-subtle: var(--vercel-stone);
-  --fg-faint: var(--vercel-graphite);
-  --hairline: var(--vercel-hairline);
-  --skeleton: var(--vercel-hairline);
-  --accent: var(--vercel-terminal-green);
-  --ring-card: rgb(0 0 0 / 0.08);
+  --canvas: #ffffff;
+  --surface: #f4f4f4;
+  --fg: #0f1010;
+  --fg-muted: #4d4d4d;
+  --fg-subtle: #6b6b6b;
+  --hairline: #ebebeb;
+  --inverted: #0f1010;
+  --on-inverted: #ffffff;
+  --highlight: #ffe14d;
+  --dot: #f5b800;
 }
 
-/* Dark: the gray ramp inverted. Not in refero — values chosen to pass scripts/check-contrast.mjs. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --canvas: #0a0a0a;
-    --surface: #111111;
-    --inverted: #ededed;
-    --on-inverted: #0a0a0a;
-    --on-inverted-muted: #4d4d4d;
-    --inverted-hairline: #d4d4d4;
+    --canvas: #0f1010;
+    --surface: #1c1c1c;
     --fg: #ededed;
-    --fg-muted: #a1a1a1;
+    --fg-muted: #b4b4b4;
     --fg-subtle: #8f8f8f;
-    --fg-faint: #5c5c5c;
-    --hairline: #2e2e2e;
-    --skeleton: #1f1f1f;
-    --accent: #45a557;
-    --ring-card: rgb(255 255 255 / 0.1);
+    --hairline: #2a2a2a;
+    --inverted: #ededed;
+    --on-inverted: #0f1010;
+    --highlight: rgb(255 225 77 / 0.35);
   }
-}
-
-/* Inside an inverted card, text and hairline tokens flip to the opposite scheme. */
-.scheme-inverted {
-  --fg: var(--on-inverted);
-  --fg-muted: var(--on-inverted-muted);
-  --fg-subtle: var(--on-inverted-muted);
-  --hairline: var(--inverted-hairline);
 }
 
 @theme {
   --color-*: initial;
 
-  --text-eyebrow: 11px;
-  --text-eyebrow--line-height: 1.5;
-  --text-eyebrow--letter-spacing: 0.071em;
-  --text-caption: 13px;
-  --text-caption--line-height: 1.54;
+  --text-greet: clamp(28px, 6.4vw, 40px);
+  --text-greet--line-height: 1.22;
+  --text-title-lg: 30px;
+  --text-title-lg--line-height: 1.2;
+  --text-title: 18px;
+  --text-title--line-height: 1.4;
+  --text-chip: 20px;
+  --text-chip--line-height: 1;
   --text-body: 16px;
-  --text-body--line-height: 1.5;
-  --text-heading: 30px;
-  --text-heading--line-height: 1.1;
-  --text-heading--letter-spacing: -0.05em;
-  --text-heading-lg: 36px;
-  --text-heading-lg--line-height: 1;
-  --text-heading-lg--letter-spacing: -0.06em;
-  --text-display: 40px;
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -0.06em;
+  --text-body--line-height: 1.6;
+  --text-meta: 14px;
+  --text-meta--line-height: 1.5;
 
-  --font-weight-book: 450;
-  --radius-sm: 2px;
-  --radius-card: 6px;
-  --container-page: 1280px;
+  --radius-btn: 8px;
+  --container-page: 720px;
 }
 
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
-  --color-inverted: var(--inverted);
-  --color-on-inverted: var(--on-inverted);
   --color-fg: var(--fg);
   --color-fg-muted: var(--fg-muted);
   --color-fg-subtle: var(--fg-subtle);
-  --color-fg-faint: var(--fg-faint);
   --color-hairline: var(--hairline);
-  --color-skeleton: var(--skeleton);
-  --color-accent: var(--accent);
+  --color-inverted: var(--inverted);
+  --color-on-inverted: var(--on-inverted);
+  --color-dot: var(--dot);
 
-  --font-sans: var(--font-geist-sans), "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  /* Geist Mono has no Hangul; Korean in labels falls through to Pretendard, not the OS font. */
-  --font-mono: var(--font-geist-mono), "Pretendard Variable", Pretendard, ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  /* Subset display font; glyphs outside it fall back to Pretendard. */
+  --font-display: var(--font-gmarket), "Pretendard Variable", Pretendard, sans-serif;
 
-  --shadow-hairline: 0 0 0 1px var(--hairline);
-  --shadow-card: 0 0 0 1px var(--ring-card), 0 0 0 2px var(--canvas);
-}
-
-/* Display sizes grow at md; the letter-spacing is in em so it scales with them. */
-@media (width >= 48rem) {
-  :root {
-    --text-heading-lg: 56px;
-    --text-display: 64px;
-  }
-}
-
-@layer base {
-  body {
-    font-feature-settings: "calt" 0, "rlig", "ss11";
-  }
+  --shadow-hairline: inset 0 0 0 1px var(--hairline);
 }
 
 @layer components {
-  .skeleton {
-    background: linear-gradient(90deg, var(--skeleton) 25%, var(--canvas) 50%, var(--skeleton) 75%);
-    background-size: 200% 100%;
-    animation: skeleton-shimmer 1.5s linear infinite;
+  mark.hl {
+    color: inherit;
+    background: linear-gradient(transparent 62%, var(--highlight) 62%);
+    padding: 0 2px;
   }
 
-  /* Typing: every character is in the DOM from the start; each one becomes visible at its own delay. */
-  .type-char {
-    opacity: 0;
-    animation: type-reveal 0s forwards;
+  /* Rotating word: decoration and an inline-block caret of fixed height never change the line box. */
+  .rw-word {
+    text-decoration: underline 3px var(--highlight);
+    text-decoration-skip-ink: none;
+    text-underline-offset: 6px;
   }
-  .type-caret {
+  .rw-caret {
     display: inline-block;
-    width: 0;
-    opacity: 0;
-    animation: type-reveal 0s forwards, type-hide 0s forwards;
-  }
-  .type-caret > span {
+    width: 2px;
+    height: 0.9em;
+    margin-left: 2px;
+    vertical-align: -0.08em;
+    background: currentColor;
     animation: caret-blink 1s step-end infinite;
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface) 25%, var(--canvas) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s linear infinite;
   }
 
   .print-break {
@@ -155,16 +105,12 @@
 }
 
 @media (prefers-reduced-motion: reduce), print {
+  .rw-caret {
+    display: none;
+  }
   .skeleton {
     animation: none;
-    background: var(--skeleton);
-  }
-  .type-char {
-    opacity: 1;
-    animation: none;
-  }
-  .type-caret {
-    display: none;
+    background: var(--surface);
   }
 }
 
@@ -175,20 +121,14 @@
 
 @media print {
   body {
-    background: var(--surface);
+    background: var(--canvas);
   }
 }
 
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
 @keyframes skeleton-shimmer {
   from { background-position: 200% 0; }
   to { background-position: -200% 0; }
-}
-@keyframes type-reveal {
-  to { opacity: 1; }
-}
-@keyframes type-hide {
-  to { opacity: 0; }
-}
-@keyframes caret-blink {
-  50% { opacity: 0; }
 }

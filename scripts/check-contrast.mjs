@@ -1,14 +1,15 @@
 // Fails when a text/background token pair in globals.css is below WCAG AA (4.5:1), in light or dark.
+// Translucent colors (e.g. the dark highlight) are composited over --canvas first.
 import { readFileSync } from "node:fs";
 
 const css = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
 const DARK = /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{\s*:root\s*\{([^}]*)\}\s*\}/;
 const PAIRS = [
-  ...["--fg", "--fg-muted", "--fg-subtle", "--accent"].flatMap((fg) =>
-    ["--canvas", "--surface"].map((bg) => [fg, bg]),
-  ),
+  ["--fg", "--canvas"],
+  ["--fg-muted", "--canvas"],
+  ["--fg-subtle", "--canvas"],
   ["--on-inverted", "--inverted"],
-  ["--on-inverted-muted", "--inverted"],
+  ["--fg", "--highlight"],
 ];
 
 function fail(message) {
@@ -35,10 +36,19 @@ function resolve(map, name, seen = new Set()) {
   return resolve(map, ref[1], seen);
 }
 
-function luminance(hex) {
-  if (!/^#[0-9a-f]{6}$/i.test(hex)) fail(`expected #rrggbb, got "${hex}"`);
-  const [r, g, b] = [1, 3, 5].map((i) => {
-    const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+function parse(color) {
+  const hex = color.match(/^#([0-9a-f]{6})$/i);
+  if (hex) return { rgb: [0, 2, 4].map((i) => parseInt(hex[1].slice(i, i + 2), 16)), a: 1 };
+  const rgb = color.match(/^rgb\(\s*(\d+)\s+(\d+)\s+(\d+)\s*(?:\/\s*([\d.]+))?\s*\)$/);
+  if (rgb) return { rgb: rgb.slice(1, 4).map(Number), a: rgb[4] === undefined ? 1 : Number(rgb[4]) };
+  fail(`unsupported color "${color}"`);
+}
+
+const over = (top, bottom) => top.rgb.map((c, i) => c * top.a + bottom[i] * (1 - top.a));
+
+function luminance(rgb) {
+  const [r, g, b] = rgb.map((v) => {
+    const c = v / 255;
     return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
   });
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
@@ -51,8 +61,12 @@ const ratio = (a, b) => {
 
 let failures = 0;
 for (const [scheme, map] of [["light", light], ["dark", dark]]) {
+  const canvas = parse(resolve(map, "--canvas"));
+  if (canvas.a !== 1) fail(`${scheme} --canvas must be opaque`);
   for (const [fg, bg] of PAIRS) {
-    const r = ratio(resolve(map, fg), resolve(map, bg));
+    const bgRgb = over(parse(resolve(map, bg)), canvas.rgb);
+    const fgRgb = over(parse(resolve(map, fg)), bgRgb);
+    const r = ratio(fgRgb, bgRgb);
     const ok = r >= 4.5;
     if (!ok) failures++;
     console.log(`${ok ? "ok  " : "FAIL"} ${scheme.padEnd(5)} ${fg} on ${bg}: ${r.toFixed(2)}`);
