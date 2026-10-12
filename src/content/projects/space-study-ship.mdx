@@ -1,6 +1,8 @@
 ## 배경
 
-할 일 목록과 타이머는 공부 계획과 시간을 기록하기엔 충분하지만, 쌓인 기록이 눈에 보이는 보상으로 이어지지는 않습니다. **우주공부선(Space Study Ship)** 은 공부한 시간을 연료로 바꾸고, 그 연료로 행성과 지역을 해금하며 우주를 탐험하게 만든 학습 관리 앱입니다. 타이머로 30분을 공부하면 연료 1이 쌓이고, 누적 학습 시간이나 연속 학습일 같은 목표를 채우면 배지를 받습니다.
+할 일 목록과 타이머는 공부 계획과 시간을 기록하기엔 충분하지만, 쌓인 기록이 눈에 보이는 보상으로 이어지지는 않습니다. 공부를 게임처럼 만들면 더 재미있게, 더 꾸준히 할 수 있겠다고 생각해 게이미피케이션을 택했습니다. 배경을 우주로 고른 것은 다음 목적지로 한 칸씩 나아가는 탐험 방식이 매일 조금씩 쌓이는 공부와 맞는다고 봤기 때문입니다.
+
+**우주공부선(Space Study Ship)** 은 공부한 시간을 연료로 바꾸고, 그 연료로 행성과 지역을 해금하며 우주를 탐험하게 만든 학습 관리 앱입니다. 타이머로 30분을 공부하면 연료 1이 쌓이고, 누적 학습 시간이나 연속 학습일 같은 목표를 채우면 배지를 받습니다.
 
 2026년 1학기 창의학기제 과제(학생들의 학습 지속성 향상을 위한 게이미피케이션 기반 Todo + Timer 서비스 개발)로 진행한 1인 과제였습니다. 한 학기 안에 화면뿐 아니라 공부 시간 계산, 보상 지급, 데이터 저장이 한 서비스 안에서 맞물려 돌아가게 만들어야 했습니다. 서버의 초기 멀티모듈 구조와 배포 설정은 다른 기여자가 잡아 두었습니다.
 
@@ -24,6 +26,12 @@
 **구현하며 생긴 문제는 다음 주 과제로 넘겼습니다.** 매주 개발 순서와 학습 목표를 정하고, 그 주에 해결하지 못한 문제는 다음 주 계획에 넣어 이어서 풀었습니다.
 
 ## 기술적 결정
+
+### 공부를 우주 탐험 게임으로
+
+- **상황**: 기존 Todo·타이머 앱은 기록에 그쳐, 꾸준히 쓸 동기와 누적된 노력에 대한 눈에 보이는 성취감이 약했습니다(기획서의 문제 정의).
+- **문제**: 공부한 시간이 숫자 기록으로만 남으면 공부를 이어 갈 이유가 되지 못합니다.
+- **결정**: 공부 시간 → 연료 → 탐험으로 이어지는 구조를 만들었습니다. 타이머 30분마다 연료 1을 주고 남은 분은 다음으로 이월하며, 연료로 행성과 지역을 해금하고, 누적 학습 시간·연속 학습일 목표를 채우면 배지를 줍니다.
 
 ### 저장 요청마다 식별키를 붙여 중복 지급 방지
 
@@ -55,4 +63,4 @@
 - **재요청이나 계정 전환 같은 상황은 처음부터 설계에 넣어야 합니다.** 연료 중복 지급 위험과 순환 의존성 오류를 겪고 나서 알게 된 점입니다.
 - **기대효과는 확인 전까지 가설입니다.** 이 앱으로 공부를 더 오래 하게 되는지는 아직 사용자 테스트로 확인하지 못했고, 다음 단계에서 재방문율과 연속 학습일로 확인하려 합니다.
 
-{/* 출처: space-study-ship/knowledge/reports/2026-09-30-creative-semester-excellence-report.md(배경·주차별 과정·정합성·순환 의존성·정량 지표·배운 점·발전 계획), space_study_ship-FE git log(EM-H20 — #77·#79·#85 순환 의존성 수정, #81 idempotencyKey·인증/게스트 분기, SUH SAECHAN은 빌드 트리거 워크플로우 3커밋), space_study_ship-BE git log(EM-H20 — #21 닉네임, #22 회원 탈퇴, #23 디바이스·FCM 토큰, Firebase ID 토큰 검증, #24 할 일, #25 타이머 세션·연료 환율 게스트 정책 미러링, #26 연료, #27 탐험, #40 오늘 통계; SUH SAECHAN — 멀티모듈 초기 구조·Security·Swagger·CI/CD·API 스펙 문서; yeo-li — Initial commit), space_study_ship-BE/docs/superpowers/specs/2026-05-12-user-device-fcm-token-design.md(D1·D3·D4, 강제 로그아웃 영향), 2026-05-25-timer-session-domain-design.md(Idempotency-Key 두 계층·race 처리), space_study_ship-FE/pubspec.yaml, space_study_ship-BE/SS-Web/.../controller/ */}
+{/* 출처: space-study-ship/knowledge/reports/2026-09-30-creative-semester-excellence-report.md(주제 선정 사유 — "쌓인 기록이 눈에 보이는 보상으로", "다음 목적지로 한 칸씩 나아가는 탐험 방식"; 배경·주차별 과정·정합성·순환 의존성·정량 지표·배운 점·발전 계획), space_study_ship-FE git log(EM-H20 — #77·#79·#85 순환 의존성 수정, #81 idempotencyKey·인증/게스트 분기, SUH SAECHAN은 빌드 트리거 워크플로우 3커밋), space_study_ship-BE git log(EM-H20 — #21 닉네임, #22 회원 탈퇴, #23 디바이스·FCM 토큰, Firebase ID 토큰 검증, #24 할 일, #25 타이머 세션·연료 환율 게스트 정책 미러링, #26 연료, #27 탐험, #40 오늘 통계; SUH SAECHAN — 멀티모듈 초기 구조·Security·Swagger·CI/CD·API 스펙 문서; yeo-li — Initial commit), space_study_ship-BE/docs/superpowers/specs/2026-05-12-user-device-fcm-token-design.md(D1·D3·D4, 강제 로그아웃 영향), 2026-05-25-timer-session-domain-design.md(Idempotency-Key 두 계층·race 처리), space_study_ship-FE/pubspec.yaml, space_study_ship-FE/docs/우주공부선PRD.md(EM-H20 f2ddcaa — 문제 정의: 동기부여 부족·시각적 보상 부재), space_study_ship-FE/lib/features/fuel/presentation/providers/fuel_provider.dart(totalMinutes ~/ 30, % 30 이월), "공부가 더 재미있도록 게임처럼"은 본인 설명 기준(보고서에는 '재미'라는 표현 없음), space_study_ship-BE/SS-Web/.../controller/ */}

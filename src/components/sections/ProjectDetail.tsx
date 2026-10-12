@@ -5,6 +5,11 @@ import { ImageSlot } from "@/components/ui/ImageSlot";
 import type { ProjectPage } from "@/content/profile";
 import { loadProjectBody } from "@/lib/projects";
 
+const GALLERY_ITEM = {
+  phone: "w-36 sm:w-40 print:w-[calc((100%-36px)/4)] print:[&:nth-child(n+5)]:hidden",
+  wide: "w-72 sm:w-[26rem] print:w-[calc((100%-12px)/2)] print:[&:nth-child(n+3)]:hidden",
+};
+
 // A project's detail content: the web page /projects/<slug> and each project page of the PDF render this.
 // The id lets the PDF turn links to /projects/<slug> into jumps within the document.
 export async function ProjectDetail({ page }: { page: ProjectPage }) {
@@ -48,10 +53,10 @@ export async function ProjectDetail({ page }: { page: ProjectPage }) {
 
       {page.gallery.length > 0 && (
         // Scrolls sideways inside the column, so the page itself never scrolls horizontally.
-        // Paper can't scroll: show the first four in one row instead.
-        <ul className="mt-8 flex snap-x gap-3 overflow-x-auto pb-2 print:overflow-visible print:[&>li:nth-child(n+5)]:hidden">
+        // Paper can't scroll: show the first row only (four phone or two desktop captures).
+        <ul className="mt-8 flex snap-x gap-3 overflow-x-auto pb-2 print:overflow-visible">
           {page.gallery.map((image, i) => (
-            <li key={image.src} className="w-36 shrink-0 snap-start sm:w-40 print:w-[calc((100%-36px)/4)]">
+            <li key={image.src} className={`shrink-0 snap-start ${GALLERY_ITEM[image.aspect === "wide" ? "wide" : "phone"]}`}>
               {/* The first screenshot is above the fold (LCP on phones) */}
               <ImageSlot image={image} eager={i === 0} />
             </li>

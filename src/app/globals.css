@@ -136,7 +136,156 @@
   }
 }
 
+/* Envelope button (EnvelopeButton). Unlayered on purpose: these state rules must beat utilities.
+   Paint order is flap < back < letter < pocket. At rest the letter is the button face and the
+   flap is folded down behind it. Opening: the flap swings up, the pocket shows its V fold, and
+   the letter turns into paper and rises with an overshoot. Closing reverses it: the letter drops
+   back first, and the flap and pocket wait for it. */
+.env-primary {
+  --env-face: var(--inverted);
+  --env-ink: var(--on-inverted);
+  --env-edge: transparent;
+  --env-inside: color-mix(in srgb, var(--inverted) 80%, var(--on-inverted));
+  --env-fold: color-mix(in srgb, var(--inverted) 60%, var(--on-inverted));
+}
+.env-ghost {
+  --env-face: var(--canvas);
+  --env-ink: var(--fg);
+  --env-edge: var(--hairline);
+  --env-inside: var(--surface);
+  --env-fold: color-mix(in srgb, var(--canvas) 80%, var(--fg));
+}
+.env {
+  position: relative;
+  display: inline-flex;
+  border-radius: var(--radius-btn);
+}
+.env:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+.env-flap {
+  position: absolute;
+  bottom: 100%;
+  left: 4px;
+  width: calc(100% - 8px);
+  height: 20px;
+  overflow: visible;
+  fill: var(--env-inside);
+  stroke: var(--env-edge);
+  transform-origin: bottom;
+  transform: perspective(160px) rotateX(180deg);
+  transition: transform 200ms ease-in 250ms;
+}
+.env-back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-btn);
+  background: var(--env-inside);
+}
+.env-letter {
+  position: relative;
+  display: grid;
+  min-height: 44px;
+  padding: 0 18px;
+  place-items: center;
+  border-radius: var(--radius-btn);
+  background: var(--env-face);
+  color: var(--env-ink);
+  box-shadow: inset 0 0 0 1px var(--env-edge);
+  transition:
+    transform 250ms ease-in,
+    background-color 150ms ease-in 100ms,
+    box-shadow 150ms ease-in 100ms;
+}
+.env-label {
+  transition: opacity 120ms ease-in 130ms;
+}
+.env-paper {
+  position: absolute;
+  inset: 0;
+  padding: 6px 10px 0;
+  color: var(--fg);
+  font-size: 12px;
+  line-height: 14px;
+  text-align: left;
+  white-space: nowrap;
+  opacity: 0;
+  background:
+    linear-gradient(var(--hairline), var(--hairline)) 10px 27px / calc(100% - 20px) 1px no-repeat,
+    linear-gradient(var(--hairline), var(--hairline)) 10px 35px / calc(100% - 32px) 1px no-repeat;
+  transition: opacity 120ms ease-in;
+}
+.env-pocket {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  fill: var(--env-face);
+  opacity: 0;
+  transition: opacity 0ms linear 250ms;
+}
+.env-pocket .env-fold {
+  fill: none;
+  stroke: var(--env-fold);
+}
+.env-ghost .env-pocket {
+  box-shadow: inset 0 0 0 1px var(--env-edge);
+}
+@media (hover: hover) {
+  .env:hover .env-flap {
+    transform: perspective(160px) rotateX(0deg);
+    transition: transform 200ms ease-out;
+  }
+  /* Appears as the letter starts to rise, not before: it would cut across the button label. */
+  .env:hover .env-pocket {
+    opacity: 1;
+    transition: opacity 0ms linear 120ms;
+  }
+  .env:hover .env-letter {
+    transform: translateY(-60%) rotate(-2deg);
+    background-color: var(--canvas);
+    box-shadow:
+      inset 0 0 0 1px var(--hairline),
+      0 6px 16px rgb(0 0 0 / 0.12);
+    transition:
+      transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1) 120ms,
+      background-color 150ms ease-out,
+      box-shadow 150ms ease-out;
+  }
+  .env:hover .env-label {
+    opacity: 0;
+    transition: opacity 120ms ease-out;
+  }
+  .env:hover .env-paper {
+    opacity: 1;
+    transition: opacity 150ms ease-out 80ms;
+  }
+}
+.env:focus-visible .env-flap {
+  transform: perspective(160px) rotateX(0deg);
+}
+.env:focus-visible .env-pocket,
+.env:focus-visible .env-paper {
+  opacity: 1;
+}
+.env:focus-visible .env-letter {
+  transform: translateY(-60%) rotate(-2deg);
+  background-color: var(--canvas);
+  box-shadow:
+    inset 0 0 0 1px var(--hairline),
+    0 6px 16px rgb(0 0 0 / 0.12);
+}
+.env:focus-visible .env-label {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce), print {
+  .env * {
+    transition: none !important;
+  }
   .rw-caret {
     display: none;
   }

@@ -41,11 +41,12 @@ const phone = (slug: string, n: number, alt: string, brief: string): ImageSpec =
   brief,
 });
 
-const gallery = (slug: string, name: string, count: number): ImageSpec[] =>
+// Phone screenshots by default; web-first projects pass "wide" (desktop captures, 16:10).
+const gallery = (slug: string, name: string, count: number, aspect: ImageAspect = "phone"): ImageSpec[] =>
   Array.from({ length: count }, (_, i) => ({
     src: `/images/projects/${slug}/gallery/${i + 1}.jpg`,
     alt: `${name} 화면 ${i + 1}`,
-    aspect: "phone" as const,
+    aspect,
     brief: `${name} 스크린샷 ${i + 1}`,
   }));
 
@@ -212,7 +213,7 @@ export const projects: Project[] = [
     tier: 2,
     name: "완익세종",
     emoji: "🎓",
-    summary: "SW-AI 해커톤 웹 프로젝트 · 팀 완익고무 100점",
+    summary: "AI 기반 진로-교과목 로드맵 추천 서비스 · 팀 완익세종",
     stack: ["React", "Next.js"],
     period: "2025.12.23 – 2025.12.24",
     badges: ["SW-AI 해커톤 장려상"],
@@ -225,6 +226,7 @@ export const projects: Project[] = [
         brief: "웹 메인 화면 캡처 (데스크톱, 16:10)",
       },
     ],
+    gallery: gallery("wanik-sejong", "완익세종", 6, "wide"),
   },
   {
     slug: "space-study-ship",
@@ -239,18 +241,6 @@ export const projects: Project[] = [
     images: [],
     icon: appIcon("space-study-ship", "우주공부선"),
     gallery: gallery("space-study-ship", "우주공부선", 6),
-  },
-  {
-    slug: "emotion-diary",
-    tier: 3,
-    name: "Emotion Diary",
-    emoji: "📔",
-    summary: "감정을 기록하고 일상을 돌아보는 다이어리",
-    stack: ["React"],
-    period: "2025.07",
-    badges: [],
-    links: [{ label: "Website", href: "https://emotion-diary-theta-eight.vercel.app/" }],
-    images: [],
   },
   {
     slug: "nyangseng",
@@ -286,8 +276,8 @@ export const projects: Project[] = [
     name: "은샘침례교회",
     emoji: "⛪",
     summary: "교회 홈페이지와 API 서버 — 실제 운영 중",
-    stack: ["Next.js", "TypeScript", "FastAPI", "Docker", "Oracle Cloud"],
-    period: "2025.07 – 2025.11",
+    stack: ["Next.js", "TypeScript", "Spring Boot", "PostgreSQL", "Docker", "Oracle Cloud"],
+    period: "2026.06 – 2026.09",
     badges: [],
     links: [{ label: "Website", href: "https://www.eunsaem.com/" }],
     images: [],

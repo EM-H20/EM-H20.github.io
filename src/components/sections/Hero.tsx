@@ -1,11 +1,10 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/Button";
+import { ContactButtons } from "@/components/ui/ContactButtons";
 import { Container } from "@/components/ui/Container";
 import { Highlight } from "@/components/ui/Highlight";
 import { InfoLines } from "@/components/ui/InfoLines";
 import { RotatingWord } from "@/components/ui/RotatingWord";
-import { hero, heroInfo, links } from "@/content/profile";
-import { site } from "@/lib/site";
+import { hero, heroInfo } from "@/content/profile";
 
 // Each line is nowrap and the size is clamped, so the block keeps one height while the word types.
 export function Hero() {
@@ -39,11 +38,8 @@ export function Hero() {
         />
       </div>
       <InfoLines lines={heroInfo()} className="mt-7" />
-      <div className="mt-6 flex flex-wrap gap-2.5">
-        <Button href={links.email.href}>메일 보내기</Button>
-        <Button href={site.pdf.href} download={site.pdf.filename} variant="ghost">
-          PDF 포트폴리오
-        </Button>
+      <div className="mt-6">
+        <ContactButtons />
       </div>
     </Container>
   );
