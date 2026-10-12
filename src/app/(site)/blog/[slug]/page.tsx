@@ -27,14 +27,14 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
   const { Content, meta } = await getPost(slug);
   return (
-    <main className="flex-1 py-16 md:py-24">
+    <main className="flex-1 py-12 md:py-16">
       <Container>
-        <article className="max-w-3xl">
-          <time dateTime={meta.date} className="font-mono text-caption text-fg-subtle">
-            {meta.date}
+        <article>
+          <time dateTime={meta.date} className="text-meta text-fg-subtle">
+            {meta.date.replaceAll("-", ".")}
           </time>
-          <h1 className="mt-3 text-heading-lg font-book text-fg">{meta.title}</h1>
-          <div className="mt-12">
+          <h1 className="mt-2 font-display text-title-lg font-bold text-fg">{meta.title}</h1>
+          <div className="mt-10">
             <Content />
           </div>
         </article>
