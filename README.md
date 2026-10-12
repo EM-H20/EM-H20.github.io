@@ -19,7 +19,7 @@ pnpm check:contrast  # 디자인 토큰 대비(WCAG AA) 검사
 
 ## 포트폴리오 내용 수정
 
-모든 내용은 `src/content/profile.ts` 한 파일에 있습니다. 홈과 PDF(`/print`)가 같은 데이터를 씁니다.
+모든 내용은 `src/content/profile.ts` 한 파일에 있습니다. PDF(`/print`)는 홈 화면과 프로젝트 상세 페이지를 같은 컴포넌트로 이어 붙여 만듭니다.
 
 프로젝트 상세 페이지(`/projects/<slug>`)의 본문은 `src/content/projects/<slug>.mdx`, 스크린샷은 `public/images/projects/<slug>/gallery/N.jpg`입니다. 프로젝트를 추가하면 같은 이름의 MDX가 있어야 테스트가 통과합니다. PDF에는 프로젝트마다 이 상세 내용이 그대로 들어갑니다.
 

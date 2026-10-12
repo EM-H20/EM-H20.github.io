@@ -136,6 +136,17 @@
   body {
     background: var(--canvas);
   }
+  /* A download button inside the downloaded file points nowhere new */
+  a[download] {
+    display: none;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  li {
+    break-inside: avoid;
+  }
 }
 
 @keyframes caret-blink {

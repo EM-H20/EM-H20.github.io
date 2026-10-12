@@ -41,7 +41,7 @@ export function ImageSlot({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden rounded-xl ${ASPECT[image.aspect]} ${className}`}>
+    <div className={`print-block relative overflow-hidden rounded-xl ${ASPECT[image.aspect]} ${className}`}>
       {imageExists(image.src) ? (
         <>
           <Skeleton className="absolute inset-0" />

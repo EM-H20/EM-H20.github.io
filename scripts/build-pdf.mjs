@@ -57,11 +57,25 @@ const { port } = server.address();
 const browser = await chromium.launch();
 try {
   const page = await browser.newPage();
-  await page.emulateMedia({ colorScheme: "light", media: "print" });
+  // Reduced motion keeps the hero's rotating word on its first word instead of mid-typing
+  await page.emulateMedia({ colorScheme: "light", media: "print", reducedMotion: "reduce" });
   const response = await page.goto(`http://127.0.0.1:${port}/print`, { waitUntil: "networkidle" });
   if (!response?.ok()) throw new Error(`/print returned HTTP ${response?.status()}`);
-  await page.evaluate(() => document.fonts.ready);
-  await page.pdf({ path: PDF, printBackground: true, preferCSSPageSize: true });
+  await page.evaluate(async () => {
+    // Site links: a project's detail page is inside this PDF, so jump there; anything else goes to the live site.
+    const siteUrl = document.querySelector("[data-site-url]").dataset.siteUrl;
+    for (const a of document.querySelectorAll('a[href^="/"]')) {
+      const slug = a.getAttribute("href").match(/^\/projects\/([^/#?]+)/)?.[1];
+      a.href = slug && document.getElementById(`project-${slug}`) ? `#project-${slug}` : siteUrl + a.getAttribute("href");
+    }
+    // Lazy images below the fold never load in a headless print, so load them all now.
+    const images = [...document.images];
+    for (const img of images) img.loading = "eager";
+    await Promise.all(images.map((img) => img.decode().catch(() => {})));
+    await document.fonts.ready;
+  });
+  // 0.8 lays the page out ~840px wide, so the 720px column prints as it looks on a desktop
+  await page.pdf({ path: PDF, printBackground: true, preferCSSPageSize: true, scale: 0.8 });
   const { size } = await stat(PDF);
   if (size < 20_000) throw new Error(`portfolio.pdf is only ${size} bytes`);
   console.log(`build-pdf: wrote ${PDF} (${Math.round(size / 1024)} KB)`);
