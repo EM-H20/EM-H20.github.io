@@ -16,6 +16,8 @@
 # next.js
 /.next/
 /out/
+# local copy of the generated PDF for `pnpm dev` (scripts/build-pdf.mjs)
+/public/portfolio.pdf
 
 # production
 /build

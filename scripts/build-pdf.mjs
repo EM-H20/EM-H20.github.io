@@ -1,7 +1,7 @@
 // Renders /print from the static export (out/) to out/portfolio.pdf with headless Chromium.
 // Keep the output name in sync with site.pdf.href in src/lib/site.ts.
 import { createServer } from "node:http";
-import { readFile, stat } from "node:fs/promises";
+import { copyFile, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
 
@@ -65,6 +65,8 @@ try {
   const { size } = await stat(PDF);
   if (size < 20_000) throw new Error(`portfolio.pdf is only ${size} bytes`);
   console.log(`build-pdf: wrote ${PDF} (${Math.round(size / 1024)} KB)`);
+  // `pnpm dev` serves public/, not out/ — keep a local copy so the PDF button works there too (gitignored)
+  await copyFile(PDF, path.resolve("public/portfolio.pdf"));
 } finally {
   await browser.close();
   server.close();

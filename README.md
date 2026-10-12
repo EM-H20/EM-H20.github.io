@@ -10,7 +10,7 @@ Next.js 16 정적 export(`output: "export"`) → GitHub Actions → GitHub Pages
 pnpm install
 pnpm dev             # http://localhost:3000 (/design: 컴포넌트 갤러리)
 pnpm build           # ./out 생성
-pnpm pdf             # ./out/portfolio.pdf 생성 (build 후, 최초 1회 `pnpm exec playwright install chromium`)
+pnpm pdf             # ./out/portfolio.pdf 생성 + dev용 사본 public/portfolio.pdf (build 후, 최초 1회 `pnpm exec playwright install chromium`)
 pnpm test            # 콘텐츠·타이핑 테스트
 pnpm check:contrast  # 디자인 토큰 대비(WCAG AA) 검사
 ```
