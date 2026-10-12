@@ -4,7 +4,6 @@
 export type ImageAspect = "phone" | "wide" | "square" | "og";
 export type ImageSpec = { src: string; alt: string; aspect: ImageAspect; brief: string };
 export type LinkSpec = { label: string; href: string };
-export type CliLine = { kind: "cmd" | "ok"; text: string };
 
 export type Project = {
   slug: string;
@@ -337,16 +336,6 @@ export function heroInfo(): InfoLine[] {
     { label: "Education", value: [education.school, ...education.certifications].join(" · ") },
     { label: "Awards", value: `${hero.topAward} 외 수상·선정 ${awards.length - 1}건` },
     { label: "Shipped", value: shippedNames().join(" · ") },
-  ];
-}
-
-export function cliLines(): CliLine[] {
-  return [
-    { kind: "cmd", text: "whoami" },
-    { kind: "ok", text: education.school },
-    ...education.certifications.map((text): CliLine => ({ kind: "ok", text })),
-    { kind: "cmd", text: "ls shipped/" },
-    { kind: "ok", text: shippedNames().join(" · ") },
   ];
 }
 

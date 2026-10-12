@@ -1,20 +1,19 @@
 import { Section } from "@/components/ui/Container";
+import { Highlight } from "@/components/ui/Highlight";
 import { awards } from "@/content/profile";
 
-// Award name leads each row (F-pattern scanning); on mobile: award | year, then contest, then project.
+// Award name leads each row (F-pattern). Mobile: award | year, then contest · project.
 export function Awards() {
   return (
-    <Section id="awards" eyebrow="Awards" title="수상">
-      <ol className="divide-y divide-hairline border-y border-hairline">
+    <Section id="awards" chip="AWARDS">
+      <ol className="space-y-2.5">
         {awards.map((a) => (
-          <li
-            key={`${a.year}-${a.contest}`}
-            className="grid grid-cols-[1fr_auto] gap-x-6 gap-y-1 py-4 md:grid-cols-[180px_1fr_160px_64px] md:items-baseline"
-          >
-            <span className={`order-1 ${a.highlight ? "font-medium text-fg" : "text-fg-muted"}`}>{a.award}</span>
-            <span className="order-2 font-mono text-caption text-fg-subtle md:order-4 md:text-right">{a.year}</span>
-            <span className="order-3 col-span-2 text-fg-muted md:order-2 md:col-span-1">{a.contest}</span>
-            <span className="order-4 col-span-2 text-sm text-fg-subtle md:order-3 md:col-span-1">{a.project}</span>
+          <li key={`${a.year}-${a.contest}`} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 sm:grid-cols-[150px_1fr_auto] sm:items-baseline">
+            <span className="font-display font-bold text-fg">{a.highlight ? <Highlight>{a.award}</Highlight> : a.award}</span>
+            <span className="text-meta text-fg-subtle sm:order-3">{a.year}</span>
+            <span className="col-span-2 text-[15px] text-fg-muted sm:order-2 sm:col-span-1">
+              {a.contest} <span className="text-fg-subtle">· {a.project}</span>
+            </span>
           </li>
         ))}
       </ol>

@@ -1,76 +1,138 @@
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
+import { Fragment, type ReactNode } from "react";
 import { Section } from "@/components/ui/Container";
+import { Highlight } from "@/components/ui/Highlight";
+import { IconCircle } from "@/components/ui/IconCircle";
 import { ImageSlot, visibleImages } from "@/components/ui/ImageSlot";
-import { TagList } from "@/components/ui/Tag";
-import { type Project, projects } from "@/content/profile";
+import { featured, type LinkSpec, type Project, projects } from "@/content/profile";
 
-function Links({ project }: { project: Project }) {
+const EXTERNAL = { target: "_blank", rel: "noreferrer" } as const;
+const UNDERLINE = "text-fg underline underline-offset-[3px]";
+
+function Detail({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="mt-auto flex flex-wrap gap-2 pt-6">
-      {project.links.map((link) => (
-        <Button key={link.href} href={link.href} variant="ghost">
-          {link.label}
-        </Button>
-      ))}
+    <div>
+      <dt className="mr-1.5 inline font-semibold text-fg">{label}</dt>
+      <dd className="inline">{children}</dd>
     </div>
   );
 }
 
-function MajorProject({ project }: { project: Project }) {
-  const [image] = visibleImages(project.images);
-  const [icon] = project.icon ? visibleImages([project.icon]) : [];
+function TextLinks({ links }: { links: readonly LinkSpec[] }) {
   return (
-    <Card size="md" className="flex h-full flex-col gap-6 sm:flex-row">
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex items-center gap-3">
-          {icon && <ImageSlot image={icon} className="size-10 shrink-0" />}
-          <h3 className="text-heading font-book text-fg">{project.name}</h3>
-        </div>
-        <TagList items={project.badges} tone="award" className="mt-4" />
-        <p className="mt-4 text-body text-fg-muted">{project.summary}</p>
-        <TagList items={[...project.stack, project.period]} className="mt-4" />
-        <Links project={project} />
-      </div>
-      {image && (
-        <ImageSlot
-          image={image}
-          className={`w-full shrink-0 self-center sm:self-start ${image.aspect === "phone" ? "max-w-40" : "sm:max-w-56"}`}
-        />
-      )}
-    </Card>
+    <p className="mt-3 flex flex-wrap gap-x-4 text-meta">
+      {links.map((link) => (
+        <a key={link.href} href={link.href} {...EXTERNAL} className={`inline-flex min-h-10 items-center ${UNDERLINE}`}>
+          {link.label}
+        </a>
+      ))}
+    </p>
   );
 }
 
-function MinorProject({ project }: { project: Project }) {
+function FeaturedProject() {
+  const screens = visibleImages(featured.screens);
+  const [event] = visibleImages([featured.event]);
+  const [firstAward, ...otherAwards] = featured.badges;
   return (
-    <Card className="flex h-full flex-col">
-      <h3 className="text-xl font-medium text-fg">{project.name}</h3>
-      <p className="mt-2 text-sm text-fg-muted">{project.summary}</p>
-      <TagList items={[...project.stack, project.period]} className="mt-4" />
-      <Links project={project} />
-    </Card>
+    <article className="pb-8">
+      <div className="flex items-center gap-4">
+        <IconCircle icon={featured.icon} emoji={featured.emoji} />
+        <div>
+          <h3 className="font-display text-title-lg font-bold text-fg">{featured.name}</h3>
+          <p className="text-meta text-fg-subtle">
+            {featured.period} · {featured.platform}
+          </p>
+        </div>
+      </div>
+      <p className="mt-4 text-[17px] text-fg">{featured.summary}</p>
+      <dl className="mt-3 space-y-1 text-meta text-fg-muted">
+        <Detail label="역할">{featured.role}</Detail>
+        <Detail label="수상">
+          <Highlight>{firstAward}</Highlight> 외 {otherAwards.length}건
+        </Detail>
+        <Detail label="기능">{featured.features.join(" · ")}</Detail>
+      </dl>
+      {screens.length > 0 && (
+        <ul className="mt-5 flex gap-2.5">
+          {screens.map((image) => (
+            <li key={image.src} className="w-24">
+              <ImageSlot image={image} />
+            </li>
+          ))}
+        </ul>
+      )}
+      {event && <ImageSlot image={event} className="mt-3 max-w-md" />}
+      <TextLinks links={featured.links} />
+    </article>
+  );
+}
+
+function MajorRow({ project }: { project: Project }) {
+  const [primary, ...others] = project.links;
+  return (
+    <li className="flex gap-4 py-2.5">
+      <IconCircle icon={project.icon} emoji={project.emoji} />
+      <div className="min-w-0 pt-1">
+        <h3 className="text-title font-medium text-fg">
+          <a href={primary.href} {...EXTERNAL} className="underline-offset-4 hover:underline">
+            {project.name}
+          </a>
+          {project.badges.map((badge) => (
+            <span key={badge} className="ml-2 text-[13px] font-normal">
+              {/* Store releases read as facts; awards get the highlight. */}
+              {project.shipped ? <span className="text-fg-subtle">{badge}</span> : <Highlight>{badge}</Highlight>}
+            </span>
+          ))}
+        </h3>
+        <p className="mt-0.5 text-meta text-fg-subtle">
+          {project.summary} · {project.stack.join(" · ")} · {project.period}
+          {others.map((link) => (
+            <Fragment key={link.href}>
+              {" · "}
+              <a href={link.href} {...EXTERNAL} className={UNDERLINE}>
+                {link.label}
+              </a>
+            </Fragment>
+          ))}
+        </p>
+      </div>
+    </li>
+  );
+}
+
+function MinorRow({ project }: { project: Project }) {
+  return (
+    <li className="flex items-center gap-3 py-1.5">
+      <IconCircle icon={project.icon} emoji={project.emoji} size={40} />
+      <p className="min-w-0 text-base font-medium text-fg">
+        <a href={project.links[0].href} {...EXTERNAL} className="underline-offset-4 hover:underline">
+          {project.name}
+        </a>{" "}
+        <span className="text-meta font-normal text-fg-subtle">
+          {project.summary} · {project.period}
+        </span>
+      </p>
+    </li>
   );
 }
 
 export function Projects() {
-  const major = projects.filter((p) => p.tier === 2);
-  const minor = projects.filter((p) => p.tier === 3);
   return (
-    <Section id="projects" eyebrow="Projects" title="프로젝트">
-      <ul className="grid gap-6 md:grid-cols-2">
-        {major.map((project) => (
-          <li key={project.slug}>
-            <MajorProject project={project} />
-          </li>
-        ))}
+    <Section id="projects" chip="PROJECTS">
+      <FeaturedProject />
+      <ul>
+        {projects
+          .filter((p) => p.tier === 2)
+          .map((project) => (
+            <MajorRow key={project.slug} project={project} />
+          ))}
       </ul>
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {minor.map((project) => (
-          <li key={project.slug}>
-            <MinorProject project={project} />
-          </li>
-        ))}
+      <ul className="mt-6">
+        {projects
+          .filter((p) => p.tier === 3)
+          .map((project) => (
+            <MinorRow key={project.slug} project={project} />
+          ))}
       </ul>
     </Section>
   );

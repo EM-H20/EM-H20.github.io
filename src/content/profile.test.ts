@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { allImages, cliLines, featured, hero, heroInfo, heroStats, projects } from "./profile.ts";
+import { allImages, featured, hero, heroInfo, heroStats, projects, shippedNames } from "./profile.ts";
 
 test("hero stats are derived from awards and shipped apps", () => {
   assert.deepEqual(heroStats(), [
@@ -10,11 +10,8 @@ test("hero stats are derived from awards and shipped apps", () => {
   ]);
 });
 
-test("CLI shipped line lists the featured app first, then shipped projects", () => {
-  assert.deepEqual(cliLines().at(-1), {
-    kind: "ok",
-    text: "경찰과도둑 · Block Drag · RuleBook",
-  });
+test("shipped names list the featured app first, then shipped projects", () => {
+  assert.deepEqual(shippedNames(), ["경찰과도둑", "Block Drag", "RuleBook"]);
 });
 
 test("project slugs are unique", () => {
