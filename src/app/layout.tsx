@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import { imageExists } from "@/components/ui/ImageSlot";
 import { ogImage } from "@/content/profile";
 import { baseOpenGraph, site } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const display = localFont({
+  src: [
+    { path: "../fonts/display-light.woff2", weight: "300", style: "normal" },
+    { path: "../fonts/display-bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-gmarket",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${display.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-canvas font-sans text-fg">{children}</body>
     </html>
