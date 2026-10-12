@@ -333,7 +333,8 @@ export type InfoLine = { label: string; value: string };
 export function heroInfo(): InfoLine[] {
   return [
     { label: "Email", value: links.email.label },
-    { label: "Education", value: [education.school, ...education.certifications].join(" · ") },
+    { label: "Education", value: [education.school, ...education.extras].join(" · ") },
+    { label: "Certification", value: education.certifications.join(" · ") },
     { label: "Awards", value: `${hero.topAward} 외 수상·선정 ${awards.length - 1}건` },
     { label: "Shipped", value: shippedNames().join(" · ") },
   ];

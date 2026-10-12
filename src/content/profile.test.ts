@@ -44,7 +44,8 @@ test("every rotating hero word takes the particle 를", () => {
 test("hero info lines are derived from profile data", () => {
   assert.deepEqual(heroInfo(), [
     { label: "Email", value: "elipair0106@gmail.com" },
-    { label: "Education", value: "세종대학교 컴퓨터공학과 · SQLD" },
+    { label: "Education", value: "세종대학교 컴퓨터공학과 · AI Advanced Microdegree" },
+    { label: "Certification", value: "SQLD" },
     { label: "Awards", value: "Google I/O Extended 1st Place 외 수상·선정 8건" },
     { label: "Shipped", value: "경찰과도둑 · Block Drag · RuleBook" },
   ]);
