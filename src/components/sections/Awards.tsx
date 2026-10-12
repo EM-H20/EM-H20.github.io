@@ -6,9 +6,9 @@ import { awards } from "@/content/profile";
 export function Awards() {
   return (
     <Section id="awards" chip="AWARDS">
-      <ol className="space-y-2.5">
+      <ol className="divide-y divide-hairline">
         {awards.map((a) => (
-          <li key={`${a.year}-${a.contest}`} className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 sm:grid-cols-[150px_1fr_auto] sm:items-baseline">
+          <li key={`${a.year}-${a.contest}`} className="grid py-2.5 first:pt-0 last:pb-0 grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 sm:grid-cols-[150px_1fr_auto] sm:items-baseline">
             <span className="font-display font-bold text-fg">{a.highlight ? <Highlight>{a.award}</Highlight> : a.award}</span>
             <span className="text-meta text-fg-subtle sm:order-3">{a.year}</span>
             <span className="col-span-2 text-[15px] text-fg-muted sm:order-2 sm:col-span-1">

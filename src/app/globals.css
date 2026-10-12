@@ -117,7 +117,8 @@
     transition: background-size 250ms ease-out;
   }
   .link-draw:hover,
-  .link-draw:focus-visible {
+  .link-draw:focus-visible,
+  .group:hover .link-draw {
     background-size: 100% max(1px, 0.08em);
   }
 
