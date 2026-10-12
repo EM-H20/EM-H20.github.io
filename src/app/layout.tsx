@@ -15,7 +15,7 @@ const display = localFont({
   display: "swap",
 });
 
-// Applies a stored theme choice before first paint (no flash). Without one, CSS follows the system.
+// Applies a stored theme choice before first paint (no flash). Without one, the page stays light.
 // Key must match STORAGE_KEY in components/ui/ThemeToggle.tsx.
 const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
 

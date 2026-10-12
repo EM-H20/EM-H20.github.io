@@ -8,8 +8,8 @@ const STORAGE_KEY = "theme";
 export function ThemeToggle() {
   const toggle = () => {
     const root = document.documentElement;
-    const current = root.dataset.theme ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    const next = current === "dark" ? "light" : "dark";
+    // Light is the default: no stored choice means light, whatever the OS prefers.
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
     try {
       localStorage.setItem(STORAGE_KEY, next);

@@ -15,8 +15,7 @@
   --dot: #f5b800;
 }
 
-/* Dark: an explicit choice (theme toggle) or the system preference when no choice is stored.
-   Keep both blocks identical — scripts/check-contrast.mjs fails if they drift. */
+/* Dark applies only when chosen with the theme toggle; light is the default regardless of the OS. */
 :root[data-theme="dark"] {
   --canvas: #0f1010;
   --surface: #1c1c1c;
@@ -29,30 +28,10 @@
   --highlight: rgb(255 225 77 / 0.35);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --canvas: #0f1010;
-    --surface: #1c1c1c;
-    --fg: #ededed;
-    --fg-muted: #b4b4b4;
-    --fg-subtle: #8f8f8f;
-    --hairline: #2a2a2a;
-    --inverted: #ededed;
-    --on-inverted: #0f1010;
-    --highlight: rgb(255 225 77 / 0.35);
-  }
-}
-
 /* Black line art (profile illustration): light strokes in dark mode. */
 :root[data-theme="dark"] .invert-in-dark {
   filter: invert(1);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .invert-in-dark {
-    filter: invert(1);
-  }
-}
-
 /* Theme toggle shows the mode it switches to: moon in light, sun in dark. */
 .theme-dark-only {
   display: none;
@@ -63,15 +42,6 @@
 :root[data-theme="dark"] .theme-light-only {
   display: none;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-dark-only {
-    display: inline;
-  }
-  :root:not([data-theme="light"]) .theme-light-only {
-    display: none;
-  }
-}
-
 @theme {
   --color-*: initial;
 
