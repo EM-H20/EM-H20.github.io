@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { CliPanel } from "@/components/ui/CliPanel";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { ImageSlot } from "@/components/ui/ImageSlot";
+import { Skeleton } from "@/components/ui/Skeleton";
+import { Tag, TagList } from "@/components/ui/Tag";
+import { allImages, cliLines } from "@/content/profile";
 
 export const metadata: Metadata = { title: "Design", robots: { index: false } };
 
@@ -69,6 +75,59 @@ export default function DesignPage() {
               Text
             </Button>
           </div>
+        </section>
+
+        <section>
+          <Eyebrow>Cards</Eyebrow>
+          <div className="grid gap-6 md:grid-cols-3">
+            <Card>
+              <p className="text-body">sm card</p>
+            </Card>
+            <Card size="md">
+              <p className="text-body text-fg-muted">md card</p>
+            </Card>
+            <Card inverted size="lg">
+              <Eyebrow>Inverted</Eyebrow>
+              <p className="text-body text-fg-muted">lg inverted card</p>
+              <TagList items={["Flutter", "Riverpod"]} className="mt-4" />
+              <div className="mt-4">
+                <Button href="https://github.com" variant="ghost">
+                  Ghost on inverted
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </section>
+
+        <section>
+          <Eyebrow>Tags</Eyebrow>
+          <div className="flex flex-wrap gap-2">
+            <Tag>Flutter</Tag>
+            <Tag tone="award">대상</Tag>
+          </div>
+        </section>
+
+        <section>
+          <Eyebrow>CLI Panel</Eyebrow>
+          <div className="max-w-md">
+            <CliPanel lines={cliLines()} />
+          </div>
+        </section>
+
+        <section>
+          <Eyebrow>Skeleton</Eyebrow>
+          <Skeleton className="h-24 max-w-md rounded-card" />
+        </section>
+
+        <section>
+          <Eyebrow>Image slots (all)</Eyebrow>
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+            {allImages().map((image) => (
+              <li key={image.src}>
+                <ImageSlot image={image} />
+              </li>
+            ))}
+          </ul>
         </section>
       </Container>
     </main>

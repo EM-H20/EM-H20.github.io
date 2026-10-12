@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+import { imageExists } from "@/components/ui/ImageSlot";
+import { ogImage } from "@/content/profile";
 import { baseOpenGraph, site } from "@/lib/site";
 import "./globals.css";
 
@@ -18,7 +20,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.name, template: `%s | ${site.shortName}` },
   description: site.description,
-  openGraph: { ...baseOpenGraph, type: "website" },
+  openGraph: {
+    ...baseOpenGraph,
+    type: "website",
+    ...(imageExists(ogImage.src) && { images: [ogImage.src] }),
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

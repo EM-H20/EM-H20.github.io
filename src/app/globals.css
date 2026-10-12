@@ -103,7 +103,8 @@
   --color-accent: var(--accent);
 
   --font-sans: var(--font-geist-sans), "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Geist Mono has no Hangul; Korean in labels falls through to Pretendard, not the OS font. */
+  --font-mono: var(--font-geist-mono), "Pretendard Variable", Pretendard, ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --shadow-hairline: 0 0 0 1px var(--hairline);
   --shadow-card: 0 0 0 1px var(--ring-card), 0 0 0 2px var(--canvas);
