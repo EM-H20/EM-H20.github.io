@@ -19,7 +19,17 @@ export function CliPanel({ lines, starts }: { lines: readonly CliLine[]; starts?
             >
               {PREFIX[line.kind]}
             </span>
-            <span>{typed ? <Typewriter text={line.text} start={start} /> : line.text}</span>
+            {typed ? (
+              // Screen readers get the line once; the per-character spans are visual only.
+              <span>
+                <span className="sr-only">{line.text}</span>
+                <span aria-hidden="true">
+                  <Typewriter text={line.text} start={start} />
+                </span>
+              </span>
+            ) : (
+              <span>{line.text}</span>
+            )}
           </p>
         );
       })}

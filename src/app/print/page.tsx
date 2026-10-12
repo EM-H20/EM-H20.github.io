@@ -167,7 +167,14 @@ export default function PrintPage() {
               <Meta>
                 {project.period} · {project.stack.join(" · ")}
               </Meta>
-              <p className="text-xs text-fg-subtle">{project.links.map((l) => bare(l.href)).join(" · ")}</p>
+              <p className="text-xs text-fg-subtle">
+                {project.links.map((link, i) => (
+                  <span key={link.href}>
+                    {i > 0 && " · "}
+                    <a href={link.href}>{bare(link.href)}</a>
+                  </span>
+                ))}
+              </p>
             </li>
           ))}
         </ul>
