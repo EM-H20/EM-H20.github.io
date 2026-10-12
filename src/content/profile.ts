@@ -68,7 +68,7 @@ export const hero = {
   eyebrow: "Flutter Developer · Mobile & Web",
   name: "홍의민",
   alias: "Elipair",
-  words: ["빠른 출시", "자동화", "아이디어", "팀워크"],
+  words: ["일단 해보기", "빠른 출시", "술래잡기", "딸깍 배포", "AI 동료", "실사용자"],
   intro: "아이디어를 실제로 사용할 수 있는 모바일·웹 서비스로 만듭니다.",
   topAward: "Google I/O Extended 1st Place",
   contactLine: "채용·협업 제안은 메일로 연락해 주세요.",
