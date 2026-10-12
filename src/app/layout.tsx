@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
-import { imageExists } from "@/components/ui/ImageSlot";
-import { ogImage } from "@/content/profile";
 import { baseOpenGraph, site } from "@/lib/site";
 import "./globals.css";
 
@@ -26,7 +24,6 @@ export const metadata: Metadata = {
   openGraph: {
     ...baseOpenGraph,
     type: "website",
-    ...(imageExists(ogImage.src) && { images: [ogImage.src] }),
   },
 };
 

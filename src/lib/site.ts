@@ -1,3 +1,5 @@
+import { ogImage } from "@/content/profile";
+
 export const site = {
   url: "https://em-h20.github.io",
   name: "Hong Eui-min · Elipair",
@@ -10,4 +12,4 @@ export const site = {
 };
 
 // Page-level `openGraph` replaces the layout's instead of merging, so pages spread this in
-export const baseOpenGraph = { siteName: site.name, locale: "ko_KR" };
+export const baseOpenGraph = { siteName: site.name, locale: "ko_KR", images: [ogImage.src] };
