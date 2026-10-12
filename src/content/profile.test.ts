@@ -39,7 +39,7 @@ const takesReul = (word: string) => {
 
 // Latin words can't be checked by code ("Python를" is wrong: 파이썬 ends in a consonant), so each one is
 // approved by ear here. Adding a new Latin word fails until someone reads "<word>를" aloud and lists it.
-const REVIEWED_LATIN = ["Flutter", "UX", "React", "Next.js"];
+const REVIEWED_LATIN = ["Flutter", "UX", "React", "Next.js", "Quest", "First Try", "Retry", "XP", "Log"];
 
 test("every rotating hero word takes the particle 를", () => {
   assert.ok(hero.words.length >= 2, "need at least two words to rotate");

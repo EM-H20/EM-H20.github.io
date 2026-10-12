@@ -1,8 +1,8 @@
 // Hero word loop: type → hold → delete → pause → next word. Pure, so it is testable without a DOM.
-export const TYPE_MS = 110;
-export const DELETE_MS = 50;
-export const HOLD_MS = 1400;
-export const NEXT_MS = 300;
+export const TYPE_MS = 180;
+export const DELETE_MS = 80;
+export const HOLD_MS = 1500;
+export const NEXT_MS = 1000;
 
 export type RotState = { word: number; length: number; deleting: boolean };
 

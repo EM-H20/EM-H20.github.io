@@ -70,7 +70,7 @@ export const hero = {
   name: "홍의민",
   alias: "Elipair",
   motto: "고민은 짧게, 행동은 빠르게",
-  words: ["시행착오", "첫 시도", "경험치", "회고", "기록하기"],
+  words: ["Quest", "First Try", "Retry", "XP", "Log", "Flutter"],
   intro: "아이디어를 실제로 사용할 수 있는 모바일·웹 서비스로 만듭니다.",
   topAward: "Google I/O Extended 1st Place",
   contactLine: "채용·협업 제안은 메일로 연락해 주세요.",
