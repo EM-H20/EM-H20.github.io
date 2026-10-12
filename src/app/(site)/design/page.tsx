@@ -7,8 +7,9 @@ import { Highlight } from "@/components/ui/Highlight";
 import { IconCircle } from "@/components/ui/IconCircle";
 import { ImageSlot } from "@/components/ui/ImageSlot";
 import { InfoLines } from "@/components/ui/InfoLines";
+import { RotatingWord } from "@/components/ui/RotatingWord";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { allImages, featured, heroInfo, projects } from "@/content/profile";
+import { allImages, featured, hero, heroInfo, projects } from "@/content/profile";
 
 export const metadata: Metadata = { title: "Design", robots: { index: false } };
 
@@ -45,6 +46,14 @@ export default function DesignPage() {
   return (
     <main className="flex-1 py-12">
       <Container className="space-y-14">
+        <Block name="ROTATING WORD">
+          <p className="font-display text-greet font-light">
+            <span className="block whitespace-nowrap">
+              <RotatingWord words={hero.words} />를 좋아하는
+            </span>
+          </p>
+        </Block>
+
         <Block name="COLORS">
           <ul className="grid grid-cols-4 gap-3">
             {SWATCHES.map(([name, cls]) => (

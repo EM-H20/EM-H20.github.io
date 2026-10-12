@@ -1,31 +1,36 @@
 import { Button } from "@/components/ui/Button";
-import { CliPanel } from "@/components/ui/CliPanel";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
-import { Typewriter } from "@/components/ui/Typewriter";
-import { cliLines, hero, heroStats, links } from "@/content/profile";
-import { schedule } from "@/lib/typing";
+import { Highlight } from "@/components/ui/Highlight";
+import { InfoLines } from "@/components/ui/InfoLines";
+import { RotatingWord } from "@/components/ui/RotatingWord";
+import { hero, heroInfo, links } from "@/content/profile";
+import { site } from "@/lib/site";
 
+// Each line is nowrap and the size is clamped, so the block keeps one height while the word types.
 export function Hero() {
-  const lines = cliLines();
-  const [nameStart, ...lineStarts] = schedule([hero.name, ...lines.map((l) => l.text)]);
   return (
-    <Container className="grid gap-12 pt-16 md:grid-cols-[1.2fr_1fr] md:items-center md:pt-28">
-      <div>
-        <Eyebrow>{hero.eyebrow}</Eyebrow>
-        <h1 className="text-display font-book text-fg" aria-label={hero.name}>
-          <Typewriter text={hero.name} start={nameStart} />
-        </h1>
-        <p className="mt-6 max-w-xl text-body text-fg-muted">{hero.intro}</p>
-        <p className="mt-4 font-mono text-caption text-fg-subtle">{heroStats().join(" · ")}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href={links.email.href}>메일 보내기</Button>
-          <Button href={links.github.href} variant="ghost">
-            GitHub
-          </Button>
-        </div>
+    <Container className="pt-16 pb-12 md:pt-24">
+      <h1 className="sr-only">{`안녕하세요! ${hero.words[0]}를 좋아하는 개발자 ${hero.name}입니다.`}</h1>
+      <p aria-hidden="true" className="font-display text-greet font-light text-fg">
+        <span className="block whitespace-nowrap">안녕하세요!</span>
+        <span className="block whitespace-nowrap">
+          <RotatingWord words={hero.words} />를 좋아하는
+        </span>
+        <span className="block whitespace-nowrap">
+          개발자{" "}
+          <Highlight>
+            <strong className="font-bold">{hero.name}</strong>
+          </Highlight>
+          입니다.
+        </span>
+      </p>
+      <InfoLines lines={heroInfo()} className="mt-9" />
+      <div className="mt-7 flex flex-wrap gap-2.5">
+        <Button href={links.email.href}>메일 보내기</Button>
+        <Button href={site.pdf.href} download={site.pdf.filename} variant="ghost">
+          PDF 포트폴리오
+        </Button>
       </div>
-      <CliPanel lines={lines} starts={lineStarts} />
     </Container>
   );
 }
