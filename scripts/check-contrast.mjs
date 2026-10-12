@@ -65,6 +65,10 @@ const ratio = (a, b) => {
   return (hi + 0.05) / (lo + 0.05);
 };
 
+// Text on the highlight must use --fg (the pair checked above), never inherit a lighter token.
+const highlightRule = css.match(/mark\.hl\s*\{([^}]*)\}/);
+if (!highlightRule || !/color:\s*var\(--fg\)\s*;/.test(highlightRule[1])) fail("mark.hl must set color: var(--fg)");
+
 let failures = 0;
 for (const [scheme, map] of [["light", light], ["dark", dark]]) {
   const canvas = parse(resolve(map, "--canvas"));

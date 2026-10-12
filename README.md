@@ -21,7 +21,7 @@ pnpm check:contrast  # 디자인 토큰 대비(WCAG AA) 검사
 
 모든 내용은 `src/content/profile.ts` 한 파일에 있습니다. 홈과 PDF(`/print`)가 같은 데이터를 씁니다.
 
-히어로의 바뀌는 단어는 `profile.ts`의 `hero.words` — 받침 없는 단어만('를'이 맞게) 넣으세요. 테스트가 검사합니다.
+히어로의 바뀌는 단어는 `profile.ts`의 `hero.words` — '를'이 맞는 단어만 넣으세요. 한글은 받침을 테스트가 검사하고, 영문 단어는 소리 내어 읽어본 뒤 `src/content/profile.test.ts`의 `REVIEWED_LATIN`에 추가해야 테스트가 통과합니다.
 
 ## 이미지 추가
 

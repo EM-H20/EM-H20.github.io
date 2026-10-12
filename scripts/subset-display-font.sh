@@ -27,8 +27,11 @@ for weight in Light Bold; do
 import sys
 from fontTools.ttLib import TTFont
 src, dst, weight = sys.argv[1:]
-names = {1: "Elipair Display", 3: f"Elipair Display {weight} subset", 4: f"Elipair Display {weight}",
-         6: f"ElipairDisplay-{weight}", 16: "Elipair Display"}
+# 0/13/14 carry the OFL notice inside the font, since only the woff2 (not OFL.txt) is served to visitors.
+names = {0: "Copyright (c) 2019, eBay Korea Co., Ltd., with Reserved Font Name Gmarket Sans Font. Modified (subset) as Elipair Display.",
+         1: "Elipair Display", 3: f"Elipair Display {weight} subset", 4: f"Elipair Display {weight}",
+         6: f"ElipairDisplay-{weight}", 13: "This Font Software is licensed under the SIL Open Font License, Version 1.1.",
+         14: "https://openfontlicense.org", 16: "Elipair Display"}
 font = TTFont(src)
 table = font["name"]
 # The source lacks some IDs (e.g. family) and embeds the original name in others: drop those, then set ours.

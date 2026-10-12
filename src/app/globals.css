@@ -102,7 +102,7 @@
 
 @layer components {
   mark.hl {
-    color: inherit;
+    color: var(--fg);
     background: linear-gradient(transparent 62%, var(--highlight) 62%);
     padding: 0 2px;
   }

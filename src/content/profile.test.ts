@@ -36,9 +36,16 @@ const takesReul = (word: string) => {
   return code < 0xac00 || code > 0xd7a3 || (code - 0xac00) % 28 === 0;
 };
 
+// Latin words can't be checked by code ("Python를" is wrong: 파이썬 ends in a consonant), so each one is
+// approved by ear here. Adding a new Latin word fails until someone reads "<word>를" aloud and lists it.
+const REVIEWED_LATIN = ["Flutter", "UX", "React", "Next.js"];
+
 test("every rotating hero word takes the particle 를", () => {
   assert.ok(hero.words.length >= 2, "need at least two words to rotate");
-  for (const word of hero.words) assert.ok(takesReul(word), `"${word}를" is ungrammatical`);
+  for (const word of hero.words) {
+    assert.ok(takesReul(word), `"${word}를" is ungrammatical`);
+    if (!/[가-힣]$/.test(word)) assert.ok(REVIEWED_LATIN.includes(word), `"${word}를" — read it aloud, then add it to REVIEWED_LATIN`);
+  }
 });
 
 test("hero info lines are derived from profile data", () => {
