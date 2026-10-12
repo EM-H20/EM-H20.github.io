@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { links } from "@/content/profile";
 import { site } from "@/lib/site";
 
@@ -31,6 +32,7 @@ export function Nav() {
           <Button href={site.pdf.href} download={site.pdf.filename} variant="pill">
             PDF
           </Button>
+          <ThemeToggle />
         </nav>
       </Container>
     </header>

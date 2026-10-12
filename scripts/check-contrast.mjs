@@ -3,7 +3,8 @@
 import { readFileSync } from "node:fs";
 
 const css = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
-const DARK = /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{\s*:root\s*\{([^}]*)\}\s*\}/;
+const DARK = /:root\[data-theme="dark"\]\s*\{([^}]*)\}/;
+const SYSTEM_DARK = /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{\s*:root:not\(\[data-theme="light"\]\)\s*\{([^}]*)\}\s*\}/;
 const PAIRS = [
   ["--fg", "--canvas"],
   ["--fg-muted", "--canvas"],
@@ -20,9 +21,14 @@ function fail(message) {
 const declarations = (block) =>
   Object.fromEntries([...block.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]));
 
+// Dark tokens appear twice: for an explicit choice and for the system preference when no choice is stored.
 const darkMatch = css.match(DARK);
-if (!darkMatch) fail("dark-mode :root block not found");
-const lightCss = css.replace(DARK, "");
+const systemMatch = css.match(SYSTEM_DARK);
+if (!darkMatch) fail(':root[data-theme="dark"] block not found');
+if (!systemMatch) fail("prefers-color-scheme dark block not found");
+if (JSON.stringify(declarations(darkMatch[1])) !== JSON.stringify(declarations(systemMatch[1])))
+  fail("the two dark-token blocks differ — keep them identical");
+const lightCss = css.replace(SYSTEM_DARK, "").replace(DARK, "");
 const light = Object.assign({}, ...[...lightCss.matchAll(/:root[^{]*\{([^}]*)\}/g)].map((m) => declarations(m[1])));
 const dark = { ...light, ...declarations(darkMatch[1]) };
 

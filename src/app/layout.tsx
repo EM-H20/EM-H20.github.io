@@ -15,6 +15,10 @@ const display = localFont({
   display: "swap",
 });
 
+// Applies a stored theme choice before first paint (no flash). Without one, CSS follows the system.
+// Key must match STORAGE_KEY in components/ui/ThemeToggle.tsx.
+const THEME_SCRIPT = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.name, template: `%s | ${site.shortName}` },
@@ -31,8 +35,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="ko"
       className={`${display.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-canvas font-sans break-keep text-fg">{children}</body>
+      <body className="flex min-h-full flex-col bg-canvas font-sans break-keep text-fg">
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        {children}
+      </body>
     </html>
   );
 }
