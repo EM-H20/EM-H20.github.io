@@ -7,7 +7,9 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { ImageSlot } from "@/components/ui/ImageSlot";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { Tag, TagList } from "@/components/ui/Tag";
-import { allImages, cliLines } from "@/content/profile";
+import { Typewriter } from "@/components/ui/Typewriter";
+import { allImages, cliLines, hero } from "@/content/profile";
+import { schedule } from "@/lib/typing";
 
 export const metadata: Metadata = { title: "Design", robots: { index: false } };
 
@@ -34,6 +36,8 @@ const TYPE = [
 ] as const;
 
 export default function DesignPage() {
+  const lines = cliLines();
+  const [nameStart, ...lineStarts] = schedule([hero.name, ...lines.map((l) => l.text)]);
   return (
     <main className="flex-1 py-16">
       <Container className="space-y-16">
@@ -108,9 +112,12 @@ export default function DesignPage() {
         </section>
 
         <section>
-          <Eyebrow>CLI Panel</Eyebrow>
-          <div className="max-w-md">
-            <CliPanel lines={cliLines()} />
+          <Eyebrow>Typing (reload to replay)</Eyebrow>
+          <div className="grid gap-8 md:grid-cols-2 md:items-center">
+            <p className="text-display font-book" aria-label={hero.name}>
+              <Typewriter text={hero.name} start={nameStart} />
+            </p>
+            <CliPanel lines={lines} starts={lineStarts} />
           </div>
         </section>
 
