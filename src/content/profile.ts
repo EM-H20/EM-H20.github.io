@@ -100,8 +100,8 @@ export const featured = {
     phone("cops-and-robbers", 3, "실시간 팀 채팅 화면", "팀 채팅 또는 게임 결과(판정) 화면"),
   ],
   event: {
-    src: "/images/projects/cops-and-robbers/event.webp",
-    alt: "행사 부스 현장",
+    src: "/images/projects/cops-and-robbers/event.jpg",
+    alt: "행사 부스 현장 — 동심지키미: 경찰과 도둑학개론",
     aspect: "wide",
     brief: "서울대학페스티벌 등 행사 부스 현장 사진",
   } satisfies ImageSpec,
