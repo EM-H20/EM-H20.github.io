@@ -1,26 +1,187 @@
 @import "tailwindcss";
 
+/* Raw palette from the refero Vercel style. Components use the semantic tokens below, never these. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --vercel-paper-white: #fafafa;
+  --vercel-pure-white: #ffffff;
+  --vercel-hairline: #ebebeb;
+  --vercel-ash: #c9c9c9;
+  --vercel-smoke: #a8a8a8;
+  --vercel-graphite: #8f8f8f;
+  --vercel-slate: #7d7d7d;
+  --vercel-stone: #666666;
+  --vercel-charcoal: #4d4d4d;
+  --vercel-obsidian: #171717;
+  --vercel-carbon: #000000;
+  --vercel-terminal-green: #297a3a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Semantic tokens, light. `.scheme-light` re-pins them so /print stays light under a dark OS. */
+:root,
+.scheme-light {
+  --canvas: var(--vercel-paper-white);
+  --surface: var(--vercel-pure-white);
+  --inverted: var(--vercel-obsidian);
+  --on-inverted: var(--vercel-pure-white);
+  --on-inverted-muted: #a1a1a1;
+  --inverted-hairline: #333333;
+  --fg: var(--vercel-obsidian);
+  --fg-muted: var(--vercel-charcoal);
+  --fg-subtle: var(--vercel-stone);
+  --fg-faint: var(--vercel-graphite);
+  --hairline: var(--vercel-hairline);
+  --skeleton: var(--vercel-hairline);
+  --accent: var(--vercel-terminal-green);
+  --ring-card: rgb(0 0 0 / 0.08);
 }
 
+/* Dark: the gray ramp inverted. Not in refero — values chosen to pass scripts/check-contrast.mjs. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --canvas: #0a0a0a;
+    --surface: #111111;
+    --inverted: #ededed;
+    --on-inverted: #0a0a0a;
+    --on-inverted-muted: #4d4d4d;
+    --inverted-hairline: #d4d4d4;
+    --fg: #ededed;
+    --fg-muted: #a1a1a1;
+    --fg-subtle: #8f8f8f;
+    --fg-faint: #5c5c5c;
+    --hairline: #2e2e2e;
+    --skeleton: #1f1f1f;
+    --accent: #45a557;
+    --ring-card: rgb(255 255 255 / 0.1);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Inside an inverted card, text and hairline tokens flip to the opposite scheme. */
+.scheme-inverted {
+  --fg: var(--on-inverted);
+  --fg-muted: var(--on-inverted-muted);
+  --fg-subtle: var(--on-inverted-muted);
+  --hairline: var(--inverted-hairline);
+}
+
+@theme {
+  --color-*: initial;
+
+  --text-eyebrow: 11px;
+  --text-eyebrow--line-height: 1.5;
+  --text-eyebrow--letter-spacing: 0.071em;
+  --text-caption: 13px;
+  --text-caption--line-height: 1.54;
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-heading: 30px;
+  --text-heading--line-height: 1.1;
+  --text-heading--letter-spacing: -0.05em;
+  --text-heading-lg: 36px;
+  --text-heading-lg--line-height: 1;
+  --text-heading-lg--letter-spacing: -0.06em;
+  --text-display: 40px;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.06em;
+
+  --font-weight-book: 450;
+  --radius-sm: 2px;
+  --radius-card: 6px;
+  --container-page: 1280px;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-inverted: var(--inverted);
+  --color-on-inverted: var(--on-inverted);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fg-faint: var(--fg-faint);
+  --color-hairline: var(--hairline);
+  --color-skeleton: var(--skeleton);
+  --color-accent: var(--accent);
+
+  --font-sans: var(--font-geist-sans), "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-hairline: 0 0 0 1px var(--hairline);
+  --shadow-card: 0 0 0 1px var(--ring-card), 0 0 0 2px var(--canvas);
+}
+
+/* Display sizes grow at md; the letter-spacing is in em so it scales with them. */
+@media (width >= 48rem) {
+  :root {
+    --text-heading-lg: 56px;
+    --text-display: 64px;
+  }
+}
+
+@layer base {
+  body {
+    font-feature-settings: "calt" 0, "rlig", "ss11";
+  }
+}
+
+@layer components {
+  .skeleton {
+    background: linear-gradient(90deg, var(--skeleton) 25%, var(--canvas) 50%, var(--skeleton) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s linear infinite;
+  }
+
+  /* Typing: every character is in the DOM from the start; each one becomes visible at its own delay. */
+  .type-char {
+    opacity: 0;
+    animation: type-reveal 0s forwards;
+  }
+  .type-caret {
+    display: inline-block;
+    width: 0;
+    opacity: 0;
+    animation: type-reveal 0s forwards, type-hide 0s forwards;
+  }
+  .type-caret > span {
+    animation: caret-blink 1s step-end infinite;
+  }
+
+  .print-break {
+    break-before: page;
+  }
+  .print-block {
+    break-inside: avoid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce), print {
+  .skeleton {
+    animation: none;
+    background: var(--skeleton);
+  }
+  .type-char {
+    opacity: 1;
+    animation: none;
+  }
+  .type-caret {
+    display: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 16mm;
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes type-reveal {
+  to { opacity: 1; }
+}
+@keyframes type-hide {
+  to { opacity: 0; }
+}
+@keyframes caret-blink {
+  50% { opacity: 0; }
 }
