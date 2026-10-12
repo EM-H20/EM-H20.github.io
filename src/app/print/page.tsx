@@ -33,14 +33,14 @@ function PrintLink({ link }: { link: LinkSpec }) {
 function Heading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <>
-      <p className="mb-2 font-mono text-eyebrow text-fg uppercase">{eyebrow}</p>
-      <h2 className="mb-6 text-heading font-book">{title}</h2>
+      <p className="mb-2 font-display text-xs font-bold tracking-wide text-fg-subtle">{eyebrow}</p>
+      <h2 className="mb-6 font-display text-[26px] font-bold">{title}</h2>
     </>
   );
 }
 
 function Meta({ children }: { children: ReactNode }) {
-  return <p className="font-mono text-[10px] tracking-[0.071em] text-fg-subtle uppercase">{children}</p>;
+  return <p className="text-xs text-fg-subtle">{children}</p>;
 }
 
 function Detail({ label, children }: { label: string; children: ReactNode }) {
@@ -56,7 +56,7 @@ function MajorBlock({ project }: { project: Project }) {
   const images = visibleImages(project.images);
   return (
     <article className="print-block border-t border-hairline py-6">
-      <h3 className="text-xl font-medium">{project.name}</h3>
+      <h3 className="font-display text-xl font-bold">{project.name}</h3>
       <Meta>
         {project.period} · {project.stack.join(" · ")}
       </Meta>
@@ -87,24 +87,24 @@ export default function PrintPage() {
   const major = projects.filter((p) => p.tier === 2);
   const minor = projects.filter((p) => p.tier === 3);
   return (
-    <main className="scheme-light mx-auto w-full max-w-[178mm] bg-surface text-fg">
+    <main className="scheme-light mx-auto w-full max-w-[178mm] bg-canvas text-fg">
       <section className="flex gap-8 pt-6">
         <div className="flex-1">
-          <p className="font-mono text-eyebrow uppercase">{hero.eyebrow}</p>
-          <h1 className="mt-3 text-[48px] leading-none font-book tracking-[-0.06em]">
+          <p className="font-display text-xs font-bold tracking-wide text-fg-subtle">{hero.eyebrow}</p>
+          <h1 className="mt-3 font-display text-[44px] leading-none font-bold">
             {hero.name} <span className="text-fg-subtle">{hero.alias}</span>
           </h1>
           <p className="mt-4 text-body text-fg-muted">{hero.intro}</p>
-          <p className="mt-3 font-mono text-caption text-fg-subtle">{heroStats().join(" · ")}</p>
+          <p className="mt-3 text-meta text-fg-subtle">{heroStats().join(" · ")}</p>
           <dl className="mt-8 space-y-2 text-sm">
             <div>
-              <dt className="inline font-mono text-eyebrow text-fg-subtle uppercase">Education </dt>
+              <dt className="inline font-display text-xs font-bold text-fg-subtle">Education </dt>
               <dd className="inline">
                 {education.school} · {education.extras.join(" · ")}
               </dd>
             </div>
             <div>
-              <dt className="inline font-mono text-eyebrow text-fg-subtle uppercase">Certification </dt>
+              <dt className="inline font-display text-xs font-bold text-fg-subtle">Certification </dt>
               <dd className="inline">{education.certifications.join(" · ")}</dd>
             </div>
           </dl>
@@ -189,7 +189,7 @@ export default function PrintPage() {
                 <td className={`py-2 pr-4 ${a.highlight ? "font-medium" : ""}`}>{a.award}</td>
                 <td className="py-2 pr-4 text-fg-muted">{a.contest}</td>
                 <td className="py-2 pr-4 text-fg-subtle">{a.project}</td>
-                <td className="py-2 font-mono text-[11px] text-fg-subtle">{a.year}</td>
+                <td className="py-2 text-xs text-fg-subtle">{a.year}</td>
               </tr>
             ))}
           </tbody>
@@ -201,7 +201,7 @@ export default function PrintPage() {
         <dl className="space-y-2 text-sm">
           {stack.map((group) => (
             <div key={group.group}>
-              <dt className="inline font-mono text-eyebrow text-fg-subtle uppercase">{group.group} </dt>
+              <dt className="inline font-display text-xs font-bold text-fg-subtle">{group.group} </dt>
               <dd className="inline">{group.items.join(" · ")}</dd>
             </div>
           ))}
