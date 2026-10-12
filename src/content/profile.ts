@@ -10,6 +10,8 @@ export type Project = {
   slug: string;
   tier: 2 | 3;
   name: string;
+  /** Shown in the round icon when no app icon file exists. */
+  emoji: string;
   summary: string;
   stack: string[];
   period: string;
@@ -39,10 +41,10 @@ const phone = (slug: string, n: number, alt: string, brief: string): ImageSpec =
 });
 
 const appIcon = (slug: string, name: string): ImageSpec => ({
-  src: `/images/projects/${slug}/icon.webp`,
+  src: `/images/projects/${slug}/icon.png`,
   alt: `${name} 앱 아이콘`,
   aspect: "square",
-  brief: `${name} 앱 아이콘 (512×512)`,
+  brief: `${name} 앱 아이콘 (정사각 PNG, 160px 이상)`,
 });
 
 export const links = {
@@ -56,6 +58,7 @@ export const hero = {
   eyebrow: "Flutter Developer · Mobile & Web",
   name: "홍의민",
   alias: "Elipair",
+  words: ["Flutter", "UX", "React", "빠른 출시", "Next.js"],
   intro: "아이디어를 실제로 사용할 수 있는 모바일·웹 서비스로 만듭니다.",
   topAward: "Google I/O Extended 1st Place",
   contactLine: "채용·협업 제안은 메일로 연락해 주세요.",
@@ -70,6 +73,7 @@ export const education = {
 export const featured = {
   slug: "cops-and-robbers",
   name: "경찰과도둑",
+  emoji: "🚔",
   summary: "현실의 술래잡기를 연결하는 실시간 위치 기반 야외 게임 앱",
   description:
     "친구·동료·가족이 스마트폰으로 함께 즐기는 경찰과 도둑 놀이입니다. 위치 공유부터 QR 체포, 팀 채팅, 게임 판정까지 하나의 앱으로 연결합니다.",
@@ -109,6 +113,7 @@ export const projects: Project[] = [
     slug: "party-passport",
     tier: 2,
     name: "Party Passport",
+    emoji: "🛂",
     summary: "파티에서 QR로 만난 사람을 스탬프로 모으고, 서로 고른 사람만 매칭되는 웹앱",
     stack: ["React", "TypeScript", "Vite"],
     period: "2026.08",
@@ -125,17 +130,20 @@ export const projects: Project[] = [
     slug: "tripgether",
     tier: 2,
     name: "트립게더",
+    emoji: "✈️",
     summary: "SNS 게시물을 공유하면 장소 정보를 정리하는 AI 여행 가이드",
     stack: ["Flutter"],
     period: "2025.09 – 2025.11",
     badges: ["세종대 창업캠프 대상", "롯데 청년기업가대상 본선"],
     links: [{ label: "GitHub", href: "https://github.com/EM-H20/Tripgether-FE" }],
     images: [phone("tripgether", 1, "장소 정리 화면", "SNS 게시물 공유 후 장소가 정리된 화면")],
+    icon: appIcon("tripgether", "트립게더"),
   },
   {
     slug: "stocker",
     tier: 2,
     name: "Stocker",
+    emoji: "📈",
     summary: "주식투자를 배우는 핀테크 교육 앱 · 팀 돔황촤 코스피",
     stack: ["Flutter"],
     period: "2025.05 – 2025.11",
@@ -150,6 +158,7 @@ export const projects: Project[] = [
     slug: "block-drag",
     tier: 2,
     name: "Block Drag",
+    emoji: "🧩",
     summary: "공간 감각을 활용하는 퍼즐 게임",
     stack: ["Flutter", "Supabase"],
     period: "2025.05 – 2025.07",
@@ -166,6 +175,7 @@ export const projects: Project[] = [
     slug: "rulebook",
     tier: 2,
     name: "RuleBook",
+    emoji: "📖",
     summary: "보드게임 규칙 검색·북마크 앱",
     stack: ["Flutter"],
     period: "2025.03 – 2025.06",
@@ -182,6 +192,7 @@ export const projects: Project[] = [
     slug: "wanik-sejong",
     tier: 2,
     name: "완익세종",
+    emoji: "🎓",
     summary: "SW-AI 해커톤 웹 프로젝트 · 팀 완익고무 100점",
     stack: ["React", "Next.js"],
     period: "2025.12.23 – 2025.12.24",
@@ -200,17 +211,20 @@ export const projects: Project[] = [
     slug: "space-study-ship",
     tier: 3,
     name: "우주공부선",
+    emoji: "🚀",
     summary: "스터디 목표 설정·학습 기록·공유 플랫폼",
     stack: ["Flutter"],
     period: "2026.01 – 2026",
     badges: [],
     links: [{ label: "GitHub", href: "https://github.com/SpaceStudyShip/SpaceStudyShip-FE" }],
     images: [],
+    icon: appIcon("space-study-ship", "우주공부선"),
   },
   {
     slug: "second-brain-template",
     tier: 3,
     name: "Second Brain Template",
+    emoji: "🧠",
     summary: "회의·문서·이슈·의사결정을 연결하는 AI 에이전트용 Markdown 지식 관리 템플릿",
     stack: ["JavaScript", "Markdown"],
     period: "2026.07",
@@ -222,6 +236,7 @@ export const projects: Project[] = [
     slug: "emotion-diary",
     tier: 3,
     name: "Emotion Diary",
+    emoji: "📔",
     summary: "감정을 기록하고 일상을 돌아보는 다이어리",
     stack: ["React"],
     period: "2025.07 – 2025.08",
@@ -233,6 +248,7 @@ export const projects: Project[] = [
     slug: "nyangseng",
     tier: 3,
     name: "냥생뭐였니?",
+    emoji: "🐱",
     summary: "고양이를 테마로 한 웹 콘텐츠",
     stack: ["Next.js"],
     period: "2024.11 – 2024.12",
@@ -242,11 +258,13 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/EM-H20/Nyangseng" },
     ],
     images: [],
+    icon: appIcon("nyangseng", "냥생뭐였니?"),
   },
   {
     slug: "planning",
     tier: 3,
     name: "플래닝",
+    emoji: "🤖",
     summary: "로스트아크 정보를 제공하는 Discord 봇",
     stack: ["Python", "Oracle Cloud"],
     period: "2024.11 – 2024.12",
@@ -258,12 +276,14 @@ export const projects: Project[] = [
     slug: "eunsaem",
     tier: 3,
     name: "은샘침례교회",
+    emoji: "⛪",
     summary: "교회 홈페이지와 API 서버 — 실제 운영 중",
     stack: ["Next.js", "TypeScript", "FastAPI", "Docker", "Oracle Cloud"],
     period: "2025.07 – 2025.11",
     badges: [],
     links: [{ label: "Website", href: "https://www.eunsaem.com/" }],
     images: [],
+    icon: appIcon("eunsaem", "은샘침례교회"),
   },
 ];
 
@@ -307,6 +327,17 @@ export function shippedNames(): string[] {
 
 export function heroStats(): string[] {
   return [`수상·선정 ${awards.length}건`, `스토어 출시 앱 ${shippedNames().length}개`, hero.topAward];
+}
+
+export type InfoLine = { label: string; value: string };
+
+export function heroInfo(): InfoLine[] {
+  return [
+    { label: "Email", value: links.email.label },
+    { label: "Education", value: [education.school, ...education.certifications].join(" · ") },
+    { label: "Awards", value: `${hero.topAward} 외 수상·선정 ${awards.length - 1}건` },
+    { label: "Shipped", value: shippedNames().join(" · ") },
+  ];
 }
 
 export function cliLines(): CliLine[] {
