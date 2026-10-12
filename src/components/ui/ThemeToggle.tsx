@@ -10,19 +10,24 @@ export function ThemeToggle() {
     const root = document.documentElement;
     // Light is the default: no stored choice means light, whatever the OS prefers.
     const next = root.dataset.theme === "dark" ? "light" : "dark";
-    root.dataset.theme = next;
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
       // Storage blocked (private mode): the choice still applies until the page is left.
     }
+    const apply = () => {
+      root.dataset.theme = next;
+    };
+    // Crossfade instead of a hard flash between near-white and near-black; instant where unsupported or unwanted.
+    if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) apply();
+    else document.startViewTransition(apply);
   };
 
   return (
     <button
       type="button"
       onClick={toggle}
-      className="relative grid size-[30px] place-items-center rounded-full text-fg shadow-hairline before:absolute before:-inset-1.5 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
+      className="relative grid size-[30px] place-items-center rounded-full text-fg shadow-hairline before:absolute before:-inset-1.5 transition-opacity hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
     >
       <span className="theme-light-only">
         <span className="sr-only">다크 모드로 전환</span>

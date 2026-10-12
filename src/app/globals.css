@@ -13,6 +13,7 @@
   --on-inverted: #ffffff;
   --highlight: #ffe14d;
   --dot: #f5b800;
+  color-scheme: light;
 }
 
 /* Dark applies only when chosen with the theme toggle; light is the default regardless of the OS. */
@@ -26,6 +27,7 @@
   --inverted: #ededed;
   --on-inverted: #0f1010;
   --highlight: rgb(255 225 77 / 0.35);
+  color-scheme: dark;
 }
 
 /* Black line art (profile illustration): light strokes in dark mode. */
@@ -104,6 +106,21 @@
     animation: caret-blink 1s step-end infinite;
   }
 
+  /* Hover underline drawn left to right. A background, not text-decoration, so it can animate.
+     Placed from the text's vertical center (= box center for inline and centered flex links alike):
+     ~0.35em down to the baseline, then 4px like the old underline-offset-4. The symmetric padding
+     only enlarges the painted area of inline links so the line isn't clipped; it shifts nothing. */
+  .link-draw {
+    padding-block: 3px;
+    background: linear-gradient(currentColor, currentColor) no-repeat 0 calc(50% + 0.35em + 4px) / 0 max(1px, 0.08em);
+    box-decoration-break: clone;
+    transition: background-size 250ms ease-out;
+  }
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% max(1px, 0.08em);
+  }
+
   .skeleton {
     background: linear-gradient(90deg, var(--surface) 25%, var(--canvas) 50%, var(--surface) 75%);
     background-size: 200% 100%;
@@ -126,6 +143,15 @@
     animation: none;
     background: var(--surface);
   }
+  .link-draw {
+    transition: none;
+  }
+}
+
+/* Theme switch crossfade (ThemeToggle wraps the change in a view transition). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 300ms;
 }
 
 @page {

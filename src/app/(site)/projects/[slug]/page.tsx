@@ -36,7 +36,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   return (
     <main className="flex-1 py-8 md:py-12">
       <Container>
-        <Link href="/#projects" className="inline-flex min-h-10 items-center text-meta text-fg-subtle underline-offset-4 hover:underline">
+        <Link href="/#projects" className="inline-flex min-h-10 items-center text-meta text-fg-subtle link-draw">
           ← 프로젝트 목록
         </Link>
 
@@ -46,14 +46,14 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
         <nav aria-label="다른 프로젝트" className="mt-14 flex justify-between gap-4 border-t border-hairline pt-6 text-meta">
           {prev ? (
-            <Link href={`/projects/${prev.slug}`} className="inline-flex min-h-10 items-center text-fg underline-offset-4 hover:underline">
+            <Link href={`/projects/${prev.slug}`} className="inline-flex min-h-10 items-center text-fg link-draw">
               ← {prev.name}
             </Link>
           ) : (
             <span />
           )}
           {next && (
-            <Link href={`/projects/${next.slug}`} className="inline-flex min-h-10 items-center text-right text-fg underline-offset-4 hover:underline">
+            <Link href={`/projects/${next.slug}`} className="inline-flex min-h-10 items-center text-right text-fg link-draw">
               {next.name} →
             </Link>
           )}

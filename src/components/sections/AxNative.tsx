@@ -12,7 +12,7 @@ export function AxNative() {
         <IconCircle emoji={tool.emoji} />
         <div className="min-w-0 pt-1">
           <h3 className="text-title font-medium text-fg">
-            <a href={tool.links[0].href} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+            <a href={tool.links[0].href} target="_blank" rel="noreferrer" className="link-draw">
               {tool.name}
             </a>
           </h3>
@@ -32,7 +32,7 @@ export function AxNative() {
             <IconCircle icon={project.icon} emoji={project.emoji} size={40} />
             <p className="min-w-0 text-base font-medium text-fg">
               {project.href ? (
-                <a href={project.href} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+                <a href={project.href} target="_blank" rel="noreferrer" className="link-draw">
                   {project.name}
                 </a>
               ) : (

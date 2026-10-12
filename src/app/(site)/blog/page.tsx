@@ -18,7 +18,7 @@ export default async function BlogPage() {
         <ul className="mt-6">
           {posts.map((post) => (
             <li key={post.slug} className="flex flex-wrap items-baseline gap-x-3 py-2">
-              <Link href={`/blog/${post.slug}`} className="text-title font-medium text-fg underline-offset-4 hover:underline">
+              <Link href={`/blog/${post.slug}`} className="text-title font-medium text-fg link-draw">
                 {post.title}
               </Link>
               <time dateTime={post.date} className="text-meta text-fg-subtle">

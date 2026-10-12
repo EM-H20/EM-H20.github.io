@@ -8,7 +8,7 @@ import { featured, type LinkSpec, type Project, projects } from "@/content/profi
 
 const EXTERNAL = { target: "_blank", rel: "noreferrer" } as const;
 const UNDERLINE = "text-fg underline underline-offset-[3px]";
-const DETAIL_LINK = "underline-offset-4 hover:underline";
+const DETAIL_LINK = "link-draw";
 
 // Store/GitHub links stay on the row; the project name opens its detail page.
 function InlineLinks({ links }: { links: readonly LinkSpec[] }) {

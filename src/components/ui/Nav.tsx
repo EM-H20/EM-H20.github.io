@@ -6,7 +6,7 @@ import { links } from "@/content/profile";
 import { site } from "@/lib/site";
 
 // Display is set per link: combining `inline-flex` with `hidden` lets `inline-flex` win on mobile.
-const NAV_LINK = "min-h-10 items-center text-fg underline-offset-4 hover:underline";
+const NAV_LINK = "min-h-10 items-center text-fg link-draw";
 
 export function Nav() {
   return (

@@ -12,7 +12,7 @@ const VARIANTS: Record<Variant, string> = {
   ghost: "min-h-11 rounded-btn px-[18px] text-sm font-bold text-fg shadow-hairline hover:opacity-70",
   // Visually 30px tall; the pseudo-element extends the hit area to 42px.
   pill: "relative h-[30px] rounded-full bg-inverted px-3 text-[13px] font-bold text-on-inverted before:absolute before:inset-x-0 before:-inset-y-1.5 hover:opacity-85",
-  text: "min-h-10 font-light text-base text-fg underline-offset-4 hover:underline",
+  text: "min-h-10 font-light text-base text-fg link-draw",
 };
 
 export function Button({
