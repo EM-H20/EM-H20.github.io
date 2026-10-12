@@ -21,6 +21,8 @@ pnpm check:contrast  # 디자인 토큰 대비(WCAG AA) 검사
 
 모든 내용은 `src/content/profile.ts` 한 파일에 있습니다. 홈과 PDF(`/print`)가 같은 데이터를 씁니다.
 
+프로젝트 상세 페이지(`/projects/<slug>`)의 본문은 `src/content/projects/<slug>.mdx`, 스크린샷은 `public/images/projects/<slug>/gallery/N.jpg`입니다. 프로젝트를 추가하면 같은 이름의 MDX가 있어야 테스트가 통과합니다. PDF에는 프로젝트마다 이 상세 내용이 그대로 들어갑니다.
+
 히어로의 바뀌는 단어는 `profile.ts`의 `hero.words` — '를'이 맞는 단어만 넣으세요. 한글은 받침을 테스트가 검사하고, 영문 단어는 소리 내어 읽어본 뒤 `src/content/profile.test.ts`의 `REVIEWED_LATIN`에 추가해야 테스트가 통과합니다.
 
 ## 이미지 추가
@@ -47,6 +49,7 @@ export const metadata = {
 
 - `src/lib/site.ts` — 사이트 이름·URL·설명 (SEO 메타데이터의 단일 출처)
 - `src/lib/posts.ts` — MDX 글 목록/로딩
+- `src/lib/projects.ts` — 프로젝트 상세 본문(MDX) 로딩 — 상세 페이지와 PDF가 함께 씀
 - `src/app/sitemap.ts`, `src/app/robots.ts` — 빌드 시 정적 생성
 - `src/app/globals.css` — 디자인 토큰 (용도별 색 → Tailwind `@theme`)
 - `src/fonts/` — 제목용 글꼴 `Elipair Display` (GmarketSans 서브셋, SIL OFL 1.1 — `src/fonts/OFL.txt`). 다시 만들 때: `scripts/subset-display-font.sh`

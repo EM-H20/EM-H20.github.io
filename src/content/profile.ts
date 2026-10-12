@@ -20,6 +20,8 @@ export type Project = {
   links: LinkSpec[];
   images: ImageSpec[];
   icon?: ImageSpec;
+  /** Extra screenshots shown only on the detail page. */
+  gallery?: ImageSpec[];
 };
 
 export type Award = {
@@ -38,6 +40,14 @@ const phone = (slug: string, n: number, alt: string, brief: string): ImageSpec =
   aspect: "phone",
   brief,
 });
+
+const gallery = (slug: string, name: string, count: number): ImageSpec[] =>
+  Array.from({ length: count }, (_, i) => ({
+    src: `/images/projects/${slug}/gallery/${i + 1}.jpg`,
+    alt: `${name} 화면 ${i + 1}`,
+    aspect: "phone" as const,
+    brief: `${name} 스크린샷 ${i + 1}`,
+  }));
 
 const appIcon = (slug: string, name: string): ImageSpec => ({
   src: `/images/projects/${slug}/icon.png`,
@@ -107,6 +117,7 @@ export const featured = {
     brief: "서울대학페스티벌 등 행사 부스 현장 사진",
   } satisfies ImageSpec,
   icon: appIcon("cops-and-robbers", "경찰과도둑"),
+  gallery: gallery("cops-and-robbers", "경찰과도둑", 8),
 };
 
 export const projects: Project[] = [
@@ -126,6 +137,7 @@ export const projects: Project[] = [
     images: [
       phone("party-passport", 1, "배지 모음 화면", "배지 모음 또는 상호 매칭 결과 화면 (Hack-the-Beat 저장소 docs/images/04-badges.png, 05-result.png 재사용 가능)"),
     ],
+    gallery: gallery("party-passport", "Party Passport", 5),
   },
   {
     slug: "tripgether",
@@ -171,6 +183,7 @@ export const projects: Project[] = [
     ],
     images: [phone("block-drag", 1, "퍼즐 플레이 화면", "퍼즐 플레이 화면")],
     icon: appIcon("block-drag", "Block Drag"),
+    gallery: gallery("block-drag", "Block Drag", 8),
   },
   {
     slug: "rulebook",
@@ -188,6 +201,7 @@ export const projects: Project[] = [
     ],
     images: [phone("rulebook", 1, "인원별 경고·벌칙·벌금 현황 화면", "인원별 출석·벌칙·벌금 현황 화면")],
     icon: appIcon("rulebook", "RuleBook"),
+    gallery: gallery("rulebook", "RuleBook", 6),
   },
   {
     slug: "wanik-sejong",
@@ -220,6 +234,7 @@ export const projects: Project[] = [
     links: [{ label: "GitHub", href: "https://github.com/SpaceStudyShip/SpaceStudyShip-FE" }],
     images: [],
     icon: appIcon("space-study-ship", "우주공부선"),
+    gallery: gallery("space-study-ship", "우주공부선", 6),
   },
   {
     slug: "emotion-diary",
@@ -348,6 +363,60 @@ export const ax = {
     },
   ] as { name: string; emoji: string; icon?: ImageSpec; summary: string; href?: string }[],
 };
+
+export type ProjectPage = {
+  slug: string;
+  name: string;
+  emoji: string;
+  icon?: ImageSpec;
+  period: string;
+  /** Platform line for apps; otherwise the stack is shown. */
+  meta: string;
+  summary: string;
+  badges: string[];
+  shipped: boolean;
+  stack: string[];
+  links: LinkSpec[];
+  gallery: ImageSpec[];
+  /** Wide photos (e.g. event booth) shown below the gallery. */
+  photos: ImageSpec[];
+};
+
+/** Every project in home order, featured first — one detail page each. */
+export function projectPages(): ProjectPage[] {
+  return [
+    {
+      slug: featured.slug,
+      name: featured.name,
+      emoji: featured.emoji,
+      icon: featured.icon,
+      period: featured.period,
+      meta: featured.platform,
+      summary: featured.summary,
+      badges: featured.badges,
+      shipped: true,
+      stack: featured.stack,
+      links: featured.links,
+      gallery: featured.gallery,
+      photos: [featured.event],
+    },
+    ...projects.map((p) => ({
+      slug: p.slug,
+      name: p.name,
+      emoji: p.emoji,
+      icon: p.icon,
+      period: p.period,
+      meta: p.stack.join(" · "),
+      summary: p.summary,
+      badges: p.badges,
+      shipped: p.shipped ?? false,
+      stack: p.stack,
+      links: p.links,
+      gallery: p.gallery ?? [],
+      photos: [],
+    })),
+  ];
+}
 
 export function shippedNames(): string[] {
   return [featured.name, ...projects.filter((p) => p.shipped).map((p) => p.name)];

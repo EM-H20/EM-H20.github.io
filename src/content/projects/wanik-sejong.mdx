@@ -1,0 +1,27 @@
+## 무엇을 만들었나
+
+완익세종은 세종대학교 학생을 위한 AI 기반 진로-교과목 로드맵 추천 서비스다. 성적표 Excel 파일을 올리고 희망 진로와 관심 분야를 입력하면, Google Gemini가 현재 강점과 보완할 영역을 분석하고 학기별 추천 과목, 기술 스택, 활동을 담은 학습 로드맵을 만든다. 해커톤 기간인 2025년 12월 23일부터 24일까지 개발했다.
+
+## 맡은 역할
+
+팀 프로젝트이며, 이 저장소(Next.js 프론트엔드)의 커밋은 모두 본인 계정으로 작성됐다. 화면과 Next.js API Routes, 챗봇, 별도 Spring Boot 백엔드와의 연동 코드를 이 저장소에서 구현했다.
+
+## 핵심 기능
+
+- 드래그 앤 드롭 성적표 업로드와 xlsx 기반 Excel 파싱(과목, 학점, 성적, 이수구분, 평균 평점)
+- 희망 진로·관심 분야 입력과 Gemini 기반 맞춤 로드맵 생성
+- 역량 분석(강점과 보완 영역)과 학기별 타임라인, 단계별 상세 모달
+- AI 챗봇 '세박사': 과목명·교수명·강의 시간 검색과 학업 상담, Markdown 응답 렌더링, 최근 대화 5개 유지
+- Framer Motion 애니메이션과 세종대 브랜드 컬러를 적용한 UI 컴포넌트
+
+## 기술적 결정
+
+- Mock·Local·Backend 3가지 운영 모드 — API 호출 없이 UI를 개발하는 Mock 모드, Next.js API Routes에서 Gemini를 직접 호출하는 Local 모드, Spring Boot 백엔드를 쓰는 Backend 모드를 환경 변수와 API URL로 자동 전환했다.
+- 백엔드 어댑터 계층 — 백엔드 API 문서와 프론트엔드 데이터 구조가 맞지 않는 문제를 분석해 문서로 정리하고, 백엔드 응답을 프론트엔드 타입으로 변환하는 어댑터를 두었다.
+- 챗봇 로컬 검색 폴백 — Gemini API가 실패하면 세종대 과목 데이터를 대상으로 한 로컬 검색으로 자동 전환해 답변이 끊기지 않게 했다.
+
+## 결과
+
+SW-AI 해커톤에서 장려상을 받았다.
+
+{/* 출처: wanik-sejong/README.md, package.json, src/app/api/generate-roadmap/route.ts, src/lib/adapters/backend-adapter.ts, claudedocs/backend-frontend-api-discrepancy.md, docs/발표대본.md, git log (커밋 작성자 EM-H20 단일, 2025-12-23~24) */}

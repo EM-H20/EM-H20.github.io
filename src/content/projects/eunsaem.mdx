@@ -1,0 +1,27 @@
+## 무엇을 만들었나
+
+은샘침례교회의 홈페이지와 API 서버다. 프론트엔드는 Next.js App Router와 TypeScript, Tailwind CSS, shadcn/ui로, 백엔드는 FastAPI와 SQLAlchemy로 만들었다. 인증은 Supabase JWT를 쓴다.
+
+## 맡은 역할
+
+저장소 커밋 410개 중 403개를 작성했다. 2025년 7월 말부터 8월 사이에 다른 기여자 한 명이 백엔드 기본 코드와 리팩터링 커밋 7개를 남겼고, 이후 프론트엔드와 백엔드 개발, 배포 설정, 문서화는 본인이 맡았다.
+
+## 핵심 기능
+
+- 설교 영상 목록과 상세 페이지. 처음에는 YouTube 썸네일만 보여 주고 클릭하면 iframe을 불러온다. 목록은 10개 단위로 나눠 보여 주며 교회 회원만 볼 수 있다.
+- 공지사항, 행사, 주보, 사진 갤러리, 문의 기능. 업로드한 이미지는 서버에서 썸네일을 만든다.
+- 관리자 기능: 회원 가입 승인과 권한 변경, 설교 등록·수정·삭제.
+- PWA 설치 지원, 사이트맵과 Google Search Console·네이버 Search Advisor 색인 설정.
+
+## 기술적 결정
+
+- Docker Compose와 Nginx 리버스 프록시로 백엔드를 운영하고, DB와 업로드 파일, 로그는 볼륨으로 마운트했다.
+- 프론트엔드는 Vercel, 백엔드는 Oracle Cloud에 배포하는 구조로 문서화했고, GitHub Actions로 프론트엔드·백엔드 CI를 구성했다.
+- 서버 데이터 조회에 React Query를 도입하고 staleTime을 5분으로 잡았다.
+- 아키텍처, 폴더 구조, 코딩 컨벤션 문서를 `docs/`에 정리했다.
+
+## 결과
+
+https://www.eunsaem.com/ 에서 운영 중이다. 2025년 11월 이후에도 React·Next.js 보안 업데이트(CVE-2025-55182 패치 포함)와 Next.js 16 업그레이드를 이어 갔다.
+
+{/* 출처: eunsaem-church/README.md, DEPLOYMENT.md, docs/포트폴리오-프로젝트-소개.md, frontend/package.json, frontend/components/sermon/YouTubeEmbed.tsx, frontend/lib/providers/query-provider.tsx, backend/app/routers/*.py, backend/app/utils/file_handler.py, .github/workflows/, git log */}

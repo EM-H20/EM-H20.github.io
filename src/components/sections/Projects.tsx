@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import { Section } from "@/components/ui/Container";
 import { Highlight } from "@/components/ui/Highlight";
@@ -7,6 +8,19 @@ import { featured, type LinkSpec, type Project, projects } from "@/content/profi
 
 const EXTERNAL = { target: "_blank", rel: "noreferrer" } as const;
 const UNDERLINE = "text-fg underline underline-offset-[3px]";
+const DETAIL_LINK = "underline-offset-4 hover:underline";
+
+// Store/GitHub links stay on the row; the project name opens its detail page.
+function InlineLinks({ links }: { links: readonly LinkSpec[] }) {
+  return links.map((link) => (
+    <Fragment key={link.href}>
+      {" · "}
+      <a href={link.href} {...EXTERNAL} className={UNDERLINE}>
+        {link.label}
+      </a>
+    </Fragment>
+  ));
+}
 
 function Detail({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -38,7 +52,11 @@ function FeaturedProject() {
       <div className="flex items-center gap-4">
         <IconCircle icon={featured.icon} emoji={featured.emoji} />
         <div>
-          <h3 className="font-display text-title-lg font-bold text-fg">{featured.name}</h3>
+          <h3 className="font-display text-title-lg font-bold text-fg">
+            <Link href={`/projects/${featured.slug}`} className={DETAIL_LINK}>
+              {featured.name}
+            </Link>
+          </h3>
           <p className="text-meta text-fg-subtle">
             {featured.period} · {featured.platform}
           </p>
@@ -63,20 +81,22 @@ function FeaturedProject() {
       )}
       {event && <ImageSlot image={event} className="mt-3 max-w-md" />}
       <TextLinks links={featured.links} />
+      <Link href={`/projects/${featured.slug}`} className={`inline-flex min-h-10 items-center text-meta font-semibold ${UNDERLINE}`}>
+        자세히 보기 →
+      </Link>
     </article>
   );
 }
 
 function MajorRow({ project }: { project: Project }) {
-  const [primary, ...others] = project.links;
   return (
     <li className="flex gap-4 py-2.5">
       <IconCircle icon={project.icon} emoji={project.emoji} />
       <div className="min-w-0 pt-1">
         <h3 className="text-title font-medium text-fg">
-          <a href={primary.href} {...EXTERNAL} className="underline-offset-4 hover:underline">
+          <Link href={`/projects/${project.slug}`} className={DETAIL_LINK}>
             {project.name}
-          </a>
+          </Link>
           {project.badges.map((badge) => (
             <span key={badge} className="ml-2 text-[13px] font-normal">
               {/* Store releases read as facts; awards get the highlight. */}
@@ -86,14 +106,7 @@ function MajorRow({ project }: { project: Project }) {
         </h3>
         <p className="mt-0.5 text-meta text-fg-subtle">
           {project.summary} · {project.stack.join(" · ")} · {project.period}
-          {others.map((link) => (
-            <Fragment key={link.href}>
-              {" · "}
-              <a href={link.href} {...EXTERNAL} className={UNDERLINE}>
-                {link.label}
-              </a>
-            </Fragment>
-          ))}
+          <InlineLinks links={project.links} />
         </p>
       </div>
     </li>
@@ -105,9 +118,9 @@ function MinorRow({ project }: { project: Project }) {
     <li className="flex items-center gap-3 py-1.5">
       <IconCircle icon={project.icon} emoji={project.emoji} size={40} />
       <p className="min-w-0 text-base font-medium text-fg">
-        <a href={project.links[0].href} {...EXTERNAL} className="underline-offset-4 hover:underline">
+        <Link href={`/projects/${project.slug}`} className={DETAIL_LINK}>
           {project.name}
-        </a>{" "}
+        </Link>{" "}
         <span className="text-meta font-normal text-fg-subtle">
           {project.summary} · {project.period}
         </span>

@@ -1,0 +1,26 @@
+## 무엇을 만들었나
+
+반려묘의 성향을 묻는 질문에 답하면 그 고양이의 전생, 환생, 인간형 모습을 결과로 보여 주는 심리테스트형 웹 콘텐츠다. Next.js(Pages Router), TypeScript, Tailwind CSS로 만들었고 Vercel에 배포했다.
+
+## 맡은 역할
+
+1인 개발이다. 저장소의 커밋 30개는 모두 본인 계정(EM-H20)으로 작성됐다.
+
+## 핵심 기능
+
+- 쉬는 자세, 좋아하는 놀이와 간식 같은 질문 10개를 차례로 보여 주고, 진행률 막대로 진행 상황을 표시한다.
+- 답변을 바탕으로 결과 27종 중 하나를 고른다. 맞는 결과가 없으면 "냥생 미스터리!" 결과를 보여 준다.
+- 결과 화면에서 Web Share API로 공유하거나, 결과 이미지와 제목, 설명, 로고를 Canvas에 그려 PNG 파일로 저장할 수 있다.
+- "히든냥이" 페이지에서 모든 결과를 목록으로 한 번에 볼 수 있다.
+
+## 기술적 결정
+
+- 질문과 결과는 `data.json` 한 파일에 정의했다. 각 선택지에는 유형 값이 있고, 결과마다 유형 목록을 가진다.
+- 선택한 유형과 결과의 유형 목록이 6개 이상 겹치는 결과만 후보로 삼는다. 후보는 겹치는 개수가 많은 순, 같으면 id가 작은 순으로 정렬해 첫 번째를 보여 준다.
+- 질문 도중 뒤로 가거나 새로고침하면 첫 화면으로 돌려보낸다.
+
+## 결과
+
+https://nyangseng.vercel.app 에 배포했다. 2024년 12월 말 Google AdSense 스크립트를 추가했다.
+
+{/* 출처: Nyangseng/ProjectTree.md, Environment.md, nyangseng/package.json, src/pages/index.tsx, src/pages/question/[id].tsx, src/pages/result/[id].tsx, src/pages/nyangs.tsx, src/pages/_document.tsx, src/utils/data.json, git log */}

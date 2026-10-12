@@ -1,0 +1,29 @@
+## 무엇을 만들었나
+
+RuleBook은 교사와 운영자가 학생의 출석, 경고, 벌점, 벌금을 기록하고 관리하는 모바일 앱이다. 학생을 프로젝트(그룹) 단위로 묶어 관리하고, 그룹마다 경고를 몇 번 받으면 벌점이 되는지와 벌점당 벌금을 따로 정할 수 있다. 데이터는 기기에 저장되며 Excel 파일로 내보낼 수 있다.
+
+## 맡은 역할
+
+Git 기록의 커밋 작성자는 모두 본인 계정이다. 요구사항 문서(PRD) 작성부터 화면 구현, 광고 연동, 스토어 배포까지 혼자 진행한 1인 개발 프로젝트다.
+
+## 핵심 기능
+
+- 프로젝트(그룹) 생성과 그룹별 학생 추가·수정·삭제, 드래그 앤 드롭 순서 변경
+- 학생별 경고, 벌점, 상점, 출석 일수, 메모 기록과 이름·출석·경고·벌점·상점 기준 정렬
+- 경고가 그룹의 임계값에 도달하면 벌점 1점으로 자동 전환하고 벌점당 벌금 단가로 금액 계산
+- table_calendar 기반 날짜별 그룹 출석 체크와 전체 출석 현황 화면
+- 학생 데이터 Excel 내보내기와 공유
+- 다크/라이트 테마, 한국어/영어 전환, 도움말 화면
+- AdMob 배너 광고
+
+## 기술적 결정
+
+- Provider 기반 서비스 계층 — StudentService, ProjectService를 ChangeNotifier로 두고 화면이 상태 변경을 구독하도록 구성했다.
+- shared_preferences와 JSON 직렬화로 로컬 저장 — PRD에서 MVP 범위를 로컬 저장으로 정하고 클라우드 동기화는 이후 기능으로 분류했다. 모델의 fromJson에 기본값을 두어 필드가 추가돼도 기존 데이터를 읽을 수 있게 했다.
+- flutter_screenutil로 반응형 레이아웃 — 기준 해상도 대비 비율로 크기를 맞춰 기기별 화면 차이에 대응했다.
+
+## 결과
+
+Google Play와 App Store에 출시했다. 출시 후에도 상점·메모·출석 일수 필드 추가, Excel 내보내기, 반응형 UI 개선을 배포했고, Android 16 타깃 SDK 요구에 맞춰 버전을 올렸다.
+
+{/* 출처: rulebook/README.md(PRD), PORTFOLIO.md, pubspec.yaml, lib/models/project.dart, lib/models/student.dart, lib/services/student_service.dart, lib/services/export_service.dart, lib/screens/setting_screen.dart, git log (커밋 작성자 Hong_EuiMin/EM-H20, 2025-03-20 '정식출시') */}

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { test } from "node:test";
-import { allImages, ax, featured, hero, heroInfo, heroStats, projects, shippedNames } from "./profile.ts";
+import { allImages, ax, featured, hero, heroInfo, heroStats, projectPages, projects, shippedNames } from "./profile.ts";
 
 test("hero stats are derived from awards and shipped apps", () => {
   assert.deepEqual(heroStats(), [
@@ -90,4 +91,21 @@ test("featured project links its official website first", () => {
 
 test("RuleBook is described as the attendance/penalty app its code implements", () => {
   assert.match(projects.find((p) => p.slug === "rulebook")?.summary ?? "", /출석/);
+});
+
+test("every project, featured included, has a detail page with a unique slug", () => {
+  const slugs = projectPages().map((p) => p.slug);
+  assert.deepEqual(slugs, [featured.slug, ...projects.map((p) => p.slug)]);
+  assert.equal(new Set(slugs).size, slugs.length);
+});
+
+test("every detail page has a written body", () => {
+  for (const { slug } of projectPages())
+    assert.ok(existsSync(new URL(`./projects/${slug}.mdx`, import.meta.url)), `missing src/content/projects/${slug}.mdx`);
+});
+
+test("every gallery image is committed under public/", () => {
+  for (const page of projectPages())
+    for (const image of [...page.gallery, ...page.photos])
+      assert.ok(existsSync(new URL(`../../public${image.src}`, import.meta.url)), image.src);
 });

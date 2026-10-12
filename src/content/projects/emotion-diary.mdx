@@ -1,0 +1,27 @@
+## 무엇을 만들었나
+
+날짜별로 그날의 감정과 일기를 기록하는 웹 일기장이다. React 학습 저장소(onebite-react-study)의 section12에서 React와 Vite로 만들었고, Vercel에 배포했다. 브라우저 제목은 "감정 일기장"이다.
+
+## 맡은 역할
+
+개인 학습 프로젝트다. 해당 디렉터리의 커밋은 모두 본인 계정(EM-H20)으로 작성됐다.
+
+## 핵심 기능
+
+- 새 일기 작성, 상세 보기, 수정, 삭제. 수정과 삭제 전에는 확인 창을 띄운다.
+- 감정은 "완전 좋음"부터 "완전 나쁨"까지 5단계 중 하나를 고르고, 단계별 이미지로 보여 준다.
+- 홈 화면은 월 단위로 일기를 모아 보여 주며, 이전 달과 다음 달로 이동할 수 있다.
+- 목록을 최신순 또는 오래된순으로 정렬한다.
+- 일기 데이터를 localStorage에 저장해 새로고침 후에도 유지한다.
+
+## 기술적 결정
+
+- 일기 상태는 `useReducer`로 관리하고, 생성·수정·삭제가 일어날 때마다 reducer 안에서 localStorage에 저장한다.
+- 상태와 변경 함수를 별도의 Context 두 개(`DiaryStateContext`, `DiaryDispatchContext`)로 나눠 하위 컴포넌트에 전달한다.
+- React Router로 `/`, `/new`, `/diary/:id`, `/edit/:id` 경로를 나누고, 일기 조회(`useDiary`)와 페이지 제목 변경(`usePageTitle`)은 커스텀 훅으로 분리했다.
+
+## 결과
+
+Vercel에 배포되어 https://emotion-diary-theta-eight.vercel.app/ 에서 사용할 수 있다.
+
+{/* 출처: onebite-react/section12 (src/App.jsx, src/pages/*.jsx, src/components/Editor.jsx, src/components/DiaryList.jsx, src/util/constants.js, src/hooks/*.jsx, index.html, package.json, .vercel/), git log */}

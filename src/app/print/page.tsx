@@ -5,16 +5,16 @@ import {
   awards,
   ax,
   education,
-  featured,
   hero,
   heroStats,
   links,
   type LinkSpec,
+  type ProjectPage,
   profilePhoto,
-  type Project,
-  projects,
+  projectPages,
   stack,
 } from "@/content/profile";
+import { loadProjectBody } from "@/lib/projects";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Portfolio PDF", robots: { index: false } };
@@ -44,49 +44,49 @@ function Meta({ children }: { children: ReactNode }) {
   return <p className="text-xs text-fg-subtle">{children}</p>;
 }
 
-function Detail({ label, children }: { label: string; children: ReactNode }) {
+// One page per project: the same facts, screenshots and body as its web detail page.
+async function ProjectSheet({ page }: { page: ProjectPage }) {
+  const Body = await loadProjectBody(page.slug);
+  const photos = visibleImages(page.photos);
+  const screens = visibleImages(page.gallery).slice(0, photos.length > 0 ? 3 : 4);
   return (
-    <div>
-      <dt className="inline font-medium">{label} </dt>
-      <dd className="inline text-fg-muted">{children}</dd>
-    </div>
-  );
-}
-
-function MajorBlock({ project }: { project: Project }) {
-  const images = visibleImages(project.images);
-  return (
-    <article className="print-block border-t border-hairline py-6">
-      <h3 className="font-display text-xl font-bold">{project.name}</h3>
+    <section className="print-break pt-10">
+      <p className="mb-2 font-display text-xs font-bold tracking-wide text-fg-subtle">Project</p>
+      <h2 className="font-display text-[26px] font-bold">{page.name}</h2>
       <Meta>
-        {project.period} · {project.stack.join(" · ")}
+        {page.period} · {page.meta}
       </Meta>
-      {project.badges.length > 0 && <p className="mt-2 text-sm font-medium">{project.badges.join(" · ")}</p>}
-      <p className="mt-2 text-sm text-fg-muted">{project.summary}</p>
-      {images.length > 0 && (
-        <div className="mt-4 flex gap-3">
-          {images.map((image) => (
-            <ImageSlot key={image.src} image={image} eager className={image.aspect === "phone" ? "w-28" : "w-72"} />
+      {page.badges.length > 0 && <p className="mt-2 text-sm font-medium">{page.badges.join(" · ")}</p>}
+      <p className="mt-3 text-body">{page.summary}</p>
+      {(screens.length > 0 || photos.length > 0) && (
+        <div className="print-block mt-5 flex items-start gap-3">
+          {screens.map((image) => (
+            <ImageSlot key={image.src} image={image} eager className="w-28 shrink-0" />
+          ))}
+          {photos.map((image) => (
+            <ImageSlot key={image.src} image={image} eager className="w-56 shrink-0" />
           ))}
         </div>
       )}
-      <ul className="mt-3 space-y-1 text-sm">
-        {project.links.map((link) => (
+      {Body && (
+        // MDX elements are styled for the web; tighten them for paper.
+        <div className="mt-2 [&_h2]:mt-5 [&_h2]:mb-1.5 [&_h2]:break-after-avoid [&_h2]:text-base [&_li]:text-sm [&_p]:my-1.5 [&_p]:text-sm [&_ul]:my-1.5">
+          <Body />
+        </div>
+      )}
+      <ul className="print-block mt-4 space-y-1 text-sm">
+        {[...page.links, { label: "웹에서 보기", href: `${site.url}/projects/${page.slug}` }].map((link) => (
           <li key={link.href}>
             <PrintLink link={link} />
           </li>
         ))}
       </ul>
-    </article>
+    </section>
   );
 }
 
 export default function PrintPage() {
   const [photo] = visibleImages([profilePhoto]);
-  const screens = visibleImages(featured.screens);
-  const [event] = visibleImages([featured.event]);
-  const major = projects.filter((p) => p.tier === 2);
-  const minor = projects.filter((p) => p.tier === 3);
   return (
     <main className="scheme-light mx-auto w-full max-w-[178mm] bg-canvas text-fg">
       <section className="flex gap-8 pt-6">
@@ -124,67 +124,9 @@ export default function PrintPage() {
         {photo && <ImageSlot image={photo} eager className="w-32 shrink-0" />}
       </section>
 
-      <section className="print-break pt-10">
-        <Heading eyebrow="Featured Project" title={featured.name} />
-        <Meta>
-          {featured.period} · {featured.platform}
-        </Meta>
-        <p className="mt-3 text-body">{featured.summary}</p>
-        <p className="mt-2 text-sm text-fg-muted">{featured.description}</p>
-        <dl className="mt-6 space-y-2 text-sm">
-          <Detail label="담당 역할">{featured.role}</Detail>
-          <Detail label="핵심 기능">{featured.features.join(" · ")}</Detail>
-          <Detail label="기술">{featured.stack.join(" · ")}</Detail>
-          <Detail label="수상">{featured.badges.join(" · ")}</Detail>
-          <Detail label="행사 참가">{featured.events.join(" · ")}</Detail>
-        </dl>
-        {(screens.length > 0 || event) && (
-          // One row that never splits across pages: screenshots plus the booth photo beside them.
-          <div className="print-block mt-6 flex items-start gap-3">
-            {screens.map((image) => (
-              <ImageSlot key={image.src} image={image} eager className="w-32 shrink-0" />
-            ))}
-            {event && <ImageSlot image={event} eager className="w-60 shrink-0" />}
-          </div>
-        )}
-        <ul className="mt-6 space-y-1 text-sm">
-          {featured.links.map((link) => (
-            <li key={link.href}>
-              <PrintLink link={link} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="print-break pt-10">
-        <Heading eyebrow="Projects" title="주요 프로젝트" />
-        {major.map((project) => (
-          <MajorBlock key={project.slug} project={project} />
-        ))}
-      </section>
-
-      <section className="print-block pt-10">
-        <Heading eyebrow="More" title="기타 프로젝트" />
-        <ul className="space-y-3 text-sm">
-          {minor.map((project) => (
-            <li key={project.slug} className="print-block">
-              <span className="font-medium">{project.name}</span>
-              <span className="text-fg-muted"> — {project.summary}</span>
-              <Meta>
-                {project.period} · {project.stack.join(" · ")}
-              </Meta>
-              <p className="text-xs text-fg-subtle">
-                {project.links.map((link, i) => (
-                  <span key={link.href}>
-                    {i > 0 && " · "}
-                    <a href={link.href}>{bare(link.href)}</a>
-                  </span>
-                ))}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {projectPages().map((page) => (
+        <ProjectSheet key={page.slug} page={page} />
+      ))}
 
       <section className="print-break pt-10">
         <Heading eyebrow="Awards" title="수상·선정" />

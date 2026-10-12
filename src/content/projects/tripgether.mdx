@@ -1,0 +1,29 @@
+## 무엇을 만들었나
+
+**트립게더**는 SNS에서 발견한 여행 콘텐츠를 장소 단위로 정리해 주는 AI 기반 여행 가이드 앱입니다. 인스타그램 릴스나 게시물에 나온 장소를 저장하려면 장소 이름을 기억하고 지도 앱에서 다시 검색해야 했습니다. 트립게더에서는 SNS 앱의 공유 버튼으로 링크를 보내면 서버가 콘텐츠를 분석해 장소 정보를 추출하고, 앱에 들어가면 분석된 장소가 저장되어 있습니다.
+
+## 맡은 역할
+
+Flutter 앱 개발을 맡았습니다. 공유 수신, 로그인과 토큰 관리, 온보딩, 홈, 지도, 알림, 마이페이지 화면을 구현했고 디자인 시스템과 공용 위젯을 정리했습니다.
+
+## 핵심 기능
+
+- 외부 앱(Instagram, YouTube 등)에서 공유한 콘텐츠를 앱으로 직접 수신
+- 분석이 끝난 SNS 콘텐츠와 저장한 장소를 홈에서 조회
+- Google Maps 지도에 영업 상태를 표시하는 커스텀 마커와 장소 정보 바텀시트
+- 다른 사용자가 만든 여행 코스를 탐색하는 코스 마켓 화면
+- Google 로그인, 6단계 온보딩(약관·닉네임·생년월일·성별·관심사)
+- FCM 푸시 알림, 한국어·영어 지원
+
+## 기술적 결정
+
+- **iOS Share Extension에서 Swift로 서버 API를 직접 호출** — Share Extension은 Flutter와 별도 프로세스로 실행되어 Flutter 코드에 접근할 수 없기 때문입니다. 로그인 토큰은 App Group의 UserDefaults로 공유했고, Android는 Intent Filter와 MethodChannel로 공유를 받았습니다.
+- **디자인 시스템을 `core/theme/`에 중앙화하고 공용 위젯을 `shared/widgets/`에 모음** — 화면마다 색상과 간격이 달라지는 UI 불일치를 막기 위해서입니다. 하드코딩된 색상·텍스트 스타일·크기 값은 금지 규칙으로 두었습니다.
+- **JWT 자동 주입과 만료 시 갱신을 Dio 인터셉터에서 처리** — 동시에 여러 요청이 나가도 토큰 갱신을 한곳에서 다루기 위해서입니다.
+
+## 결과
+
+- 세종대 창업캠프 대상
+- 롯데 청년기업가대상 본선 진출
+
+{/* 출처: workspace/Flutter_Project/tripgether/README.md, docs/Portfolio_v2.md, docs/SharedContent.md, ios/share/ShareViewController.swift(App Group suiteName 확인), android/app/src/main/AndroidManifest.xml, git shortlog·log(EM-H20), 의뢰 브리프의 수상 목록 */}
