@@ -21,7 +21,7 @@
 | 토큰 방식 | Tailwind v4 `@theme` + CSS 변수, `globals.css` 한 파일 |
 | 언어 | 한국어 본문 + 영문 대문자 모노 레이블 |
 | 한글 글꼴 | Pretendard (npm `pretendard@1.3.9`, 자체 호스팅, dynamic subset) |
-| 움직임 | 히어로 타이핑 효과 1회만 (§3.2) |
+| 움직임 | 히어로 타이핑 효과 1회만, CSS만 사용 (§3.2) |
 | 이미지 | 자리만 만들어 두고 파일은 사용자가 나중에 추가. lazy loading + 스켈레톤. 파일이 없으면 배포본에서 자리 숨김 (§3.3, §7) |
 | PDF | 빌드 시 Playwright로 `/print`를 A4 PDF로 생성, 다운로드 버튼 제공. 페이지 수 제한 없음 (§4.4, §5.3) |
 | 작업 순서 | 토큰 → 컴포넌트 + `/design` → 데이터 → 홈 섹션 → 블로그 스타일 → `/print` + PDF 생성 |
@@ -32,7 +32,7 @@
 
 ### 2.1 두 층 구조
 
-- **원본 층 (`:root`)** — refero 값을 이름 그대로: `--color-paper-white #fafafa`, `--color-pure-white #ffffff`, `--color-hairline #ebebeb`, `--color-ash #c9c9c9`, `--color-smoke #a8a8a8`, `--color-graphite #8f8f8f`, `--color-slate #7d7d7d`, `--color-stone #666666`, `--color-charcoal #4d4d4d`, `--color-obsidian #171717`, `--color-carbon #000000`, `--color-terminal-green #297a3a`. 유틸리티로 노출하지 않으며 컴포넌트는 직접 참조하지 않는다.
+- **원본 층 (`:root`)** — refero 값과 이름을 `--vercel-` 접두로: `--vercel-paper-white #fafafa`, `--vercel-pure-white #ffffff`, `--vercel-hairline #ebebeb`, `--vercel-ash #c9c9c9`, `--vercel-smoke #a8a8a8`, `--vercel-graphite #8f8f8f`, `--vercel-slate #7d7d7d`, `--vercel-stone #666666`, `--vercel-charcoal #4d4d4d`, `--vercel-obsidian #171717`, `--vercel-carbon #000000`, `--vercel-terminal-green #297a3a`. (refero의 `--color-*` 이름은 Tailwind 색 네임스페이스와 충돌해 `--color-hairline`이 순환 참조가 되므로 접두를 바꿨다.) 유틸리티로 노출하지 않으며 컴포넌트는 직접 참조하지 않는다. Tailwind 기본 색 팔레트는 `--color-*: initial`로 끈다.
 - **용도 층 (`@theme inline`으로 노출)** — 컴포넌트는 이것만 쓴다. 다크 모드에서는 이 층의 값만 바뀐다.
 
 | 용도 토큰 | 라이트 | 용도 |
@@ -96,13 +96,14 @@
 
 - **▲ 미사용:** Vercel 로고이므로 CLI 프롬프트는 `$`, 브랜드는 `Elipair` 워드마크로 대체.
 
-### 3.2 `Typewriter` (클라이언트 컴포넌트 — 사이트에서 유일한 JS 섬)
+### 3.2 `Typewriter` (서버 컴포넌트 — CSS 애니메이션만 사용, JS 없음)
 
-- 대상: 히어로의 이름 → 한 줄 소개 → CliPanel 라인을 **순서대로 한 번** 타이핑. 반복 없음.
-- 원문 전체가 처음부터 DOM에 있다(서버 렌더). 화면에서만 아직 안 친 글자를 숨긴다 → 검색엔진·스크린리더·PDF는 항상 완성된 문장을 본다. 레이아웃 높이는 처음부터 최종 크기로 고정해 밀림이 없다.
-- `prefers-reduced-motion: reduce`, 인쇄(`@media print`), JS 비활성 시: 타이핑 없이 전체 표시.
-- 커서: 모노 `▍`(accent 아님, fg) 깜빡임, 마지막 줄이 끝나면 사라짐.
-- 속도: 글자당 약 40–60ms, 줄 사이 300ms 내외. 전체 3초 이내로 끝나게 조절.
+- 대상: 히어로의 이름 → CliPanel 라인을 **순서대로 한 번** 타이핑. 반복 없음. 한 줄 소개는 길어서 타이핑하면 읽기가 늦어지므로 정적으로 둔다.
+- 원문 전체가 처음부터 DOM에 있다(서버 렌더). 글자마다 `animation-delay`를 달리해 차례로 보이게 한다 → 검색엔진·PDF는 항상 완성된 문장을 보고, 글자가 처음부터 자리를 차지하므로 레이아웃 밀림이 없다. 이름 제목은 `aria-label`로 스크린리더에 한 단어로 읽힌다.
+- 이 저장소의 lint(`react-hooks/set-state-in-effect`가 error)에 걸리는 `useEffect`+`setState` 방식을 피하기 위해 CSS로 구현한다.
+- `prefers-reduced-motion: reduce`, 인쇄(`@media print`): 타이핑 없이 전체 표시.
+- 커서: 모노 `▍`(fg) 깜빡임, 각 줄 타이핑 중에만 보이고 끝나면 사라짐.
+- 속도: 글자당 35ms, 줄 사이 120ms. 전체 3초 이내(테스트로 고정, 현재 약 2.9초).
 
 ### 3.3 `ImageSlot` (서버 컴포넌트)
 
@@ -123,7 +124,7 @@
 ### 4.1 홈 (`src/app/page.tsx`) — 섹션 순서
 
 1. **Nav**
-2. **Hero** — 좌: Eyebrow `FLUTTER DEVELOPER · MOBILE & WEB`, display "홍의민"(Typewriter), 한 줄 소개("아이디어를 실제로 사용할 수 있는 모바일·웹 서비스로 만듭니다."), **숫자 줄**(모노 caption: `수상 9건 · 스토어 출시 앱 3개 · Google I/O Extended 1st Place`), [메일 보내기 primary] [GitHub ghost]. 우: CliPanel(Typewriter) — `$ whoami` / `✓ 세종대학교 컴퓨터공학과` / `✓ SQLD` / `$ ls shipped/` / `✓ 경찰과도둑 · Block Drag · RuleBook`. 모바일에서는 세로로 쌓임.
+2. **Hero** — 좌: Eyebrow `FLUTTER DEVELOPER · MOBILE & WEB`, display "홍의민"(Typewriter), 한 줄 소개(정적, "아이디어를 실제로 사용할 수 있는 모바일·웹 서비스로 만듭니다."), **숫자 줄**(모노 caption: `수상·선정 9건 · 스토어 출시 앱 3개 · Google I/O Extended 1st Place` — 9건에 '선정'·'본선 진출'이 포함되므로 '수상·선정'으로 표기), [메일 보내기 primary] [GitHub ghost]. 우: CliPanel(Typewriter) — `$ whoami` / `✓ 세종대학교 컴퓨터공학과` / `✓ SQLD` / `$ ls shipped/` / `✓ 경찰과도둑 · Block Drag · RuleBook`. 모바일에서는 세로로 쌓임.
 3. **대표 프로젝트** (`#featured`) — **1단계**: 전체 폭 inverted Card(lg). 제목 heading-lg "경찰과도둑", 2025.10–2026, Flutter·Android & iOS. 2단 구성 — 좌: 한 줄 설명, 담당 역할, 핵심 기능, 기술 Tag. 우: 수상 Tag(award) 4개(대상 · 우수 창업 아이템상 · 특별상 · SSUP 선정), 행사 참가(서울대학페스티벌 · 청춘대로 · 서울게임타운). 하단: 이미지 줄(ImageSlot phone × 3) + Google Play / App Store / GitHub 버튼.
 4. **프로젝트** (`#projects`)
    - **2단계** — 2열(모바일 1열) Card(md). 제목 heading(30px), 수상·출시 Tag(award), 한 줄 설명, 기술·기간 Tag, ImageSlot(대표 1장), 링크 Button(ghost). 순서:
@@ -168,7 +169,7 @@
 - 타입 있는 상수: `links`(email, github, blog, instagram, site), `hero`(이름, 소개, 숫자 줄, CLI 라인), `featured`, `projects[]`(각 항목에 `tier: 2 | 3`, `badges[]`, `images[]`), `awards[]`, `stack[]`, `education`.
 - 이미지 항목: `{ src, alt, aspect, brief }` — §7 표와 1:1.
 - 내용은 2026-10-11 기준 프로필 README와 Hack-the-Beat 저장소에서 옮긴다. 수정은 이 파일 하나에서.
-- 숫자 줄의 숫자(수상 9건, 출시 앱 3개)는 하드코딩하지 않고 `awards.length`, 출시 배지 수에서 계산한다.
+- 숫자 줄의 숫자(수상·선정 9건, 출시 앱 3개)는 하드코딩하지 않고 `awards.length`, 출시 배지 수에서 계산한다.
 - `src/lib/site.ts`는 SEO 메타데이터 출처로 유지.
 
 ### 5.2 검증
