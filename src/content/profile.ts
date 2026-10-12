@@ -68,7 +68,8 @@ export const hero = {
   eyebrow: "Flutter Developer · Mobile & Web",
   name: "홍의민",
   alias: "Elipair",
-  words: ["일단 해보기", "빠른 출시", "술래잡기", "딸깍 배포", "AI 동료", "실사용자"],
+  motto: "고민은 짧게, 행동은 빠르게",
+  words: ["빠른 출시", "술래잡기", "딸깍 배포", "AI 동료", "실사용자"],
   intro: "아이디어를 실제로 사용할 수 있는 모바일·웹 서비스로 만듭니다.",
   topAward: "Google I/O Extended 1st Place",
   contactLine: "채용·협업 제안은 메일로 연락해 주세요.",
@@ -433,6 +434,7 @@ export type InfoLine = { label: string; value: string };
 
 export function heroInfo(): InfoLine[] {
   return [
+    { label: "Motto", value: hero.motto },
     { label: "Email", value: links.email.label },
     { label: "Education", value: [education.school, ...education.extras].join(" · ") },
     { label: "Certification", value: education.certifications.join(" · ") },
