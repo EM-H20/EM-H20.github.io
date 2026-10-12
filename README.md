@@ -21,6 +21,8 @@ pnpm check:contrast  # 디자인 토큰 대비(WCAG AA) 검사
 
 모든 내용은 `src/content/profile.ts` 한 파일에 있습니다. 홈과 PDF(`/print`)가 같은 데이터를 씁니다.
 
+히어로의 바뀌는 단어는 `profile.ts`의 `hero.words` — 받침 없는 단어만('를'이 맞게) 넣으세요. 테스트가 검사합니다.
+
 ## 이미지 추가
 
 `public/` 아래 정해진 경로에 파일을 넣으면 자동으로 표시됩니다(코드 수정 불필요). 파일이 없으면 배포 사이트에서는 자리가 숨겨지고, `pnpm dev`와 `/design`에서는 설명이 적힌 자리 표시가 보입니다. 전체 목록과 권장 크기는 `docs/superpowers/specs/2026-10-12-portfolio-design.md` §7, 또는 `/design` 페이지의 Image slots 섹션을 보세요.
@@ -46,7 +48,8 @@ export const metadata = {
 - `src/lib/site.ts` — 사이트 이름·URL·설명 (SEO 메타데이터의 단일 출처)
 - `src/lib/posts.ts` — MDX 글 목록/로딩
 - `src/app/sitemap.ts`, `src/app/robots.ts` — 빌드 시 정적 생성
-- `src/app/globals.css` — 디자인 토큰 (refero Vercel 스타일 → 용도별 토큰 → Tailwind `@theme`)
+- `src/app/globals.css` — 디자인 토큰 (용도별 색 → Tailwind `@theme`)
+- `src/fonts/` — 제목용 글꼴 `Elipair Display` (GmarketSans 서브셋, SIL OFL 1.1 — `src/fonts/OFL.txt`). 다시 만들 때: `scripts/subset-display-font.sh`
 - `src/components/ui/` — 기본 컴포넌트, `src/components/sections/` — 홈 섹션
 - `src/app/print/` + `scripts/build-pdf.mjs` — PDF 원본 페이지와 생성 스크립트
 - `.github/workflows/deploy.yml` — 배포 (build → PDF 생성 → Pages)
