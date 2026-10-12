@@ -52,15 +52,15 @@
 
 ## 결과
 
-- 학기 말 기준 앱과 서버가 연동된 베타 버전 완성, 최종 발표 당시 Google Play 비공개 테스트 버전 게시
-- 탐험 콘텐츠 행성 8개·세부 지역 30개, 배지 6개 범주 25개(획득 상태는 기기에 저장)
-- 서버 API 23개(인증 6, 할 일·카테고리 8, 타이머 3, 연료 2, 탐험 4)
-- 학기 중 보고서 기준 프론트엔드·백엔드 자동 테스트 240개 이상 통과
+- 학기 말까지 앱과 서버가 연동된 베타 버전을 완성했고, 최종 발표 때 Google Play 비공개 테스트 버전을 게시했습니다.
+- 탐험 콘텐츠는 행성 8개·세부 지역 30개, 배지는 6개 범주 25개입니다(획득 상태는 기기에 저장).
+- 서버 API 23개(인증 6, 할 일·카테고리 8, 타이머 3, 연료 2, 탐험 4)를 만들었습니다.
+- 학기 중 보고서 기준으로 프론트엔드·백엔드 자동 테스트 240개 이상이 통과했습니다.
 - 소셜 화면은 샘플 데이터로 구성돼 있으며, 소셜과 배지의 서버 연동은 남은 과제입니다
 
 ## 배운 점
 
 - **재요청이나 계정 전환 같은 상황은 처음부터 설계에 넣어야 합니다.** 연료 중복 지급 위험과 순환 의존성 오류를 겪고 나서 알게 된 점입니다.
-- **기대효과는 확인 전까지 가설입니다.** 이 앱으로 공부를 더 오래 하게 되는지는 아직 사용자 테스트로 확인하지 못했고, 다음 단계에서 재방문율과 연속 학습일로 확인하려 합니다.
+- **기대효과는 사용자 데이터로 확인하기 전까지 가설로 둬야 합니다.** 이 앱으로 공부를 더 오래 하게 되는지는 아직 사용자 테스트로 확인하지 못했고, 다음 단계에서 재방문율과 연속 학습일로 확인하려 합니다.
 
 {/* 출처: space-study-ship/knowledge/reports/2026-09-30-creative-semester-excellence-report.md(주제 선정 사유 — "쌓인 기록이 눈에 보이는 보상으로", "다음 목적지로 한 칸씩 나아가는 탐험 방식"; 배경·주차별 과정·정합성·순환 의존성·정량 지표·배운 점·발전 계획), space_study_ship-FE git log(EM-H20 — #77·#79·#85 순환 의존성 수정, #81 idempotencyKey·인증/게스트 분기, SUH SAECHAN은 빌드 트리거 워크플로우 3커밋), space_study_ship-BE git log(EM-H20 — #21 닉네임, #22 회원 탈퇴, #23 디바이스·FCM 토큰, Firebase ID 토큰 검증, #24 할 일, #25 타이머 세션·연료 환율 게스트 정책 미러링, #26 연료, #27 탐험, #40 오늘 통계; SUH SAECHAN — 멀티모듈 초기 구조·Security·Swagger·CI/CD·API 스펙 문서; yeo-li — Initial commit), space_study_ship-BE/docs/superpowers/specs/2026-05-12-user-device-fcm-token-design.md(D1·D3·D4, 강제 로그아웃 영향), 2026-05-25-timer-session-domain-design.md(Idempotency-Key 두 계층·race 처리), space_study_ship-FE/pubspec.yaml, space_study_ship-FE/docs/우주공부선PRD.md(EM-H20 f2ddcaa — 문제 정의: 동기부여 부족·시각적 보상 부재), space_study_ship-FE/lib/features/fuel/presentation/providers/fuel_provider.dart(totalMinutes ~/ 30, % 30 이월), "공부가 더 재미있도록 게임처럼"은 본인 설명 기준(보고서에는 '재미'라는 표현 없음), space_study_ship-BE/SS-Web/.../controller/ */}
