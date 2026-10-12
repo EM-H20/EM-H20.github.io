@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // GitHub Pages serves static files only: `next build` emits ./out
+  output: "export",
+  // The default image loader needs a server
+  images: { unoptimized: true },
+  pageExtensions: ["ts", "tsx", "mdx"],
   turbopack: {
     rules: {
       "*.css": {
@@ -14,4 +17,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default createMDX()(nextConfig);

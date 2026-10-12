@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EM-H20.github.io
 
-## Getting Started
+Hong Eui-min (Elipair) 포트폴리오 & 블로그 — https://em-h20.github.io
 
-First, run the development server:
+Next.js 16 정적 export(`output: "export"`) → GitHub Actions → GitHub Pages.
+
+## 개발
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev     # http://localhost:3000
+pnpm build   # ./out 생성
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 글 쓰기
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`src/content/posts/<slug>.mdx` 파일을 추가하고 `main`에 push하면 자동 배포됩니다. 파일 이름이 주소가 됩니다(`/blog/<slug>`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```mdx
+export const metadata = {
+  title: "제목",
+  description: "검색 결과/링크 미리보기에 보일 요약",
+  date: "2026-10-12",
+};
 
-## Learn More
+본문...
+```
 
-To learn more about Next.js, take a look at the following resources:
+`metadata`가 빠지거나 형식이 틀리면 빌드가 실패합니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 구조
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/lib/site.ts` — 사이트 이름·URL·설명 (SEO 메타데이터의 단일 출처)
+- `src/lib/posts.ts` — MDX 글 목록/로딩
+- `src/app/sitemap.ts`, `src/app/robots.ts` — 빌드 시 정적 생성
+- `.github/workflows/deploy.yml` — 배포
