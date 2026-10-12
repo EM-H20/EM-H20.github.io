@@ -43,6 +43,16 @@
   }
 }
 
+/* Black line art (profile illustration): light strokes in dark mode. */
+:root[data-theme="dark"] .invert-in-dark {
+  filter: invert(1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .invert-in-dark {
+    filter: invert(1);
+  }
+}
+
 /* Theme toggle shows the mode it switches to: moon in light, sun in dark. */
 .theme-dark-only {
   display: none;
