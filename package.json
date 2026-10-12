@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:contrast": "node scripts/check-contrast.mjs"
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
