@@ -21,7 +21,10 @@ export function Hero() {
           <span className="block whitespace-nowrap">
             개발자{" "}
             <Highlight>
-              <strong className="font-bold">{hero.name}</strong>
+              {/* One caret on the page is enough; the name alternates with the alias */}
+              <strong className="font-bold">
+                <RotatingWord words={[hero.name, hero.alias]} caret={false} />
+              </strong>
             </Highlight>
             입니다.
           </span>

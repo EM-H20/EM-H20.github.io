@@ -45,7 +45,8 @@
 @theme {
   --color-*: initial;
 
-  --text-greet: clamp(28px, 6.4vw, 40px);
+  /* Min 26px keeps "개발자 Elipair입니다." inside a 320px screen; 7.5vw keeps ~28px at 375px */
+  --text-greet: clamp(26px, 7.5vw, 40px);
   --text-greet--line-height: 1.22;
   --text-title-lg: 30px;
   --text-title-lg--line-height: 1.2;

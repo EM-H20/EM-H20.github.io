@@ -5,7 +5,7 @@ import { HOLD_MS, type RotState, step, visible } from "@/lib/rotating";
 
 // Updates its text node through a ref instead of React state: the repo's lint forbids setState in
 // effects, and re-rendering every 50ms buys nothing. The server renders the first word complete.
-export function RotatingWord({ words }: { words: readonly string[] }) {
+export function RotatingWord({ words, caret = true }: { words: readonly string[]; caret?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export function RotatingWord({ words }: { words: readonly string[] }) {
       <span ref={ref} className="rw-word">
         {words[0]}
       </span>
-      <span aria-hidden="true" className="rw-caret" />
+      {caret && <span aria-hidden="true" className="rw-caret" />}
     </>
   );
 }
