@@ -1,33 +1,68 @@
-## 무엇을 만들었나
+## 배경
 
-**경찰과 도둑**은 오프라인 술래잡기에 지도, 위치 공유, 실시간 게임 상태를 더한 Flutter 앱입니다. 경찰은 도둑을 찾아 QR로 체포하고, 도둑은 도망치거나 감옥에서 탈출하며 게임을 이어갑니다. iOS와 Android 양쪽 스토어에 출시했고, 한국어·영어·일본어를 지원합니다. 앱 외에 Spring Boot 게임 서버와 Next.js 공식 사이트가 함께 운영됩니다.
+**경찰과 도둑**은 오프라인 술래잡기에 지도, 위치 공유, 실시간 게임 상태를 더한 Flutter 앱입니다. 경찰은 도둑을 찾아 QR로 체포하고, 도둑은 도망치거나 감옥에서 탈출하며 게임을 이어갑니다. 호스트가 지도 위에 플레이 구역과 감옥을 그리고, 정해진 주기마다 도둑의 위치가 공개되며, 한 방에 최대 150명까지 참여합니다.
+
+팀은 Flutter 앱, Spring Boot 게임 서버, Next.js 공식 사이트를 각각의 저장소로 나눠 개발했고, 저는 프론트엔드 2명 중 한 명으로 앱을 맡았습니다. 실제로 밖에서 뛰는 게임이라 화면이 꺼져도 위치와 연결이 유지돼야 했고, iOS·Android 양쪽 스토어에 계속 배포할 수 있어야 했습니다.
 
 ## 맡은 역할
 
-- Flutter 앱 개발
-- GitHub Actions와 Fastlane 기반 iOS TestFlight·Android Play Store 배포 자동화
-- UX 개선
-- iOS 잠금 화면 Live Activity와 Android 게임 진행 알림 등 잠금 화면 게임 현황 구현
+- **Flutter 앱 개발** — 게임 진행과 방 만들기·참여 흐름을 중심으로 한 앱 기능 개발
+- **배포 자동화** — GitHub Actions와 Fastlane으로 iOS TestFlight·Android Play Store 배포 파이프라인 구성, PR CI에 자동 테스트 추가
+- **백그라운드 위치·연결 유지** — Android Foreground Service와 Wake Lock으로 게임 중 화면이 꺼져도 연결 유지
+- **잠금 화면 게임 현황** — iOS Live Activity와 Android 게임 진행 알림 구현, TestFlight 서명 설정까지 반영
+- **UX 개선과 스토어 심사** — 사용자 피드백을 바탕으로 한 흐름 개선, 앱 연결 작업과 스토어 심사 제출
+- **프로젝트 기록 관리** — 앱·서버·웹 세 저장소의 회의·이슈·설계 결정을 한 볼트(cops-and-robbers-brain)로 정리
 
-## 핵심 기능
+## 과정
 
-- GPS 기반 실시간 위치 추적과 구역 이탈 경고
-- 호스트가 지도 위에 플레이 구역과 감옥을 직접 그려 설정
-- 설정한 주기마다 도둑의 위치를 발자국으로 공개
-- 경찰이 도둑의 QR을 스캔해 체포하고, 탈옥도 QR로 처리
-- 같은 팀끼리만 대화하는 인게임 팀 채팅
-- 방을 만들면 6자리 초대 코드와 QR이 자동 생성되며, 최대 150명까지 참여
-- 게임 종료 후 결과와 이동 경로·거리를 담은 기록 공유
+**첫 이슈는 기능이 아니라 배포였습니다.** 앱 저장소의 1번 이슈는 iOS TestFlight 배포 자동화였고, 이어서 Android 릴리스 서명과 Play Store 배포를 붙였습니다. 이후에도 Xcode·iOS SDK 버전 업그레이드, Ruby 버전, CocoaPods 충돌로 배포가 여러 차례 깨졌고, 그때마다 고치다가 결국 모든 워크플로우의 Fastlane 설치를 Bundler 방식으로 통일했습니다.
+
+**튜토리얼은 노출 방식을 세 번 바꾼 끝에 지웠습니다.** 처음 쓰는 사용자를 위해 화면마다 코치마크 튜토리얼을 넣었고, 이후 "팀별로 1회", "팀과 무관하게 1회", "별도 페이지로 분리"로 노출 방식을 세 번 바꿨습니다. 그래도 "튜토리얼을 강제한다, 답답하다"는 피드백이 계속 쌓였습니다. 코드를 다시 보니 문제는 횟수가 아니라 구조였습니다. 건너뛰기 버튼이 없는 코치마크와 닫을 수 없는 안내 다이얼로그가 게임 시작 직전 대기방에서 연달아 떴습니다. 그래서 코치마크를 전부 걷어내고, 설치 후 한 번만 보는 온보딩으로 바꿨습니다.
+
+**제가 세운 벽을 제가 걷어냈습니다.** Android에서 게임 중 화면을 끄면 서버 연결이 끊기는 문제가 있었습니다. 처음에는 삼성 배터리 정책 문제로 보고, 배터리 최적화를 "제한 없음"으로 바꾸지 않으면 방 만들기·참여하기를 막는 게이트를 직접 넣었습니다. 약 3개월 뒤 이 게이트가 가장 큰 진입 장벽으로 올라왔습니다. 다시 분석해 보니 프로세스는 살아 있어도 CPU가 잠들어 하트비트가 멈춘 것이 원인이었고, 내비게이션·음악 앱과 같은 방식으로 해결한 뒤 게이트를 없앴습니다.
+
+**잠금 화면에서도 게임이 보이게 했습니다.** 휴대폰을 주머니에 넣고 뛰는 게임이라, 앱을 열지 않아도 다음 위치 공개 시각과 도주 중인 도둑 수를 볼 수 있도록 iOS Live Activity와 Android 게임 진행 알림을 만들었습니다. iOS 확장 기능은 본 앱과 따로 서명돼야 해서 TestFlight 배포 설정도 함께 고쳤고, 이후 앱을 다시 실행했을 때 기존 표시를 이어받고 끝난 게임의 표시를 정리하는 수정을 이어서 배포했습니다.
 
 ## 기술적 결정
 
-- **REST는 조회·명령, STOMP는 실시간 이벤트로 분리** — 체포·탈옥 같은 요청은 REST로 보내고, 위치 공개·체포 이벤트는 STOMP로 받습니다. 연결이 끊겼다 복구되면 REST 상태 스냅샷으로 놓친 상태를 보정합니다.
-- **Android 백그라운드 유지는 Foreground Service와 `PARTIAL_WAKE_LOCK`으로 해결** — 이전에는 배터리 최적화 해제를 요구하는 게이트로 게임 진입을 막았는데, 이것이 가장 큰 진입 장벽이 되었습니다. 내비게이션·음악 앱과 같은 방식으로 바꿔 사용자에게 설정 변경을 요구하지 않게 했습니다.
-- **법적 문서의 정본은 웹, 앱은 웹뷰로 표시** — 앱 번들과 웹에 따로 있던 약관을 사람이 손으로 맞추면서 어긋날 위험이 있었고, 문구 하나를 고칠 때도 앱 재배포와 심사가 필요했기 때문입니다.
+### 배터리 설정을 요구하는 대신 Foreground Service + Wake Lock
+
+- **상황**: Android에서 게임 중 홈으로 나가거나 화면을 끄면 STOMP 하트비트가 끊겨 게임이 중단됐습니다.
+- **문제**: 이를 기기 배터리 정책 문제로 보고 세운 "배터리 제한 없음" 강제 게이트가 약 3개월간 가장 큰 진입 장벽이 됐습니다. iOS는 추가 설정 없이 동작하는데 Android만 사용자에게 OS 설정 변경을 요구하고 있었습니다.
+- **결정**: Foreground Service(location)는 프로세스를, `PARTIAL_WAKE_LOCK`은 CPU를 깨워 두는 서로 다른 축으로 보고 둘 다 적용했습니다. Wake Lock은 정상 종료, 태스크 스와이프, 4시간 타임아웃 세 경로로 반드시 해제되게 했습니다.
+- **대안**: 기존 방식(Foreground Service만 유지하고 배터리 설정을 강제)은 Foreground Service만으로는 CPU가 깨어 있지 않아 근본 해결이 아니므로 버렸습니다.
+- **결과**: 방 만들기·참여하기의 배터리 차단 다이얼로그가 사라지고, 게임 진입 조건은 위치 권한 하나만 남았습니다.
+
+### 강제 코치마크 대신 설치 후 1회 온보딩
+
+- **상황**: 노출 정책을 세 번 바꿔도 "튜토리얼을 강제한다"는 피드백이 반복됐습니다.
+- **결정**: 코치마크 엔진과 관련 서비스·라우트·의존성을 모두 삭제하고, 스플래시 직후 한 번만 보는 온보딩을 만들었습니다. 로그아웃해도 다시 띄우지 않고, 마이페이지에서 "앱 소개 다시 보기"로만 다시 열 수 있게 했습니다.
+- **대안**: 다른 코치마크 패키지(showcaseview)는 같은 순차 스포트라이트 방식이라 갈아타도 사용자 경험이 같아 제외했습니다. 계획했던 온보딩 패키지(introduction_screen)도 이미 프로젝트에 있던 `smooth_page_indicator`로 직접 구현하는 쪽으로 바꿔, 새 의존성을 늘리지 않았습니다.
+
+### iOS Live Activity는 패키지 없이 ActivityKit 직접 호출
+
+- **상황**: 잠금 화면 카드는 본 앱과 따로 서명되는 확장 기능이 그리고, 앱 배포는 GitHub Actions의 수동 서명으로 돌고 있었습니다.
+- **문제**: 본 앱 App ID 설정을 바꾸면 기존 프로비저닝 프로파일이 무효화돼 배포가 깨집니다.
+- **결정**: Android 게임 알림에 쓰던 기존 MethodChannel에서 Swift로 ActivityKit을 직접 호출하고, App Group 없이 확장 기능에 별도 App ID와 프로파일만 추가했습니다. CI는 타깃 이름으로 프로파일을 고르게 했습니다.
+- **대안**: `live_activities` 패키지와 App Group 조합은 본 앱 프로파일 재발급이 필요해 기존 배포 파이프라인을 건드리므로 제외했습니다.
+- **결과**: 본 앱의 App ID·프로파일·Secrets는 그대로 두고 추가만으로 배포했고, Android와 같은 채널 구조라 Dart 코드는 하나로 유지됩니다.
+
+### REST는 조회·명령, STOMP는 실시간 이벤트
+
+- **상황**: 체포·탈옥 같은 요청과 위치 공개·체포 알림 같은 이벤트가 한 게임 안에서 동시에 오갑니다.
+- **결정**: 요청은 REST로 보내고, 이벤트는 STOMP로 받도록 나눴습니다.
+- **결과**: 연결이 끊겼다 복구되면 REST 상태 스냅샷으로 놓친 상태를 보정합니다.
 
 ## 결과
 
+- iOS App Store·Google Play 출시, 한국어·영어·일본어 지원
 - 수상: 세종 SW 창업 아이디어 리그 대상, 입주공모전 우수 창업 아이템상, 아롬 데모데이 특별상, SSUP 선정
 - 오프라인 행사 운영: 서울게임타운, 서울 대학생 연합 페스티벌, 광진구 청춘대로
+- 잠금 화면 게임 현황(iOS Live Activity·Android 게임 진행 알림)을 v3.1.20으로 배포
 
-{/* 출처: cops-and-robbers-brain/README.md, cops_and_robbers-FE/README.md, cops_and_robbers-FE/CHANGELOG.md, cops_and_robbers-FE git log(EM-H20 작성 CI·Fastlane·#618 커밋), dongsim-web/lib/i18n/messages.ts, knowledge/decisions/DEC-0007-background-keepalive-without-user-battery-setting.md, knowledge/decisions/DEC-0036-legal-docs-web-canonical-app-webview.md, knowledge/docs/DOC-0079-sejong-2026-startup-competition-business-plan-submitted.md, 의뢰 브리프의 프로필 수상 목록(입주공모전·아롬·SSUP) */}
+## 배운 점
+
+- **사용자에게 설정을 요구하는 게이트는 아직 못 고친 문제의 청구서입니다.** 내비게이션·음악 앱은 배터리 설정을 요구하지 않는다는 신호가 처음부터 있었습니다. 같은 성격의 앱이 요구하지 않는 설정이라면 정책 문제가 아니라 제가 놓친 기술이 있다는 뜻이었습니다.
+- **같은 불만이 반복되면 횟수가 아니라 구조를 봐야 합니다.** 튜토리얼을 언제, 몇 번 띄울지만 세 번 바꾸는 동안 빠져나갈 길이 없는 구조는 그대로 남아 있었습니다.
+
+{/* 출처: cops-and-robbers-brain/README.md, cops_and_robbers-FE/README.md(REST·STOMP 구조), cops_and_robbers-FE/CHANGELOG.md(v3.1.20~3.1.24), cops_and_robbers-FE git log --author=EM-H20(#1·#25 TestFlight 자동화, 0d8669dd·fc125663 Android 배포 설정, #97 Fastlane Bundler 통일, #616 PR CI flutter test, #212·#278·#308·#336·#523 튜토리얼, #305·#466 백그라운드, #618·#621 잠금 화면), knowledge/decisions/DEC-0007-background-keepalive-without-user-battery-setting.md, knowledge/decisions/DEC-0090-ios-live-activity-direct-activitykit-no-app-group.md, knowledge/issues/ISS-0169-tutorial-removal-and-onboarding-fe.md, knowledge/lessons/LSN-0006-permission-gate-is-a-bill-for-an-unfixed-cause.md, knowledge/meetings/2026-08-26-press-outreach-booth-budget-magazine-copyright.md(앱 연결·스토어 심사 담당), dongsim-web/content/credits/credits.json(팀 구성), dongsim-web/lib/i18n/messages.ts(최대 150명), knowledge/docs/DOC-0079-sejong-2026-startup-competition-business-plan-submitted.md, 의뢰 브리프의 프로필 수상 목록(입주공모전·아롬·SSUP). 이전 판의 "법적 문서 웹 정본" 결정(DEC-0036)은 앱 쪽 구현(FE #481)과 웹 구현 모두 다른 팀원(INSANE-P) 커밋이라 본인 결정 목록에서 제외. 워크플로우 파일은 SUH-DEVOPS-TEMPLATE 기반 */}
