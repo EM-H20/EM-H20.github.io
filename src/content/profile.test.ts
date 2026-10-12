@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { allImages, featured, hero, heroInfo, heroStats, projects, shippedNames } from "./profile.ts";
+import { allImages, ax, featured, hero, heroInfo, heroStats, projects, shippedNames } from "./profile.ts";
 
 test("hero stats are derived from awards and shipped apps", () => {
   assert.deepEqual(heroStats(), [
@@ -73,4 +73,21 @@ test("app icons point at the committed png files", () => {
     "/images/projects/space-study-ship/icon.png",
     "/images/projects/tripgether/icon.png",
   ]);
+});
+
+test("Second Brain Template lives in AX-Native, not in the project list", () => {
+  assert.equal(ax.tool.name, "Second Brain Template");
+  assert.ok(!projects.some((p) => p.name === ax.tool.name), "listed twice");
+});
+
+test("AX-Native lists the projects that run a second brain", () => {
+  assert.deepEqual(ax.applied.map((a) => a.name), ["경찰과도둑", "캡스톤 Big-Brother", "에브리페스타"]);
+});
+
+test("featured project links its official website first", () => {
+  assert.deepEqual(featured.links[0], { label: "Website", href: "https://copsandrobbers.app/" });
+});
+
+test("RuleBook is described as the attendance/penalty app its code implements", () => {
+  assert.match(projects.find((p) => p.slug === "rulebook")?.summary ?? "", /출석/);
 });

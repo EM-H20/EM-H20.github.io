@@ -33,7 +33,7 @@ export type Award = {
 export type StackGroup = { group: string; items: string[] };
 
 const phone = (slug: string, n: number, alt: string, brief: string): ImageSpec => ({
-  src: `/images/projects/${slug}/${n}.webp`,
+  src: `/images/projects/${slug}/${n}.jpg`,
   alt,
   aspect: "phone",
   brief,
@@ -79,7 +79,7 @@ export const featured = {
   period: "2025.10 – 2026",
   platform: "Flutter · Android & iOS",
   role: "Flutter 앱 개발 · GitHub Actions/Fastlane 배포 자동화 · UX 개선",
-  features: ["실시간 위치 공유", "QR 체포·초대", "팀별 채팅", "자동 게임 판정"],
+  features: ["실시간 위치 공유", "QR 체포·초대", "팀별 채팅", "자동 게임 판정", "2~150명 플레이"],
   stack: ["Flutter", "Riverpod", "Dio/Retrofit", "지도 SDK", "WebSocket(STOMP)", "Firebase"],
   badges: [
     "세종 창업 아이디어 리그 대상",
@@ -89,14 +89,15 @@ export const featured = {
   ],
   events: ["서울대학페스티벌", "청춘대로", "서울게임타운"],
   links: [
+    { label: "Website", href: "https://copsandrobbers.app/" },
     { label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.elipair.copsandrobbers" },
     { label: "App Store", href: "https://apps.apple.com/us/app/cops-and-robbers-real-chase/id6756843948" },
     { label: "GitHub", href: "https://github.com/cops-and-robbers/cops-and-robbers-FE" },
   ],
   screens: [
-    phone("cops-and-robbers", 1, "게임 중 지도 화면", "게임 중 지도 화면 — 팀원·상대 위치가 보이는 장면"),
-    phone("cops-and-robbers", 2, "QR 체포 화면", "QR 체포 또는 QR 초대 화면"),
-    phone("cops-and-robbers", 3, "팀 채팅 화면", "팀 채팅 또는 게임 결과(판정) 화면"),
+    phone("cops-and-robbers", 1, "정해진 시간마다 도둑 위치가 지도에 공개되는 화면", "게임 중 지도 화면 — 팀원·상대 위치가 보이는 장면"),
+    phone("cops-and-robbers", 2, "QR 코드로 도둑을 체포하는 화면", "QR 체포 또는 QR 초대 화면"),
+    phone("cops-and-robbers", 3, "실시간 팀 채팅 화면", "팀 채팅 또는 게임 결과(판정) 화면"),
   ],
   event: {
     src: "/images/projects/cops-and-robbers/event.webp",
@@ -175,7 +176,7 @@ export const projects: Project[] = [
     tier: 2,
     name: "RuleBook",
     emoji: "📖",
-    summary: "보드게임 규칙 검색·북마크 앱",
+    summary: "출석·벌칙·벌금을 관리하는 앱",
     stack: ["Flutter"],
     period: "2025.03 – 2025.06",
     badges: ["Google Play · App Store 출시"],
@@ -184,7 +185,7 @@ export const projects: Project[] = [
       { label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.elipair.rulebook" },
       { label: "App Store", href: "https://apps.apple.com/us/app/%EB%A3%B0%EB%B6%81-rulebook/id6745808744" },
     ],
-    images: [phone("rulebook", 1, "규칙 검색 화면", "규칙 검색 결과 또는 상세 화면")],
+    images: [phone("rulebook", 1, "인원별 경고·벌칙·벌금 현황 화면", "인원별 출석·벌칙·벌금 현황 화면")],
     icon: appIcon("rulebook", "RuleBook"),
   },
   {
@@ -218,18 +219,6 @@ export const projects: Project[] = [
     links: [{ label: "GitHub", href: "https://github.com/SpaceStudyShip/SpaceStudyShip-FE" }],
     images: [],
     icon: appIcon("space-study-ship", "우주공부선"),
-  },
-  {
-    slug: "second-brain-template",
-    tier: 3,
-    name: "Second Brain Template",
-    emoji: "🧠",
-    summary: "회의·문서·이슈·의사결정을 연결하는 AI 에이전트용 Markdown 지식 관리 템플릿",
-    stack: ["JavaScript", "Markdown"],
-    period: "2026.07",
-    badges: [],
-    links: [{ label: "GitHub", href: "https://github.com/EM-H20/second-brain-template" }],
-    images: [],
   },
   {
     slug: "emotion-diary",
@@ -318,6 +307,28 @@ export const ogImage: ImageSpec = {
   alt: "홍의민 포트폴리오",
   aspect: "og",
   brief: "링크 공유 미리보기 (1200×630) — 이름 + 한 줄 소개, 흑백 스타일",
+};
+
+export const ax = {
+  intro: "AI 에이전트와 함께 일하는 방식을 도구로 만들고, 실제 팀 프로젝트에 적용합니다.",
+  tool: {
+    name: "Second Brain Template",
+    emoji: "🧠",
+    summary:
+      "회의·문서·이슈·결정을 지식으로 쌓고, 코드와의 충돌 감지·리포트·반복 이슈 탐지까지 한 흐름으로 묶는 프로젝트별 세컨드 브레인 템플릿",
+    install: "npx github:EM-H20/second-brain-template",
+    tags: ["Claude Code", "Codex", "Gemini", "Obsidian", "의존성 0"],
+    // second-brain-bench results/report.md (2026-09-26, 1st run): opus, 31 questions, one run each.
+    benchmark:
+      "경찰과도둑 저장소로 만든 31문항 1차 벤치마크에서 볼트가 있으면 정확도 0.97, 코드만 있으면 0.71이었습니다. '왜 이렇게 정했나' 질문은 1.0 대 0.0, 없는 경로 인용은 8.3%에서 0.8%로 줄었습니다.",
+    links: [{ label: "GitHub", href: "https://github.com/EM-H20/second-brain-template" }],
+  },
+  // Vault repositories are private, so these are described rather than linked.
+  applied: [
+    { name: "경찰과도둑", emoji: "🚔", icon: appIcon("cops-and-robbers", "경찰과도둑"), summary: "앱·서버·웹 3개 저장소의 회의·이슈·설계를 한 볼트로 관리" },
+    { name: "캡스톤 Big-Brother", emoji: "📹", summary: "CCTV 위험 상황 관제와 VLM 자연어 설명 — FE·BE·VLM 지식을 한곳에" },
+    { name: "에브리페스타", emoji: "🎪", summary: "대학 축제 정보 서비스 — 결정·이슈·교훈을 기록하고 축제 데이터 볼트를 따로 분리" },
+  ] as { name: string; emoji: string; icon?: ImageSpec; summary: string }[],
 };
 
 export function shippedNames(): string[] {

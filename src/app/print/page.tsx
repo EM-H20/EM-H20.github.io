@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ImageSlot, visibleImages } from "@/components/ui/ImageSlot";
 import {
   awards,
+  ax,
   education,
   featured,
   hero,
@@ -197,15 +198,37 @@ export default function PrintPage() {
       </section>
 
       <section className="print-block pt-10">
-        <Heading eyebrow="Tech Stack" title="기술 스택" />
-        <dl className="space-y-2 text-sm">
-          {stack.map((group) => (
-            <div key={group.group}>
-              <dt className="inline font-display text-xs font-bold text-fg-subtle">{group.group} </dt>
-              <dd className="inline">{group.items.join(" · ")}</dd>
-            </div>
+        <Heading eyebrow="AX-Native" title="AI와 일하는 방식" />
+        <p className="text-sm text-fg-muted">{ax.intro}</p>
+        <article className="print-block mt-4">
+          <h3 className="font-display text-xl font-bold">{ax.tool.name}</h3>
+          <p className="mt-1 text-sm text-fg-muted">{ax.tool.summary}</p>
+          <p className="mt-2 text-sm">{ax.tool.benchmark}</p>
+          <Meta>
+            {ax.tool.install} · {ax.tool.tags.join(" · ")}
+          </Meta>
+          <ul className="mt-2 space-y-1 text-sm">
+            {ax.tool.links.map((link) => (
+              <li key={link.href}>
+                <PrintLink link={link} />
+              </li>
+            ))}
+          </ul>
+        </article>
+        <p className="mt-5 font-display text-xs font-bold text-fg-subtle">적용 중인 프로젝트</p>
+        <ul className="mt-2 space-y-1 text-sm">
+          {ax.applied.map((project) => (
+            <li key={project.name}>
+              <span className="font-medium">{project.name}</span>
+              <span className="text-fg-muted"> — {project.summary}</span>
+            </li>
           ))}
-        </dl>
+        </ul>
+      </section>
+
+      <section className="print-block pt-6">
+        <p className="font-display text-xs font-bold text-fg-subtle">Tech Stack</p>
+        <p className="mt-1 text-sm">{stack.flatMap((group) => group.items).join(" · ")}</p>
       </section>
     </main>
   );

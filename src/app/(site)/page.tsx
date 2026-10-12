@@ -1,8 +1,8 @@
 import { Awards } from "@/components/sections/Awards";
+import { AxNative } from "@/components/sections/AxNative";
 import { Contact } from "@/components/sections/Contact";
 import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
-import { Stack } from "@/components/sections/Stack";
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
       <Hero />
       <Projects />
       <Awards />
-      <Stack />
+      <AxNative />
       <Contact />
     </main>
   );

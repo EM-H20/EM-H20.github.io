@@ -103,9 +103,12 @@
 
 한 줄 = `상`(GmarketSans Bold; `highlight: true`면 Highlight) · `대회`(fg-muted) · `프로젝트`(fg-subtle) · `연도`(fg-subtle, 오른쪽). 모바일에서는 `상 | 연도` 다음 줄에 대회·프로젝트. F-패턴 원칙(상 이름이 줄 첫머리) 유지.
 
-### 4.4 STACK
+### 4.4 AX-NATIVE (STACK 대체, 2026-10-12 사용자 요청)
 
-`InfoLines`와 같은 형식: `Mobile.` Flutter · Dart · Riverpod … (5줄).
+- 기술 스택 섹션은 홈에서 제거하고, 같은 자리에 AX-NATIVE 섹션을 둔다.
+- 구성: 한 줄 소개 → Second Brain Template(설명, `second-brain-bench` 1차 결과 한 문장, `npx` 설치 명령, 지원 도구, GitHub 링크) → "적용 중인 프로젝트" 3개(경찰과도둑 · 캡스톤 Big-Brother · 에브리페스타). 적용 프로젝트의 볼트 저장소는 비공개라 링크하지 않는다.
+- Second Brain Template은 기타 프로젝트 목록에서 빼 이 섹션으로 옮긴다(중복 방지).
+- PDF: AX-Native 섹션을 추가하고, 기술 스택은 키워드 검색용으로 한 줄(모든 항목 나열)만 남긴다.
 
 ### 4.5 CONTACT
 
