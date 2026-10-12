@@ -38,10 +38,7 @@ export function AxNative() {
               ) : (
                 project.name
               )}{" "}
-              <span className="text-meta font-normal text-fg-subtle">
-                {project.summary}
-                {project.privateRepo && " · 비공개 저장소"}
-              </span>
+              <span className="text-meta font-normal text-fg-subtle">{project.summary}</span>
             </p>
           </li>
         ))}

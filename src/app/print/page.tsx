@@ -234,7 +234,6 @@ export default function PrintPage() {
                   </a>
                 </>
               )}
-              {project.privateRepo && <span className="text-xs text-fg-subtle"> (비공개 저장소)</span>}
             </li>
           ))}
         </ul>
