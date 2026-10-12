@@ -140,22 +140,22 @@
    Paint order is flap < back < letter < pocket. At rest the letter is the button face and the
    flap is folded down behind it. Opening: the flap swings up, the pocket shows its V fold, and
    the letter turns into paper and rises with an overshoot. Closing reverses it: the letter drops
-   back first, and the flap and pocket wait for it. */
+   back first, and the flap and pocket wait for it.
+   Tones only change the button face; every envelope is the same dark one, so the paper reads. */
 .env-primary {
   --env-face: var(--inverted);
   --env-ink: var(--on-inverted);
   --env-edge: transparent;
-  --env-inside: color-mix(in srgb, var(--inverted) 80%, var(--on-inverted));
-  --env-fold: color-mix(in srgb, var(--inverted) 60%, var(--on-inverted));
 }
 .env-ghost {
   --env-face: var(--canvas);
   --env-ink: var(--fg);
   --env-edge: var(--hairline);
-  --env-inside: var(--surface);
-  --env-fold: color-mix(in srgb, var(--canvas) 80%, var(--fg));
 }
 .env {
+  --env-body: var(--inverted);
+  --env-inside: color-mix(in srgb, var(--inverted) 80%, var(--on-inverted));
+  --env-fold: color-mix(in srgb, var(--inverted) 60%, var(--on-inverted));
   position: relative;
   display: inline-flex;
   border-radius: var(--radius-btn);
@@ -172,7 +172,6 @@
   height: 20px;
   overflow: visible;
   fill: var(--env-inside);
-  stroke: var(--env-edge);
   transform-origin: bottom;
   transform: perspective(160px) rotateX(180deg);
   transition: transform 200ms ease-in 250ms;
@@ -223,16 +222,13 @@
   height: 100%;
   border-radius: var(--radius-btn);
   overflow: hidden;
-  fill: var(--env-face);
+  fill: var(--env-body);
   opacity: 0;
   transition: opacity 0ms linear 250ms;
 }
 .env-pocket .env-fold {
   fill: none;
   stroke: var(--env-fold);
-}
-.env-ghost .env-pocket {
-  box-shadow: inset 0 0 0 1px var(--env-edge);
 }
 @media (hover: hover) {
   .env:hover .env-flap {

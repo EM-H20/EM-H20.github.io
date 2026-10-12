@@ -20,7 +20,7 @@ export function EnvelopeButton({
   return (
     <a href={href} download={download} className={`env env-${tone} font-display text-sm font-bold`}>
       <svg aria-hidden="true" viewBox="0 0 100 20" preserveAspectRatio="none" className="env-flap">
-        <path d="M0 20 L50 1 L100 20" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        <path d="M0 20 L50 1 L100 20" />
       </svg>
       <span aria-hidden="true" className="env-back" />
       <span className="env-letter">
