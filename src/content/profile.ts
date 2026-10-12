@@ -133,6 +133,9 @@ export const projects: Project[] = [
     links: [
       { label: "Live Demo", href: "https://twin-fang.github.io/Hack-the-Beat/" },
       { label: "GitHub", href: "https://github.com/Twin-Fang/Hack-the-Beat" },
+      // GDG Campus Korea event recaps (captions confirm AI judging and the theme; slide 12 is the one shared as proof)
+      { label: "Instagram 행사 기록", href: "https://www.instagram.com/p/Dc27pKRk18w/?img_index=12" },
+      { label: "LinkedIn 행사 기록", href: "https://www.linkedin.com/posts/gdg-campus-korea_gdg-ioex-ioextended-activity-7510266275038695425-Mg0S" },
     ],
     images: [
       phone("party-passport", 1, "배지 모음 화면", "배지 모음 또는 상호 매칭 결과 화면 (Hack-the-Beat 저장소 docs/images/04-badges.png, 05-result.png 재사용 가능)"),
