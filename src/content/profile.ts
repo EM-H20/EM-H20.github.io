@@ -91,7 +91,7 @@ export const featured = {
     "친구·동료·가족이 스마트폰으로 함께 즐기는 경찰과 도둑 놀이입니다. 위치 공유부터 QR 체포, 팀 채팅, 게임 판정까지 하나의 앱으로 연결합니다.",
   period: "2025.10 – 2026",
   platform: "Flutter · Android & iOS",
-  role: "Flutter 앱 개발 · GitHub Actions/Fastlane 배포 자동화 · UX 개선",
+  role: "Flutter 앱 전체 설계·구현 · GitHub Actions/Fastlane 배포 자동화 · UX 개선",
   features: ["실시간 위치 공유", "QR 체포·초대", "팀별 채팅", "자동 게임 판정", "2~150명 플레이"],
   stack: ["Flutter", "Riverpod", "Dio/Retrofit", "지도 SDK", "WebSocket(STOMP)", "Firebase"],
   badges: [
