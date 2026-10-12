@@ -41,7 +41,7 @@ export function ImageSlot({
   className?: string;
 }) {
   return (
-    <div className={`relative overflow-hidden rounded-card ${ASPECT[image.aspect]} ${className}`}>
+    <div className={`relative overflow-hidden rounded-xl ${ASPECT[image.aspect]} ${className}`}>
       {imageExists(image.src) ? (
         <>
           <Skeleton className="absolute inset-0" />
@@ -55,7 +55,7 @@ export function ImageSlot({
           />
         </>
       ) : (
-        <div className="absolute inset-0 flex flex-col justify-center gap-1 rounded-card border border-dashed border-hairline p-3 font-mono text-[11px] leading-snug break-all text-fg-subtle">
+        <div className="absolute inset-0 flex flex-col justify-center gap-1 rounded-xl border border-dashed border-hairline p-3 text-[11px] leading-snug break-all text-fg-subtle">
           <span className="text-fg">{image.brief}</span>
           <span>{image.src}</span>
           <span>{RECOMMENDED[image.aspect]}</span>

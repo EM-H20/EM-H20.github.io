@@ -4,37 +4,34 @@ import { Container } from "@/components/ui/Container";
 import { links } from "@/content/profile";
 import { site } from "@/lib/site";
 
-const SECTIONS = [
-  { href: "/#projects", label: "Projects" },
-  { href: "/#awards", label: "Awards" },
-  { href: "/#stack", label: "Stack" },
-];
+// Display is set per link: combining `inline-flex` with `hidden` lets `inline-flex` win on mobile.
+const NAV_LINK = "min-h-10 items-center text-fg underline-offset-4 hover:underline";
 
 export function Nav() {
   return (
-    <header className="sticky top-0 z-10 bg-canvas/80 backdrop-blur-xl">
-      <Container className="flex h-16 items-center gap-8">
-        <Link href="/" className="text-sm font-medium text-fg">
+    <header className="sticky top-0 z-10 bg-canvas/85 backdrop-blur-md">
+      <Container className="flex h-16 items-center justify-between">
+        <Link href="/" className={`${NAV_LINK} inline-flex font-display text-base font-bold`}>
           {site.shortName}
         </Link>
-        <nav aria-label="섹션" className="hidden items-center gap-6 md:flex">
-          {SECTIONS.map((s) => (
-            <Link key={s.href} href={s.href} className="text-sm text-fg-muted hover:text-fg">
-              {s.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="ml-auto flex items-center gap-2">
-          <Button href={site.pdf.href} download={site.pdf.filename} variant="text">
+        <nav aria-label="메뉴" className="flex items-center gap-3.5 font-display text-base font-bold">
+          <Link href="/#projects" className={`${NAV_LINK} hidden sm:inline-flex`}>
+            projects
+          </Link>
+          <Link href="/#awards" className={`${NAV_LINK} hidden sm:inline-flex`}>
+            awards
+          </Link>
+          <Link href="/blog" className={`${NAV_LINK} inline-flex`}>
+            blog
+          </Link>
+          <span aria-hidden="true" className="h-3.5 w-px bg-hairline" />
+          <Button href={links.github.href} variant="text">
+            github
+          </Button>
+          <Button href={site.pdf.href} download={site.pdf.filename} variant="pill">
             PDF
           </Button>
-          <Button href="/blog" variant="text">
-            Blog
-          </Button>
-          <Button href={links.github.href} variant="pill">
-            GitHub
-          </Button>
-        </div>
+        </nav>
       </Container>
     </header>
   );

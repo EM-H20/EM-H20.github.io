@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-import { CliPanel } from "@/components/ui/CliPanel";
+import { Chip } from "@/components/ui/Chip";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Highlight } from "@/components/ui/Highlight";
+import { IconCircle } from "@/components/ui/IconCircle";
 import { ImageSlot } from "@/components/ui/ImageSlot";
+import { InfoLines } from "@/components/ui/InfoLines";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { Tag, TagList } from "@/components/ui/Tag";
-import { Typewriter } from "@/components/ui/Typewriter";
-import { allImages, cliLines, hero } from "@/content/profile";
-import { schedule } from "@/lib/typing";
+import { allImages, featured, heroInfo, projects } from "@/content/profile";
 
 export const metadata: Metadata = { title: "Design", robots: { index: false } };
 
@@ -17,125 +16,99 @@ export const metadata: Metadata = { title: "Design", robots: { index: false } };
 const SWATCHES = [
   ["canvas", "bg-canvas"],
   ["surface", "bg-surface"],
-  ["inverted", "bg-inverted"],
   ["fg", "bg-fg"],
   ["fg-muted", "bg-fg-muted"],
   ["fg-subtle", "bg-fg-subtle"],
-  ["fg-faint", "bg-fg-faint"],
   ["hairline", "bg-hairline"],
-  ["skeleton", "bg-skeleton"],
-  ["accent", "bg-accent"],
+  ["inverted", "bg-inverted"],
+  ["dot", "bg-dot"],
 ] as const;
 
 const TYPE = [
-  ["display", "text-display font-book"],
-  ["heading-lg", "text-heading-lg font-book"],
-  ["heading", "text-heading font-book"],
+  ["greet", "font-display font-light text-greet"],
+  ["title-lg", "font-display font-bold text-title-lg"],
+  ["title", "text-title font-medium"],
   ["body", "text-body"],
-  ["caption", "text-caption"],
+  ["meta", "text-meta text-fg-subtle"],
 ] as const;
 
-export default function DesignPage() {
-  const lines = cliLines();
-  const [nameStart, ...lineStarts] = schedule([hero.name, ...lines.map((l) => l.text)]);
+function Block({ name, children }: { name: string; children: ReactNode }) {
   return (
-    <main className="flex-1 py-16">
-      <Container className="space-y-16">
-        <section>
-          <Eyebrow>Colors</Eyebrow>
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-5">
+    <section className="space-y-4">
+      <Chip as="p">{name}</Chip>
+      {children}
+    </section>
+  );
+}
+
+export default function DesignPage() {
+  return (
+    <main className="flex-1 py-12">
+      <Container className="space-y-14">
+        <Block name="COLORS">
+          <ul className="grid grid-cols-4 gap-3">
             {SWATCHES.map(([name, cls]) => (
-              <li key={name} className="space-y-2">
-                <div className={`h-16 rounded-card shadow-hairline ${cls}`} />
-                <p className="font-mono text-eyebrow text-fg-subtle uppercase">{name}</p>
+              <li key={name} className="space-y-1">
+                <div className={`h-12 rounded-btn shadow-hairline ${cls}`} />
+                <p className="text-meta text-fg-subtle">{name}</p>
               </li>
             ))}
           </ul>
-        </section>
+          <p className="text-body">
+            형광펜: <Highlight>세종 창업 아이디어 리그 대상</Highlight>
+          </p>
+        </Block>
 
-        <section>
-          <Eyebrow>Type</Eyebrow>
-          <div className="space-y-6">
-            {TYPE.map(([name, cls]) => (
-              <div key={name}>
-                <p className="font-mono text-eyebrow text-fg-subtle uppercase">{name}</p>
-                <p className={cls}>홍의민 Turning Ideas Into Real Products</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Block name="TYPE">
+          {TYPE.map(([name, cls]) => (
+            <div key={name}>
+              <p className="text-meta text-fg-subtle">{name}</p>
+              <p className={cls}>안녕하세요! 개발자 홍의민입니다.</p>
+            </div>
+          ))}
+        </Block>
 
-        <section>
-          <Eyebrow>Buttons</Eyebrow>
+        <Block name="BUTTONS">
           <div className="flex flex-wrap items-center gap-3">
-            <Button href="mailto:test@example.com">Primary</Button>
+            <Button href="mailto:test@example.com">메일 보내기</Button>
             <Button href="https://github.com" variant="ghost">
-              Ghost
+              PDF 포트폴리오
             </Button>
             <Button href="https://github.com" variant="pill">
-              Pill
+              PDF
             </Button>
-            <Button href="/blog" variant="text">
-              Text
+            <Button href="https://github.com" variant="text">
+              github
             </Button>
           </div>
-        </section>
+        </Block>
 
-        <section>
-          <Eyebrow>Cards</Eyebrow>
-          <div className="grid gap-6 md:grid-cols-3">
-            <Card>
-              <p className="text-body">sm card</p>
-            </Card>
-            <Card size="md">
-              <p className="text-body text-fg-muted">md card</p>
-            </Card>
-            <Card inverted size="lg">
-              <Eyebrow>Inverted</Eyebrow>
-              <p className="text-body text-fg-muted">lg inverted card</p>
-              <TagList items={["Flutter", "Riverpod"]} className="mt-4" />
-              <div className="mt-4">
-                <Button href="https://github.com" variant="ghost">
-                  Ghost on inverted
-                </Button>
-              </div>
-            </Card>
+        <Block name="ICONS">
+          <div className="flex flex-wrap items-center gap-3">
+            {[featured, ...projects].map((p) => (
+              <IconCircle key={p.slug} icon={p.icon} emoji={p.emoji} />
+            ))}
+            <IconCircle emoji="🧪" size={40} />
           </div>
-        </section>
+        </Block>
 
-        <section>
-          <Eyebrow>Tags</Eyebrow>
-          <div className="flex flex-wrap gap-2">
-            <Tag>Flutter</Tag>
-            <Tag tone="award">대상</Tag>
-          </div>
-        </section>
+        <Block name="INFO LINES">
+          <InfoLines lines={heroInfo()} />
+        </Block>
 
-        <section>
-          <Eyebrow>Typing (reload to replay)</Eyebrow>
-          <div className="grid gap-8 md:grid-cols-2 md:items-center">
-            <p className="text-display font-book" aria-label={hero.name}>
-              <Typewriter text={hero.name} start={nameStart} />
-            </p>
-            <CliPanel lines={lines} starts={lineStarts} />
-          </div>
-        </section>
+        <Block name="SKELETON">
+          <Skeleton className="h-20 max-w-sm rounded-xl" />
+        </Block>
 
-        <section>
-          <Eyebrow>Skeleton</Eyebrow>
-          <Skeleton className="h-24 max-w-md rounded-card" />
-        </section>
-
-        <section>
-          <Eyebrow>Image slots (all)</Eyebrow>
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+        <Block name="IMAGE SLOTS">
+          <ul className="grid grid-cols-3 gap-3 sm:grid-cols-5">
             {allImages().map((image) => (
               <li key={image.src}>
                 <ImageSlot image={image} />
               </li>
             ))}
           </ul>
-        </section>
+        </Block>
       </Container>
     </main>
   );

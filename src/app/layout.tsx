@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="ko"
       className={`${display.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-canvas font-sans text-fg">{children}</body>
+      <body className="flex min-h-full flex-col bg-canvas font-sans break-keep text-fg">{children}</body>
     </html>
   );
 }
