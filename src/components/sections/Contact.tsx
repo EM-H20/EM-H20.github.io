@@ -14,7 +14,7 @@ export function Contact() {
           PDF 포트폴리오
         </Button>
       </div>
-      <ul className="mt-10 flex flex-wrap gap-x-5">
+      <ul className="mt-8 flex flex-wrap gap-x-5">
         {Object.values(links).map((link) => (
           <li key={link.href}>
             <Button href={link.href} variant="text">

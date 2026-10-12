@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 // Each line is nowrap and the size is clamped, so the block keeps one height while the word types.
 export function Hero() {
   return (
-    <Container className="pt-16 pb-12 md:pt-24">
+    <Container className="pt-10 pb-9 md:pt-16">
       <h1 className="sr-only">{`안녕하세요! ${hero.words[0]}를 좋아하는 개발자 ${hero.name}입니다.`}</h1>
       <div className="flex flex-col-reverse gap-6 sm:flex-row sm:items-center sm:justify-between">
         <p aria-hidden="true" className="font-display text-greet font-light text-fg">
@@ -35,8 +35,8 @@ export function Hero() {
           className="invert-in-dark w-20 shrink-0 sm:w-40"
         />
       </div>
-      <InfoLines lines={heroInfo()} className="mt-9" />
-      <div className="mt-7 flex flex-wrap gap-2.5">
+      <InfoLines lines={heroInfo()} className="mt-7" />
+      <div className="mt-6 flex flex-wrap gap-2.5">
         <Button href={links.email.href}>메일 보내기</Button>
         <Button href={site.pdf.href} download={site.pdf.filename} variant="ghost">
           PDF 포트폴리오

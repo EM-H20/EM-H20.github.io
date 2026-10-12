@@ -6,7 +6,7 @@ import { Projects } from "@/components/sections/Projects";
 
 export default function Home() {
   return (
-    <main className="flex-1 pb-12">
+    <main className="flex-1 pb-8">
       <Hero />
       <Projects />
       <Awards />

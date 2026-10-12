@@ -34,7 +34,7 @@ function FeaturedProject() {
   const [event] = visibleImages([featured.event]);
   const [firstAward, ...otherAwards] = featured.badges;
   return (
-    <article className="pb-8">
+    <article className="pb-6">
       <div className="flex items-center gap-4">
         <IconCircle icon={featured.icon} emoji={featured.emoji} />
         <div>

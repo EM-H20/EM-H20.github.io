@@ -25,7 +25,7 @@ export function AxNative() {
         </div>
       </article>
 
-      <h3 className="mt-10 font-display font-bold text-fg">적용 중인 프로젝트</h3>
+      <h3 className="mt-8 font-display font-bold text-fg">적용 중인 프로젝트</h3>
       <ul className="mt-3">
         {ax.applied.map((project) => (
           <li key={project.name} className="flex items-center gap-3 py-1.5">
