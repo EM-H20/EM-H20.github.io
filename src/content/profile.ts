@@ -49,6 +49,7 @@ const appIcon = (slug: string, name: string): ImageSpec => ({
 export const links = {
   email: { label: "elipair0106@gmail.com", href: "mailto:elipair0106@gmail.com" },
   github: { label: "GitHub", href: "https://github.com/EM-H20" },
+  linkedin: { label: "LinkedIn", href: "https://www.linkedin.com/in/eui-min-hong" },
   blog: { label: "Tistory 블로그", href: "https://elipair.tistory.com/" },
   instagram: { label: "Instagram @e_m_hong", href: "https://instagram.com/e_m_hong" },
 } satisfies Record<string, LinkSpec>;
@@ -323,12 +324,30 @@ export const ax = {
       "경찰과도둑 저장소로 만든 31문항 1차 벤치마크에서 볼트가 있으면 정확도 0.97, 코드만 있으면 0.71이었습니다. '왜 이렇게 정했나' 질문은 1.0 대 0.0, 없는 경로 인용은 8.3%에서 0.8%로 줄었습니다.",
     links: [{ label: "GitHub", href: "https://github.com/EM-H20/second-brain-template" }],
   },
-  // Vault repositories are private, so these are described rather than linked.
+  // The vaults themselves are private; each item links the project's public code instead, if any.
   applied: [
-    { name: "경찰과도둑", emoji: "🚔", icon: appIcon("cops-and-robbers", "경찰과도둑"), summary: "앱·서버·웹 3개 저장소의 회의·이슈·설계를 한 볼트로 관리" },
-    { name: "캡스톤 Big-Brother", emoji: "📹", summary: "CCTV 위험 상황 관제와 VLM 자연어 설명 — FE·BE·VLM 지식을 한곳에" },
-    { name: "에브리페스타", emoji: "🎪", summary: "대학 축제 정보 서비스 — 결정·이슈·교훈을 기록하고 축제 데이터 볼트를 따로 분리" },
-  ] as { name: string; emoji: string; icon?: ImageSpec; summary: string }[],
+    {
+      name: "경찰과도둑",
+      emoji: "🚔",
+      icon: appIcon("cops-and-robbers", "경찰과도둑"),
+      summary: "앱·서버·웹 3개 저장소의 회의·이슈·설계를 한 볼트로 관리",
+      href: "https://github.com/cops-and-robbers",
+    },
+    {
+      name: "캡스톤 Big-Brother",
+      emoji: "📹",
+      summary: "CCTV 위험 상황 관제와 VLM 자연어 설명 — FE·BE·VLM 지식을 한곳에",
+      // Every repository of this team is private, so there is nothing a visitor could open.
+      privateRepo: true,
+    },
+    {
+      name: "에브리페스타",
+      emoji: "🎪",
+      icon: appIcon("festa", "에브리페스타"),
+      summary: "대학 축제 정보 서비스 — 결정·이슈·교훈을 기록하고 축제 데이터 볼트를 따로 분리",
+      href: "https://github.com/greedy-team/festa-frontend",
+    },
+  ] as { name: string; emoji: string; icon?: ImageSpec; summary: string; href?: string; privateRepo?: boolean }[],
 };
 
 export function shippedNames(): string[] {

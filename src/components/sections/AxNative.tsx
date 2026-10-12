@@ -31,7 +31,17 @@ export function AxNative() {
           <li key={project.name} className="flex items-center gap-3 py-1.5">
             <IconCircle icon={project.icon} emoji={project.emoji} size={40} />
             <p className="min-w-0 text-base font-medium text-fg">
-              {project.name} <span className="text-meta font-normal text-fg-subtle">{project.summary}</span>
+              {project.href ? (
+                <a href={project.href} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+                  {project.name}
+                </a>
+              ) : (
+                project.name
+              )}{" "}
+              <span className="text-meta font-normal text-fg-subtle">
+                {project.summary}
+                {project.privateRepo && " · 비공개 저장소"}
+              </span>
             </p>
           </li>
         ))}

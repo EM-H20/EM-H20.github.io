@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 // Each line is nowrap and the size is clamped, so the block keeps one height while the word types.
 export function Hero() {
   return (
-    <Container className="pt-10 pb-9 md:pt-16">
+    <Container className="pt-8 pb-7 md:pt-12">
       <h1 className="sr-only">{`안녕하세요! ${hero.words[0]}를 좋아하는 개발자 ${hero.name}입니다.`}</h1>
       <div className="flex flex-col-reverse gap-6 sm:flex-row sm:items-center sm:justify-between">
         <p aria-hidden="true" className="font-display text-greet font-light text-fg">

@@ -108,6 +108,10 @@ export default function PrintPage() {
               <dt className="inline font-display text-xs font-bold text-fg-subtle">Certification </dt>
               <dd className="inline">{education.certifications.join(" · ")}</dd>
             </div>
+            <div>
+              <dt className="inline font-display text-xs font-bold text-fg-subtle">Tech Stack </dt>
+              <dd className="inline">{stack.flatMap((group) => group.items).join(" · ")}</dd>
+            </div>
           </dl>
           <ul className="mt-6 space-y-1 text-sm">
             {[...Object.values(links), { label: "Portfolio", href: site.url }].map((link) => (
@@ -134,14 +138,15 @@ export default function PrintPage() {
           <Detail label="수상">{featured.badges.join(" · ")}</Detail>
           <Detail label="행사 참가">{featured.events.join(" · ")}</Detail>
         </dl>
-        {screens.length > 0 && (
-          <div className="mt-6 flex gap-3">
+        {(screens.length > 0 || event) && (
+          // One row that never splits across pages: screenshots plus the booth photo beside them.
+          <div className="print-block mt-6 flex items-start gap-3">
             {screens.map((image) => (
-              <ImageSlot key={image.src} image={image} eager className="w-36" />
+              <ImageSlot key={image.src} image={image} eager className="w-32 shrink-0" />
             ))}
+            {event && <ImageSlot image={event} eager className="w-60 shrink-0" />}
           </div>
         )}
-        {event && <ImageSlot image={event} eager className="mt-4 w-full" />}
         <ul className="mt-6 space-y-1 text-sm">
           {featured.links.map((link) => (
             <li key={link.href}>
@@ -221,15 +226,20 @@ export default function PrintPage() {
             <li key={project.name}>
               <span className="font-medium">{project.name}</span>
               <span className="text-fg-muted"> — {project.summary}</span>
+              {project.href && (
+                <>
+                  {" "}
+                  <a href={project.href} className="text-xs text-fg-subtle">
+                    {bare(project.href)}
+                  </a>
+                </>
+              )}
+              {project.privateRepo && <span className="text-xs text-fg-subtle"> (비공개 저장소)</span>}
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="print-block pt-6">
-        <p className="font-display text-xs font-bold text-fg-subtle">Tech Stack</p>
-        <p className="mt-1 text-sm">{stack.flatMap((group) => group.items).join(" · ")}</p>
-      </section>
     </main>
   );
 }

@@ -7,7 +7,7 @@ export function Container({ className = "", children }: { className?: string; ch
 
 export function Section({ id, chip, children }: { id: string; chip: string; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 py-9">
+    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 py-7">
       <Container>
         <Chip id={`${id}-title`}>{chip}</Chip>
         <div className="mt-5">{children}</div>
