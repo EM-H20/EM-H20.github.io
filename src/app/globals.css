@@ -173,6 +173,12 @@
   margin: 16mm;
 }
 
+@media print {
+  body {
+    background: var(--surface);
+  }
+}
+
 @keyframes skeleton-shimmer {
   from { background-position: 200% 0; }
   to { background-position: -200% 0; }

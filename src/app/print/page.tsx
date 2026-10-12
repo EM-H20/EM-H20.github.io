@@ -18,7 +18,8 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Portfolio PDF", robots: { index: false } };
 
-const bare = (href: string) => href.replace(/^mailto:/, "").replace(/^https?:\/\//, "").replace(/\/$/, "");
+const bare = (href: string) =>
+  decodeURI(href).replace(/^mailto:/, "").replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 function PrintLink({ link }: { link: LinkSpec }) {
   return (
@@ -86,7 +87,7 @@ export default function PrintPage() {
   const major = projects.filter((p) => p.tier === 2);
   const minor = projects.filter((p) => p.tier === 3);
   return (
-    <main className="scheme-light mx-auto w-full max-w-[178mm] bg-canvas text-fg">
+    <main className="scheme-light mx-auto w-full max-w-[178mm] bg-surface text-fg">
       <section className="flex gap-8 pt-6">
         <div className="flex-1">
           <p className="font-mono text-eyebrow uppercase">{hero.eyebrow}</p>
