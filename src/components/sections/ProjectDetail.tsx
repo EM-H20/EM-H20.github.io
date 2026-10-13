@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/Button";
 import { Highlight } from "@/components/ui/Highlight";
 import { IconCircle } from "@/components/ui/IconCircle";
 import { ImageSlot } from "@/components/ui/ImageSlot";
+import { LinkButton } from "@/components/ui/LinkButton";
 import type { ProjectPage } from "@/content/profile";
 import { loadProjectBody } from "@/lib/projects";
 
@@ -43,11 +43,12 @@ export async function ProjectDetail({ page }: { page: ProjectPage }) {
 
       <p className="mt-4 text-[17px] text-fg">{page.summary}</p>
 
-      <div className="mt-5 flex flex-wrap gap-2.5">
+      {/* Extra top room: hovering lifts each button's mark above it */}
+      <div className="mt-10 flex flex-wrap gap-2.5">
         {page.links.map((link) => (
-          <Button key={link.href} href={link.href} variant="ghost">
+          <LinkButton key={link.href} href={link.href}>
             {link.label}
-          </Button>
+          </LinkButton>
         ))}
       </div>
 
