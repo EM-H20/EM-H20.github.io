@@ -14,7 +14,7 @@ export default async function BlogPage() {
   return (
     <main className="flex-1 py-12 md:py-16">
       <Container>
-        <Chip as="h1">POSTS</Chip>
+        <Chip as="h1">BLOG</Chip>
         <ul className="mt-6">
           {posts.map((post) => (
             <li key={post.slug} className="flex flex-wrap items-baseline gap-x-3 py-2">

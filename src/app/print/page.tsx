@@ -18,8 +18,8 @@ export default function PrintPage() {
     <main className="scheme-light bg-canvas text-fg" data-site-url={site.url}>
       <Hero />
       <Projects />
-      <Awards />
       <AxNative />
+      <Awards />
       {/* Short enough to keep on one page rather than leave its links stranded on the next */}
       <div className="print-block">
         <Contact />

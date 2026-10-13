@@ -9,8 +9,8 @@ export default function Home() {
     <main className="flex-1 pb-8">
       <Hero />
       <Projects />
-      <Awards />
       <AxNative />
+      <Awards />
       <Contact />
     </main>
   );

@@ -65,7 +65,7 @@ pnpm dev             # http://localhost:3000  (/design: 컴포넌트 갤러리)
 | 이름 · 소개 · 수상 · 링크 · 프로젝트 목록(기간, 스택, 배지, 링크) | `src/content/profile.ts` |
 | 프로젝트 상세 본문 | `src/content/projects/<slug>.mdx` |
 | 프로젝트 스크린샷 | `public/images/projects/<slug>/gallery/N.jpg` (기본 휴대폰 비율, 웹 프로젝트는 `"wide"` 16:10) |
-| 블로그 글 | `src/content/posts/<slug>.mdx` |
+| 블로그 글 | `src/content/blog/<slug>.mdx` |
 | 링크 미리보기 이미지 | `public/images/og.png` (1200×630) |
 
 - **히어로의 바뀌는 단어**는 `profile.ts`의 `hero.words`입니다. 첫 단어가 PDF와 og 이미지에 나가는 기본값이고, '를'이 맞는 단어(받침 없음)만 넣어야 테스트가 통과합니다. 영문 단어는 소리 내어 읽어본 뒤 `profile.test.ts`의 `REVIEWED_LATIN`에 추가하세요.
@@ -101,7 +101,7 @@ src/
 ├─ content/
 │  ├─ profile.ts         포트폴리오 데이터의 단일 출처
 │  ├─ projects/*.mdx     프로젝트 상세 본문
-│  └─ posts/*.mdx        블로그 글
+│  └─ blog/*.mdx         블로그 글
 ├─ lib/                  site.ts(SEO 단일 출처) · posts.ts · projects.ts
 └─ fonts/                Elipair Display (SIL OFL 1.1 — OFL.txt)
 scripts/
