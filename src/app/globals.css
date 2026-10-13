@@ -279,8 +279,9 @@
 }
 
 /* Outbound link button (LinkButton). Unlayered like .env so state rules beat utilities.
-   The mark waits centred behind the opaque face; hover or focus lifts it 38px so it rises clear of the
-   top edge. Marks only translate — brand artwork is never rotated, recoloured or cropped.
+   The mark waits centred behind the opaque face; hover or focus lifts it until most of it
+   shows above the top edge. Marks only translate: brand guides forbid rotating, recolouring or
+   cropping them.
    A website gets a rocket instead, which peeks, shakes, then launches up and to the right. */
 .lb {
   position: relative;
@@ -310,23 +311,30 @@
   display: flex;
   color: var(--fg);
   pointer-events: none;
+  opacity: 0;
   transform: translate(-50%, -50%);
-  transition: transform 200ms ease-in;
+  transition:
+    transform 200ms ease-in,
+    opacity 120ms ease-in;
 }
+/* left: 50% leaves the mark only half the button to shrink into; never let a mark squash. */
 .lb-mark img,
 .lb-mark svg {
   display: block;
+  max-width: none;
 }
 .lb-rocket-emoji {
-  font-size: 20px;
+  font-size: 42px;
   line-height: 1;
 }
 .lb:focus-visible .lb-mark {
-  transform: translate(-50%, calc(-50% - 38px));
+  opacity: 1;
+  transform: translate(-50%, calc(-85% - 22px));
 }
 @media (hover: hover) {
   .lb:hover .lb-mark {
-    transform: translate(-50%, calc(-50% - 38px));
+    opacity: 1;
+    transform: translate(-50%, calc(-85% - 22px));
     transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .lb.lb-rocket:hover .lb-mark {
@@ -335,19 +343,20 @@
 }
 @keyframes lb-launch {
   0% {
+    opacity: 1;
     transform: translate(-50%, -50%);
   }
   30% {
-    transform: translate(-50%, calc(-50% - 38px));
+    transform: translate(-50%, calc(-85% - 22px));
   }
   36% {
-    transform: translate(calc(-50% - 1.5px), calc(-50% - 38px));
+    transform: translate(calc(-50% - 1.5px), calc(-85% - 22px));
   }
   42% {
-    transform: translate(calc(-50% + 1.5px), calc(-50% - 38px));
+    transform: translate(calc(-50% + 1.5px), calc(-85% - 22px));
   }
   48% {
-    transform: translate(-50%, calc(-50% - 38px));
+    transform: translate(-50%, calc(-85% - 22px));
     opacity: 1;
   }
   100% {
