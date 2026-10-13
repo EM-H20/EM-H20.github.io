@@ -96,7 +96,7 @@ test("RuleBook is described as the attendance/penalty app its code implements", 
 
 test("every project, featured included, has a detail page with a unique slug", () => {
   const slugs = projectPages().map((p) => p.slug);
-  assert.deepEqual(slugs, [featured.slug, ...projects.map((p) => p.slug)]);
+  assert.deepEqual(slugs, [featured.slug, ...projects.map((p) => p.slug), ax.tool.slug]);
   assert.equal(new Set(slugs).size, slugs.length);
 });
 

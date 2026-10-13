@@ -168,7 +168,6 @@ export const projects: Project[] = [
     badges: ["Seeds 팀 프로젝트 우수상"],
     links: [
       { label: "GitHub", href: "https://github.com/EM-H20/stocker" },
-      { label: "상장", href: "https://github.com/user-attachments/files/26157168/_.pdf" },
     ],
     images: [phone("stocker", 1, "학습 메인 화면", "학습/모의투자 메인 화면")],
   },
@@ -325,15 +324,23 @@ export const ogImage: ImageSpec = {
 export const ax = {
   intro: "AI 에이전트와 함께 일하는 방식을 도구로 만들고, 실제 팀 프로젝트에 적용합니다.",
   tool: {
+    slug: "second-brain-template",
     name: "Second Brain Template",
     emoji: "🧠",
+    period: "2026.07 – 2026",
     summary:
       "회의·문서·이슈·결정을 지식으로 쌓고, 코드와의 충돌 감지·리포트·반복 이슈 탐지까지 한 흐름으로 묶는 프로젝트별 세컨드 브레인 템플릿",
     install: "npx github:EM-H20/second-brain-template",
     tags: ["Claude Code", "Codex", "Gemini", "Obsidian", "의존성 0"],
     // second-brain-bench results/report.md (2026-09-26, 1st run): opus, 31 questions, one run each.
-    benchmark:
-      "경찰과도둑 저장소로 만든 31문항 1차 벤치마크에서 볼트가 있으면 정확도 0.97, 코드만 있으면 0.71이었습니다. '왜 이렇게 정했나' 질문은 1.0 대 0.0, 없는 경로 인용은 8.3%에서 0.8%로 줄었습니다.",
+    benchmark: {
+      caption: "경찰과도둑 저장소 31문항 1차 벤치마크 — 코드만 있을 때 → 볼트가 있을 때",
+      stats: [
+        { label: "정확도", before: "0.71", after: "0.97" },
+        { label: "'왜 이렇게 정했나' 질문", before: "0.0", after: "1.0" },
+        { label: "없는 경로 인용", before: "8.3%", after: "0.8%" },
+      ],
+    },
     links: [{ label: "GitHub", href: "https://github.com/EM-H20/second-brain-template" }],
   },
   // The vaults themselves are private; each item links the project's GitHub organization or code instead.
@@ -412,6 +419,21 @@ export function projectPages(): ProjectPage[] {
       gallery: p.gallery ?? [],
       photos: [],
     })),
+    // Not in the project list (it sits in AX-Native), but gets a detail page for the benchmark write-up.
+    {
+      slug: ax.tool.slug,
+      name: ax.tool.name,
+      emoji: ax.tool.emoji,
+      period: ax.tool.period,
+      meta: "AI 코딩 에이전트용 프로젝트 템플릿",
+      summary: ax.tool.summary,
+      badges: [],
+      shipped: false,
+      stack: ax.tool.tags,
+      links: ax.tool.links,
+      gallery: [],
+      photos: [],
+    },
   ];
 }
 
