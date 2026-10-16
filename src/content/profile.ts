@@ -86,7 +86,7 @@ export const featured = {
   slug: "cops-and-robbers",
   name: "경찰과도둑",
   emoji: "🚔",
-  summary: "현실의 술래잡기를 연결하는 실시간 위치 기반 야외 게임 앱",
+  summary: "사람과 사람 사이에, 다시 연결을",
   description:
     "친구·동료·가족이 스마트폰으로 함께 즐기는 경찰과 도둑 놀이입니다. 위치 공유부터 QR 체포, 팀 채팅, 게임 판정까지 하나의 앱으로 연결합니다.",
   period: "2025.10 – 2026",
