@@ -12,6 +12,7 @@ const DETAIL_LINK = "link-draw";
 // Whole-row click target: the name link's ::after covers the row (the li is the positioned ancestor).
 // Links inside the row sit above it with `relative z-10`.
 const ROW_LINK = "link-draw after:absolute after:inset-0";
+const GROUP_HEADING = "mb-3 text-meta font-semibold text-fg-subtle";
 
 // Store/GitHub links stay on the row; the project name opens its detail page.
 function InlineLinks({ links }: { links: readonly LinkSpec[] }) {
@@ -55,11 +56,11 @@ function FeaturedProject() {
       <div className="flex items-center gap-4">
         <IconCircle icon={featured.icon} emoji={featured.emoji} />
         <div>
-          <h3 className="font-display text-title-lg font-bold text-fg">
+          <h4 className="font-display text-title-lg font-bold text-fg">
             <Link href={`/projects/${featured.slug}`} className={DETAIL_LINK}>
               {featured.name}
             </Link>
-          </h3>
+          </h4>
           <p className="text-meta text-fg-subtle">
             {featured.period} · {featured.platform}
           </p>
@@ -96,7 +97,7 @@ function MajorRow({ project }: { project: Project }) {
     <li className="group relative flex gap-4 py-2.5">
       <IconCircle icon={project.icon} emoji={project.emoji} />
       <div className="min-w-0 pt-1">
-        <h3 className="text-title font-semibold text-fg">
+        <h4 className="text-title font-semibold text-fg">
           <Link href={`/projects/${project.slug}`} className={ROW_LINK}>
             {project.name}
           </Link>
@@ -106,7 +107,7 @@ function MajorRow({ project }: { project: Project }) {
               {project.shipped ? <span className="text-fg-subtle">{badge}</span> : <Highlight>{badge}</Highlight>}
             </span>
           ))}
-        </h3>
+        </h4>
         {/* What it is first; stack, period and links one step quieter */}
         <p className="mt-0.5 text-meta text-fg-muted">{project.summary}</p>
         <p className="text-[13px] text-fg-subtle">
@@ -137,21 +138,25 @@ function MinorRow({ project }: { project: Project }) {
 export function Projects() {
   return (
     <Section id="projects" chip="PROJECTS">
+      <h3 className={GROUP_HEADING}>메인 프로젝트</h3>
       <FeaturedProject />
-      <ul className="border-t border-hairline pt-4">
-        {projects
-          .filter((p) => p.tier === 2)
-          .map((project) => (
-            <MajorRow key={project.slug} project={project} />
-          ))}
-      </ul>
-      <ul className="mt-4 border-t border-hairline pt-4">
-        {projects
-          .filter((p) => p.tier === 3)
-          .map((project) => (
-            <MinorRow key={project.slug} project={project} />
-          ))}
-      </ul>
+      <div className="border-t border-hairline pt-4">
+        <h3 className={GROUP_HEADING}>그 외의 프로젝트</h3>
+        <ul>
+          {projects
+            .filter((p) => p.tier === 2)
+            .map((project) => (
+              <MajorRow key={project.slug} project={project} />
+            ))}
+        </ul>
+        <ul className="mt-4 border-t border-hairline pt-4">
+          {projects
+            .filter((p) => p.tier === 3)
+            .map((project) => (
+              <MinorRow key={project.slug} project={project} />
+            ))}
+        </ul>
+      </div>
     </Section>
   );
 }

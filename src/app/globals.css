@@ -409,7 +409,8 @@
     display: none;
   }
   h2,
-  h3 {
+  h3,
+  h4 {
     break-after: avoid;
   }
   li {
