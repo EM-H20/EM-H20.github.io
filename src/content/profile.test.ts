@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
-import { allImages, ax, featured, hero, heroInfo, heroStats, projectPages, projects, shippedNames } from "./profile.ts";
+import { allImages, ax, featured, hero, heroInfo, heroStats, howIWork, projectPages, projects, shippedNames } from "./profile.ts";
 
 test("hero stats are derived from awards and shipped apps", () => {
   assert.deepEqual(heroStats(), [
@@ -96,7 +96,7 @@ test("RuleBook is described as the attendance/penalty app its code implements", 
 
 test("every project, featured included, has a detail page with a unique slug", () => {
   const slugs = projectPages().map((p) => p.slug);
-  assert.deepEqual(slugs, [featured.slug, ...projects.map((p) => p.slug), ax.tool.slug]);
+  assert.deepEqual(slugs, [featured.slug, ...projects.map((p) => p.slug), ax.tool.slug, "festa", "big-brother"]);
   assert.equal(new Set(slugs).size, slugs.length);
 });
 
@@ -109,4 +109,39 @@ test("every gallery image is committed under public/", () => {
   for (const page of projectPages())
     for (const image of [...page.gallery, ...page.photos])
       assert.ok(existsSync(new URL(`../../public${image.src}`, import.meta.url)), image.src);
+});
+
+const pageSlugs = () => new Set(projectPages().map((p) => p.slug));
+const workNoteIds = (mdx: string) => [...mdx.matchAll(/<WorkNote id="([^"]+)">/g)].map((m) => m[1]);
+
+test("HOW I WORK links only to existing detail pages", () => {
+  for (const { slug } of [...howIWork.rows, ...howIWork.breadth]) assert.ok(pageSlugs().has(slug), slug);
+});
+
+// All detail pages share one document in the PDF, so ids must not collide with section ids there.
+test("HOW I WORK row ids are unique and prefixed", () => {
+  const ids = howIWork.rows.map((r) => r.id);
+  assert.equal(new Set(ids).size, ids.length);
+  for (const id of ids) assert.match(id, /^work-[a-z-]+$/);
+});
+
+test("every HOW I WORK row points at exactly one WorkNote on its project page", () => {
+  for (const row of howIWork.rows) {
+    const mdx = readFileSync(new URL(`./projects/${row.slug}.mdx`, import.meta.url), "utf8");
+    assert.equal(workNoteIds(mdx).filter((id) => id === row.id).length, 1, `${row.slug}.mdx needs <WorkNote id="${row.id}">`);
+  }
+});
+
+test("every WorkNote on a project page has a HOW I WORK row for that page", () => {
+  for (const file of readdirSync(new URL("./projects/", import.meta.url))) {
+    const slug = file.replace(/\.mdx$/, "");
+    for (const id of workNoteIds(readFileSync(new URL(`./projects/${file}`, import.meta.url), "utf8")))
+      assert.ok(howIWork.rows.some((r) => r.id === id && r.slug === slug), `${file}: ${id}`);
+  }
+});
+
+test("AX-Native team projects link to their detail pages", () => {
+  const linked = ax.applied.flatMap((a) => (a.slug ? [a.slug] : []));
+  assert.deepEqual(linked, ["big-brother", "festa"]);
+  for (const slug of linked) assert.ok(pageSlugs().has(slug), slug);
 });

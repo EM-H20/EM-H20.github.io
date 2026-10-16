@@ -65,8 +65,13 @@ try {
     // Site links: a project's detail page is inside this PDF, so jump there; anything else goes to the live site.
     const siteUrl = document.querySelector("[data-site-url]").dataset.siteUrl;
     for (const a of document.querySelectorAll('a[href^="/"]')) {
-      const slug = a.getAttribute("href").match(/^\/projects\/([^/#?]+)/)?.[1];
-      a.href = slug && document.getElementById(`project-${slug}`) ? `#project-${slug}` : siteUrl + a.getAttribute("href");
+      const href = a.getAttribute("href");
+      // A link to a paragraph (/projects/<slug>#work-…, /#how-i-work) jumps there; otherwise to the project's page.
+      const hash = href.split("#")[1];
+      const slug = href.match(/^\/projects\/([^/#?]+)/)?.[1];
+      a.href = hash && document.getElementById(hash) ? `#${hash}`
+        : slug && document.getElementById(`project-${slug}`) ? `#project-${slug}`
+        : siteUrl + href;
     }
     // Lazy images below the fold never load in a headless print, so load them all now.
     const images = [...document.images];

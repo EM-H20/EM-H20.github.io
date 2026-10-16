@@ -343,7 +343,8 @@ export const ax = {
     },
     links: [{ label: "GitHub", href: "https://github.com/EM-H20/second-brain-template" }],
   },
-  // The vaults themselves are private; each item links the project's GitHub organization or code instead.
+  // The vaults themselves are private; each item links the project's GitHub organization or code instead,
+  // or its detail page when it has one (slug).
   applied: [
     {
       name: "경찰과도둑",
@@ -357,6 +358,7 @@ export const ax = {
       emoji: "📹",
       summary: "CCTV 위험 상황 관제와 VLM 자연어 설명 — FE·BE·VLM 지식을 한곳에",
       href: "https://github.com/SJU-Big-Brother",
+      slug: "big-brother",
     },
     {
       name: "에브리페스타",
@@ -364,8 +366,81 @@ export const ax = {
       icon: appIcon("festa", "에브리페스타"),
       summary: "대학 축제 정보 서비스 — 결정·이슈·교훈을 기록하고 축제 데이터 볼트를 따로 분리",
       href: "https://github.com/greedy-team/festa-frontend",
+      slug: "festa",
     },
-  ] as { name: string; emoji: string; icon?: ImageSpec; summary: string; href?: string }[],
+  ] as { name: string; emoji: string; icon?: ImageSpec; summary: string; href?: string; slug?: string }[],
+};
+
+export type WorkRow = { id: string; skill: string; question: string; answer: string; fact: string; slug: string };
+
+// HOW I WORK: a T-shaped profile, then product changes I proposed or made from feedback.
+// Each row's id is a <WorkNote id> on src/content/projects/<slug>.mdx, where the full story is.
+export const howIWork = {
+  depth: "Flutter",
+  breadth: [
+    { label: "기획", slug: "party-passport" },
+    { label: "웹", slug: "wanik-sejong" },
+    { label: "서버", slug: "eunsaem" },
+    { label: "DB", slug: "eunsaem" },
+    { label: "클라우드", slug: "eunsaem" },
+    { label: "AI 에이전트", slug: "second-brain-template" },
+  ],
+  story: [
+    "Front만 알 땐, API가 외국어였습니다.",
+    "그래서 서버를 직접 띄워 보고(Oracle Cloud), 백엔드는 AI 에이전트와 함께 짜 봤습니다.",
+    "지금은 교회 홈페이지를 DB부터 배포까지 혼자 만들어 운영합니다.",
+    "이제 백엔드 팀원과 같은 언어로 말합니다.",
+  ],
+  rows: [
+    {
+      id: "work-jail",
+      skill: "사용자 관점",
+      question: "사용자가 답답하다면요?",
+      answer: "Lock은 걸어도, Block은 말고.",
+      fact: "잡힌 사람이 감옥을 못 찾자 지도와 채팅을 열어 두자고 제안",
+      slug: "cops-and-robbers",
+    },
+    {
+      id: "work-right",
+      skill: "디자인 협업",
+      question: "버튼은 어디에 둬요?",
+      answer: "Right는 Right에.",
+      fact: "긍정 버튼에 색을 넣고 오른쪽으로 옮기자고 디자이너에게 제안",
+      slug: "cops-and-robbers",
+    },
+    {
+      id: "work-battery",
+      skill: "책임감",
+      question: "제 실수를 찾으면요?",
+      answer: "제가 세운 Gate, 제가 걷습니다.",
+      fact: "제가 넣은 배터리 설정 요구가 진입 장벽이 되자, 원인을 고쳐 없앰",
+      slug: "cops-and-robbers",
+    },
+    {
+      id: "work-tutorial",
+      skill: "문제 해결",
+      question: "같은 불만이 계속되면요?",
+      answer: "Count 말고 Cause를.",
+      fact: "튜토리얼 노출 횟수를 세 번 바꾼 뒤, 강제하는 구조를 걷어냄",
+      slug: "cops-and-robbers",
+    },
+    {
+      id: "work-delete",
+      skill: "팀워크",
+      question: "안 되는 기능은요?",
+      answer: "Disable 말고 Delete.",
+      fact: "눌러도 반응 없는 버튼을 지우자고 제안했고, 팀 규칙이 됨",
+      slug: "festa",
+    },
+    {
+      id: "work-alert",
+      skill: "디테일",
+      question: "경고는 언제 띄워요?",
+      answer: "늦게 오는 Alert는 Alert가 아니니까.",
+      fact: "관제원 창에 경고 카드를 바로 띄우고, 영상이 밀리지 않게 자리를 고정",
+      slug: "big-brother",
+    },
+  ] as WorkRow[],
 };
 
 export type ProjectPage = {
@@ -431,6 +506,39 @@ export function projectPages(): ProjectPage[] {
       shipped: false,
       stack: ax.tool.tags,
       links: ax.tool.links,
+      gallery: [],
+      photos: [],
+    },
+    // AX-Native team projects: detail pages for the HOW I WORK write-ups, not in the project list.
+    {
+      slug: "festa",
+      name: "에브리페스타",
+      emoji: "🎪",
+      icon: appIcon("festa", "에브리페스타"),
+      period: "2026.08 – 2026",
+      meta: "Next.js · TanStack Query",
+      summary: "대학 축제를 축제·아티스트·학교별로 찾아보는 웹 서비스 — 프론트엔드 2명, 백엔드 2명 팀",
+      badges: [],
+      shipped: false,
+      stack: ["Next.js", "TypeScript", "TanStack Query", "Playwright"],
+      links: [
+        { label: "Website", href: "https://www.every-festa.com/" },
+        { label: "GitHub", href: "https://github.com/greedy-team/festa-frontend" },
+      ],
+      gallery: [],
+      photos: [],
+    },
+    {
+      slug: "big-brother",
+      name: "Big-Brother",
+      emoji: "📹",
+      period: "2026.09 – 2026",
+      meta: "React · Spring Boot",
+      summary: "여러 CCTV의 위험 상황을 찾고 VLM이 자연어로 설명하는 관제 시스템 — 4명 캡스톤 프로젝트",
+      badges: [],
+      shipped: false,
+      stack: ["React", "TypeScript", "Vite", "TanStack Query", "zustand", "Spring Boot"],
+      links: [{ label: "GitHub", href: "https://github.com/SJU-Big-Brother" }],
       gallery: [],
       photos: [],
     },

@@ -47,7 +47,11 @@ export function AxNative() {
           <li key={project.name} className="flex items-center gap-3 py-1.5">
             <IconCircle icon={project.icon} emoji={project.emoji} size={40} />
             <p className="min-w-0 text-base font-medium text-fg">
-              {project.href ? (
+              {project.slug ? (
+                <Link href={`/projects/${project.slug}`} className="link-draw">
+                  {project.name}
+                </Link>
+              ) : project.href ? (
                 <a href={project.href} target="_blank" rel="noreferrer" className="link-draw">
                   {project.name}
                 </a>

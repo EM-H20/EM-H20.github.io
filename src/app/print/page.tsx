@@ -3,6 +3,7 @@ import { Awards } from "@/components/sections/Awards";
 import { AxNative } from "@/components/sections/AxNative";
 import { Contact } from "@/components/sections/Contact";
 import { Hero } from "@/components/sections/Hero";
+import { HowIWork } from "@/components/sections/HowIWork";
 import { ProjectDetail } from "@/components/sections/ProjectDetail";
 import { Projects } from "@/components/sections/Projects";
 import { Container } from "@/components/ui/Container";
@@ -18,6 +19,7 @@ export default function PrintPage() {
     <main className="scheme-light bg-canvas text-fg" data-site-url={site.url}>
       <Hero />
       <Projects />
+      <HowIWork />
       <AxNative />
       <Awards />
       {/* Short enough to keep on one page rather than leave its links stranded on the next */}

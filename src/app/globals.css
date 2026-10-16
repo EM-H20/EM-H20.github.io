@@ -84,6 +84,11 @@
 }
 
 @layer components {
+  /* Reached from a HOW I WORK row: tint the paragraph the link points to. */
+  .work-note:target {
+    background: color-mix(in srgb, var(--highlight) 30%, transparent);
+  }
+
   mark.hl {
     color: var(--fg);
     background: linear-gradient(transparent 62%, var(--highlight) 62%);
