@@ -93,7 +93,7 @@ export const featured = {
   platform: "Flutter · Android & iOS",
   role: "Flutter 앱 설계·구현 · GitHub Actions/Fastlane 배포 자동화 · UX 개선",
   features: ["실시간 위치 공유", "QR 체포·초대", "팀별 채팅", "자동 게임 판정", "2~150명 플레이"],
-  stack: ["Flutter", "Riverpod", "Dio/Retrofit", "지도 SDK", "WebSocket(STOMP)", "Firebase"],
+  stack: ["Flutter", "Riverpod", "Dio/Retrofit", "Google Maps", "WebSocket(STOMP)", "Firebase"],
   badges: [
     "세종 창업 아이디어 리그 대상",
     "입주공모전 우수 창업 아이템상",

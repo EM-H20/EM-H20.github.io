@@ -2,11 +2,14 @@
 
 경찰과 도둑을 좋아해 직접 모여 뛰던 사람들이 "이걸 앱으로 하면 더 재밌겠다"는 생각으로 시작한 프로젝트입니다. **경찰과 도둑**은 오프라인 술래잡기에 지도, 위치 공유, 실시간 게임 상태를 더한 Flutter 앱입니다. 호스트가 지도 위에 플레이 구역과 감옥을 그리고, 한 방에 최대 150명까지 참여합니다.
 
-팀은 Flutter 앱, Spring Boot 게임 서버, Next.js 공식 사이트를 저장소별로 나눠 개발했고, 저는 Flutter 앱의 구조 설계와 대부분의 기능 구현을 맡았습니다. 밖에서 뛰는 게임이라 화면이 꺼져도 위치와 연결이 유지돼야 했습니다.
+팀은 Flutter 앱, Spring Boot 게임 서버, Next.js 공식 사이트를 저장소별로 나눠 개발했고, 저는 Flutter 앱의 구조 설계와 대부분의 기능 구현을 맡았습니다. 코드 구현은 AI 에이전트(Claude Code)에게 맡기고, 설계·결정·검증은 직접 했습니다. 밖에서 뛰는 게임이라 화면이 꺼져도 위치와 연결이 유지돼야 했습니다.
 
 ## 맡은 역할
 
 - **앱 구조 설계** — Clean Architecture, Riverpod, GoRouter, Dio/Retrofit
+- **지도 SDK 선정** — 글로벌 사용자를 전제로 초반에 Google Maps 확정
+- **서비스 도입** — 소셜 로그인, 딥링크, FCM, Remote Config, Analytics, Crashlytics, AdMob
+- **좌표 격자** — 지도를 칸으로 나눠 핑 위치를 팀 채팅에 자동 연결
 - **방 만들기·게임 진행** — 지도 위 구역·감옥 그리기, QR 체포, 재진입 시 경로 복원
 - **실시간 채팅·커뮤니티** — STOMP 팀 채팅, 모집글·모임 채팅방·알림
 - **백그라운드 위치·연결 유지** — iOS 백그라운드 위치, Android Foreground Service
@@ -15,7 +18,7 @@
 
 ## 과정
 
-**앱 개발자 두 명이 동시에 개발할 수 있게 구조부터 정했습니다.** 처음에는 두 명이 앱을 맡았고, 제가 제안한 Clean Architecture로 도메인 계층은 인터페이스만 두고 데이터 계층이 이를 구현하게 해(의존성 역전), 기능을 나눠 병렬로 개발했습니다. 다른 팀원은 원래 웹 개발자로, 앱 개발을 돕기 위해 합류한 상태였습니다. 후반으로 가면서 홍보와 검색 노출(SEO·AEO)을 위한 웹사이트가 필요해졌고, 앞으로 도메인도 필요할 것으로 보여 그 팀원은 웹사이트 개발로 보내고 앱은 제가 이어서 맡았습니다.
+**앱 개발자 두 명이 동시에 개발할 수 있게 구조부터 정했습니다.** 처음에는 두 명이 앱을 맡았고, 제가 제안한 Clean Architecture로 도메인 계층은 인터페이스만 두고 데이터 계층이 이를 구현하게 해(의존성 역전), 기능을 나눠 병렬로 개발했습니다. 다른 팀원은 원래 웹 개발자로, 앱 개발을 돕기 위해 합류한 상태였습니다. 후반으로 가면서 홍보와 검색 노출(SEO·AEO)을 위한 웹사이트가 필요해졌고, 앞으로 도메인도 필요할 것으로 보여 그 팀원은 웹사이트와 어드민 콘솔 개발로 보내고 앱은 제가 이어서 맡았습니다. 앱 약관·크레딧은 웹을 정본으로 두고 앱이 웹뷰로 여는 구조로 맞췄습니다.
 
 **첫 이슈는 기능이 아니라 배포였습니다.** 앱 저장소의 1번 이슈가 iOS TestFlight 배포 자동화였고, 이어서 Android 릴리스 서명과 Play Store 배포를 붙였습니다. 이후 빌드 환경 문제로 배포가 여러 번 깨져, Fastlane 설치를 Bundler 방식으로 통일했습니다.
 
@@ -67,11 +70,21 @@
 
 ## 기술적 결정
 
-### 배터리 설정을 요구하는 대신 Foreground Service + Wake Lock
+### 지도는 초반에 Google Maps로 확정
 
-- **상황**: Android에서 게임 중 화면을 끄면 STOMP 하트비트가 끊겨 게임이 중단됐습니다.
-- **문제**: iOS는 추가 설정 없이 동작하는데, Android만 사용자에게 "배터리 제한 없음" 설정을 강제하고 있었습니다.
-- **결정**: Foreground Service만으로는 CPU가 잠들기 때문에, 프로세스는 Foreground Service로, CPU는 `PARTIAL_WAKE_LOCK`으로 따로 깨워 뒀습니다. Wake Lock은 정상 종료, 태스크 스와이프, 4시간 타임아웃 중 하나로 반드시 해제됩니다.
+- **상황**: 개발 초반에 지도 SDK를 정해야 했고, 처음 후보는 카카오·네이버 지도였습니다.
+- **결정**: 한국어·영어·일본어 지원과 해외 사용자까지 목표로 하자고 제안했습니다. 해외에서도 똑같이 동작하는 Google Maps로 초반에 확정했습니다.
+- **대안**: 카카오·네이버 지도는 국내 중심이라 글로벌 목표와 맞지 않아 제외했습니다.
+- **결과**: 어느 나라에서든 같은 지도 위에 플레이 구역과 감옥을 원형·폴리곤으로 그립니다. 42개국에서 사용됐습니다.
+
+### 백그라운드를 도입하고, 배터리 설정 요구는 원인부터 고쳤습니다
+
+- **상황**: 앱에는 세 상태가 있습니다. 화면을 보는 foreground, 홈으로 나가거나 화면을 끈 background, 앱을 종료한 terminated입니다. foreground에서는 API와 웹소켓이 잘 동작했지만, background로 넘어가면 OS가 앱 프로세스를 멈춰 웹소켓이 끊기고 API 요청도 나가지 않았습니다.
+- **문제**: 앱을 다시 열어야 이벤트가 보였습니다. 서버에는 background로 가기 직전의 위치만 남아, 경찰이 도둑의 옛 위치를 보고 혼선이 컸습니다.
+- **결정**: 필요성을 제가 먼저 제기해 도입했습니다. Android는 Foreground Service, iOS는 background location 모드로 프로세스와 위치 전송을 유지했습니다. 위치를 상시 수집하게 되어 개인정보처리방침과 이용약관도 함께 개정했습니다.
+- **후속**: Android에서 화면을 끄면 STOMP 하트비트가 끊겨 게임이 중단되는 문제가 남았고, 처음에는 사용자에게 배터리 "제한 없음" 설정을 요구해 우회했습니다. 3개월 뒤 이 요구가 가장 큰 진입 장벽이 됐습니다. iOS는 추가 설정 없이 동작하고 내비게이션·음악 앱도 이런 설정을 요구하지 않는다는 점에서 원인을 다시 봤습니다.
+- **원인**: Foreground Service만으로는 CPU가 잠들고 있었습니다.
+- **재결정**: 프로세스는 Foreground Service로, CPU는 `PARTIAL_WAKE_LOCK`으로 따로 깨워 뒀습니다. Wake Lock은 정상 종료, 태스크 스와이프, 4시간 타임아웃 중 하나로 반드시 해제됩니다.
 - **결과**: 배터리 차단 다이얼로그가 사라지고, 게임 진입 조건은 위치 권한 하나만 남았습니다.
 
 ### 초대는 링크 하나로 — 앱과 웹이 나눠 맡은 딥링크
@@ -96,11 +109,35 @@
 - **결정**: 요청은 REST로 보내고, 이벤트는 STOMP로 받도록 나눴습니다.
 - **결과**: 연결이 끊겼다 복구되면 REST 상태 스냅샷으로 놓친 상태를 보정합니다.
 
+### 심사 거부로 배운 위치 표시등
+
+- **상황**: 표시등 없이 백그라운드에서 위치를 수집했다가 Apple 심사에서 거부됐습니다.
+- **결정**: iOS 위치 인디케이터 표시를 정책 요건으로 받아들여 넣었습니다. 게임이 끝난 뒤에도 표시등이 남아 위치를 계속 수집하는 것처럼 보이는 문제는 위치 구독 해제 시점을 바로잡아 고쳤습니다.
+- **교훈**: "백그라운드 위치 수집은 사용자에게 보이는 신호와 함께 설계한다"를 팀 규칙으로 기록했습니다. 이후 스토어 심사 대응의 기준이 됐습니다.
+
+### 지도에 격자를 깔아 "어디"를 한마디로
+
+- **상황**: "어디로 가는 중"이라고 쓰면 추상적이라 알아듣기 어려웠고, 뛰면서 채팅을 칠 틈도 없었습니다. 위치를 알리는 핑은 2.5초면 사라져 거의 쓰이지 않았습니다.
+- **계기**: 천장을 보다가 지도에 좌표를 붙이면 되겠다는 생각이 떠올라, 바로 만들어 팀에 보여 줬습니다.
+- **결정**: 지도 위에 체스판처럼 격자를 깔고, 칸마다 "D5"처럼 이름을 붙였습니다. 가로는 알파벳, 세로는 숫자입니다. 격자를 켠 채 핑을 찍으면 "D5에서 도둑을 봤어요"가 팀 채팅에 자동으로 올라가서, 핑을 놓쳐도 기록이 남습니다.
+- **조정**: 칸 크기는 플레이 구역의 크기에 맞춰 자동으로 정해집니다. 격자는 켠 사람에게만 적용해, 원하지 않는 사람의 채팅이 늘지 않게 했습니다.
+- **구상**: 나중에 보이스 채팅이나 무전기가 생기면 "D5에 둘, E6으로 이동"처럼 말로 브리핑하기도 쉬워집니다.
+
+### 서비스를 도입한 이유
+
+- **소셜 로그인** — Firebase Authentication. 일반 회원가입보다 접근성이 높고 가입 이탈이 적다는 사례를 근거로 제안했습니다. Google·Apple 로그인 후 백엔드 JWT를 발급받습니다.
+- **딥링크** — 링크 하나로 바로 유입되면 가입·유입이 늘어난다는 사례를 근거로 제안했습니다. 앱 수신부는 제가, 웹 랜딩은 웹 팀원이 맡았고, 새 경로를 열 때 앱과 웹을 한 작업 단위로 보는 협업 규칙을 만들었습니다. 자세한 내용은 위 딥링크 항목입니다.
+- **FCM** — 당장 필요한 기능은 아니었지만 APNs 설정 등 준비할 것이 많아 초기에 한 번에 세팅했습니다. 이후 게임 시작·인게임 채팅·커뮤니티 알림에 쓰였고, 채팅 푸시는 30초에 1건으로 묶어 알림 과다를 막았습니다.
+- **Remote Config** — 이벤트 배너·점검·광고 on/off를 앱 재배포 없이 바꾸려고 도입했습니다. 설정이 없거나 실패하면 꺼지게 했습니다.
+- **Analytics** — 로그인부터 이탈까지 어디서 사용자가 빠지는지 데이터가 없어 도입했습니다. 계측 실패가 앱 흐름을 막지 않게 했습니다.
+- **AdMob** — 수익화 수단이 없어 게임 종료 전면광고와 커뮤니티 네이티브 광고를 넣었습니다. 광고가 실패해도 게임은 진행되고(fail-open), Remote Config로 원격에서 끌 수 있습니다.
+- **Crashlytics** — 앱이 갑자기 꺼졌을 때 원인을 모아 보여 주는 도구입니다. 화면을 그리다 난 오류와 잡히지 않은 비동기 오류를 릴리즈 빌드에서만 수집하고, 디버그 빌드에서는 끕니다. Crashlytics 설정이 실패해도 앱은 계속 뜹니다.
+
 ## 결과
 
 - iOS App Store·Google Play에 출시했고, 한국어·영어·일본어를 지원합니다.
 - Firebase Analytics 기준 2026년 1월 1일부터 10월 12일까지 새 사용자 840명이 들어왔고, 한국·미국·일본 등 42개 국가에서 앱을 사용했습니다.
-- 탈퇴를 제외하고 남아 있는 사용자 수는 딥링크·QR 전환을 마친 뒤 156명(2026.06.18)에서 620명(2026.10.12)으로 약 4배가 됐습니다.
+- 탈퇴를 제외하고 남아 있는 사용자 수는 딥링크·QR 전환을 마친 뒤 156명(2026.06.18)에서 660명(2026.10.19)으로 약 4배가 됐습니다.
 - 잠금 화면 게임 현황(iOS Live Activity·Android 게임 진행 알림)을 v3.1.20으로 배포했습니다.
 - 수상: 세종 SW 창업 아이디어 리그 대상, 입주공모전 우수 창업 아이템상, 아롬 데모데이 특별상, SSUP 선정
 - 오프라인 행사 운영: 서울게임타운, 서울 대학생 연합 페스티벌, 광진구 청춘대로
@@ -109,5 +146,6 @@
 
 - **사용자에게 설정 변경을 요구하기 전에, 같은 종류의 앱은 어떻게 동작하는지 먼저 확인해야 합니다.** 내비게이션·음악 앱은 배터리 설정을 요구하지 않았고, 실제 원인은 CPU가 잠드는 것을 놓친 제 구현이었습니다.
 - **보안 대책은 막을 위협의 범위부터 정해야 합니다.** 막을 대상을 찍어 둔 QR 사진의 재사용으로 정하니, 서버 서명까지는 필요 없다고 판단할 수 있었습니다.
+- **백그라운드 위치 수집은 사용자에게 보이는 신호와 함께 설계해야 합니다.** 표시등 없이 올렸다가 심사에서 거부된 뒤, 이를 팀 규칙으로 남겼습니다.
 
-{/* 출처: 팀 결성 계기(경도를 좋아해 모인 사람들)는 개발자 설명, 앱 2인 병렬 개발과 Clean Architecture(의존성 역전) 제안, 웹 개발자 팀원의 앱 지원 합류와 웹사이트 재배치 이유(홍보·SEO·AEO·도메인)는 개발자 설명, cops-and-robbers-brain/README.md, cops_and_robbers-FE/README.md(REST·STOMP 구조), cops_and_robbers-FE/CHANGELOG.md(v3.1.20~3.1.24), cops_and_robbers-FE git log --author=EM-H20(#1·#25 TestFlight 자동화, 0d8669dd·fc125663 Android 배포 설정, #97 Fastlane Bundler 통일, #616 PR CI flutter test, #212·#278·#308·#336·#523 튜토리얼, #305·#466 백그라운드, #618·#621 잠금 화면), knowledge/decisions/DEC-0007-background-keepalive-without-user-battery-setting.md, knowledge/decisions/DEC-0090-ios-live-activity-direct-activitykit-no-app-group.md, 딥링크: cops_and_robbers-FE/docs/Deep_link.md·DEEPLINK.md·specs/2026-04-05-deep-link-room-invite-design.md, knowledge/clusters/cluster-deeplink.md, ISS-0002·0003·0004·0005(웹 핸드오프·인앱 브라우저 브릿지·QR 전환), git log #216·#381·#406·#417, QR 체포: knowledge/issues/ISS-0049-qr-code-based-arrest.md(#190), ISS-0075-arrest-qr-ttl-expiry-report.md(#276, TTL 30초, 위협 범위), LSN-0056(딥링크 웹 핸드오프 재발), #274 카드 탭 체포 디버그 전용, 도입 동기(닉네임 찾기·오탐·원격 체포·아너 시스템)는 개발자 설명, 새 사용자 840명·42개 국가는 Firebase Analytics 인구통계(국가) 화면 스크린샷(2026-01-01~2026-10-12, 활성 사용자 846·새 사용자 840·한국 387·미국 114·일본 49·(not set) 179), 사용자 수는 개발자 제공 수치로 해당 시점에 남아 있는 인원(탈퇴 제외, 2026-06-18 156 → 2026-10-12 620), knowledge/issues/ISS-0169-tutorial-removal-and-onboarding-fe.md, knowledge/lessons/LSN-0006-permission-gate-is-a-bill-for-an-unfixed-cause.md, knowledge/meetings/2026-08-26-press-outreach-booth-budget-magazine-copyright.md(앱 연결·스토어 심사 담당), dongsim-web/content/credits/credits.json(팀 구성), dongsim-web/lib/i18n/messages.ts(최대 150명), knowledge/docs/DOC-0079-sejong-2026-startup-competition-business-plan-submitted.md, 의뢰 브리프의 프로필 수상 목록(입주공모전·아롬·SSUP). 이전 판의 "법적 문서 웹 정본" 결정(DEC-0036)은 앱 쪽 구현(FE #481)과 웹 구현 모두 다른 팀원(INSANE-P) 커밋이라 본인 결정 목록에서 제외. 워크플로우 파일은 SUH-DEVOPS-TEMPLATE 기반 */}
+{/* 출처: 팀 결성 계기(경도를 좋아해 모인 사람들)는 개발자 설명, 앱 2인 병렬 개발과 Clean Architecture(의존성 역전) 제안, 웹 개발자 팀원의 앱 지원 합류와 웹사이트 재배치 이유(홍보·SEO·AEO·도메인)는 개발자 설명, cops-and-robbers-brain/README.md, cops_and_robbers-FE/README.md(REST·STOMP 구조), cops_and_robbers-FE/CHANGELOG.md(v3.1.20~3.1.24), cops_and_robbers-FE git log --author=EM-H20(#1·#25 TestFlight 자동화, 0d8669dd·fc125663 Android 배포 설정, #97 Fastlane Bundler 통일, #616 PR CI flutter test, #212·#278·#308·#336·#523 튜토리얼, #305·#466 백그라운드, #618·#621 잠금 화면), knowledge/decisions/DEC-0007-background-keepalive-without-user-battery-setting.md, knowledge/decisions/DEC-0090-ios-live-activity-direct-activitykit-no-app-group.md, 딥링크: cops_and_robbers-FE/docs/Deep_link.md·DEEPLINK.md·specs/2026-04-05-deep-link-room-invite-design.md, knowledge/clusters/cluster-deeplink.md, ISS-0002·0003·0004·0005(웹 핸드오프·인앱 브라우저 브릿지·QR 전환), git log #216·#381·#406·#417, QR 체포: knowledge/issues/ISS-0049-qr-code-based-arrest.md(#190), ISS-0075-arrest-qr-ttl-expiry-report.md(#276, TTL 30초, 위협 범위), LSN-0056(딥링크 웹 핸드오프 재발), #274 카드 탭 체포 디버그 전용, 도입 동기(닉네임 찾기·오탐·원격 체포·아너 시스템)는 개발자 설명, 새 사용자 840명·42개 국가는 Firebase Analytics 인구통계(국가) 화면 스크린샷(2026-01-01~2026-10-12, 활성 사용자 846·새 사용자 840·한국 387·미국 114·일본 49·(not set) 179), 사용자 수는 개발자 제공 수치로 해당 시점에 남아 있는 인원(탈퇴 제외, 2026-06-18 156 → 2026-10-19 660(2026-10-12 기준 620에서 갱신)), knowledge/issues/ISS-0169-tutorial-removal-and-onboarding-fe.md, knowledge/lessons/LSN-0006-permission-gate-is-a-bill-for-an-unfixed-cause.md, knowledge/meetings/2026-08-26-press-outreach-booth-budget-magazine-copyright.md(앱 연결·스토어 심사 담당), dongsim-web/content/credits/credits.json(팀 구성), dongsim-web/lib/i18n/messages.ts(최대 150명), knowledge/docs/DOC-0079-sejong-2026-startup-competition-business-plan-submitted.md, 의뢰 브리프의 프로필 수상 목록(입주공모전·아롬·SSUP). 이전 판의 "법적 문서 웹 정본" 결정(DEC-0036)은 앱 쪽 구현(FE #481)과 웹 구현 모두 다른 팀원(INSANE-P) 커밋이라 본인 결정 목록에서 제외. 워크플로우 파일은 SUH-DEVOPS-TEMPLATE 기반. 2026-10-19 개발자 직접 제공(코드·knowledge 대조 전): Google Maps 선정 사유, 백그라운드 세 상태 설명과 개인정보처리방침·이용약관 개정, App Store 심사 거부·위치 인디케이터, 좌표 격자(C3·최대 12칸·핑 2.5초), 서비스 도입 사유(소셜 로그인·FCM 30초 묶음·Remote Config·Analytics·AdMob fail-open), 어드민 콘솔·약관/크레딧 웹 정본 역할 분리, Claude Code 구현 분담 */}
