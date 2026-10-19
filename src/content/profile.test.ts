@@ -54,7 +54,7 @@ test("hero info lines are derived from profile data", () => {
     { label: "Motto", value: "고민은 짧게, 행동은 빠르게" },
     { label: "Email", value: "elipair0106@gmail.com" },
     { label: "Education", value: "세종대학교 컴퓨터공학과 · AI Advanced Microdegree" },
-    { label: "Certification", value: "SQLD" },
+    { label: "Certification", value: "SQLD (2026.03 취득)" },
     { label: "Awards", value: "Google I/O Extended 1st Place 외 수상·선정 8건" },
     { label: "Shipped", value: "경찰과도둑 · Block Drag · RuleBook" },
   ]);

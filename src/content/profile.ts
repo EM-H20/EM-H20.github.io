@@ -79,7 +79,7 @@ export const hero = {
 export const education = {
   school: "세종대학교 컴퓨터공학과",
   extras: ["AI Advanced Microdegree"],
-  certifications: ["SQLD"],
+  certifications: ["SQLD (2026.03 취득)"],
 };
 
 export const featured = {
