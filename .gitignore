@@ -41,3 +41,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 개인정보(지원서용 일정 등)
+docs/개인정보/
+
+# 채용 지원 자료(공고별 폴더, 지원 이력 포함)
+docs/채용공고/
