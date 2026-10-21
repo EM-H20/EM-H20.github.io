@@ -291,7 +291,7 @@ export const projects: Project[] = [
 export const awards: Award[] = [
   { award: "1st Place", contest: "Google I/O Extended: Hack the Beat · GDG Campus Korea", project: "Party Passport", year: 2026, highlight: true },
   { award: "대상", contest: "세종대학교 SW중심대학 · 세종 창업 아이디어 리그", project: "경찰과도둑", year: 2026, highlight: true },
-  { award: "우수상", contest: "세종대학교 창업아이템 경진대회", project: "경찰과도둑", year: 2026, highlight: false },
+  { award: "우수상", contest: "세종대학교 창업아이템 경진대회 (22팀 중 6팀 수상)", project: "경찰과도둑", year: 2026, highlight: false },
   { award: "우수 창업 아이템상", contest: "세종대학교 하반기 입주공모전", project: "경찰과도둑", year: 2026, highlight: false },
   { award: "특별상", contest: "세종대학교 중앙학술동아리 아롬 데모데이", project: "경찰과도둑", year: 2026, highlight: false },
   { award: "선정", contest: "세종대학교 창업 동아리 SSUP", project: "경찰과도둑", year: 2026, highlight: false },
