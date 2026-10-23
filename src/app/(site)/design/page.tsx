@@ -95,9 +95,9 @@ export default function DesignPage() {
         <Block name="ICONS">
           <div className="flex flex-wrap items-center gap-3">
             {[featured, ...projects].map((p) => (
-              <IconCircle key={p.slug} icon={p.icon} emoji={p.emoji} />
+              <IconCircle key={p.slug} icon={p.icon} symbol={p.symbol} />
             ))}
-            <IconCircle emoji="🧪" size={40} />
+            <IconCircle symbol="puzzle-piece" size={40} />
           </div>
         </Block>
 

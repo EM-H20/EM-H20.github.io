@@ -52,6 +52,24 @@ const components: MDXComponents = {
       {caption && <figcaption className="mt-2 text-meta text-fg-subtle">{caption}</figcaption>}
     </figure>
   ),
+  // A YouTube video played in place. Paper can't play it, so the PDF shows the link instead.
+  YouTube: ({ id, title }: { id: string; title: string }) => (
+    <figure className="my-6">
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${id}`}
+        title={title}
+        loading="lazy"
+        allow="encrypted-media; picture-in-picture; fullscreen"
+        referrerPolicy="strict-origin-when-cross-origin"
+        className="aspect-video w-full rounded-xl print:hidden"
+      />
+      <figcaption className="mt-2 text-meta text-fg-subtle">
+        <a href={`https://www.youtube.com/watch?v=${id}`} className="link-draw">
+          {title}
+        </a>
+      </figcaption>
+    </figure>
+  ),
 };
 
 export function useMDXComponents(): MDXComponents {

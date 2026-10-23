@@ -6,7 +6,7 @@ import type { ProjectPage } from "@/content/profile";
 import { loadProjectBody } from "@/lib/projects";
 
 const GALLERY_ITEM = {
-  phone: "w-36 sm:w-40 print:w-[calc((100%-36px)/4)] print:[&:nth-child(n+5)]:hidden",
+  phone: "w-44 sm:w-52 print:w-[calc((100%-36px)/4)] print:[&:nth-child(n+5)]:hidden",
   wide: "w-72 sm:w-[26rem] print:w-[calc((100%-12px)/2)] print:[&:nth-child(n+3)]:hidden",
 };
 
@@ -17,7 +17,7 @@ export async function ProjectDetail({ page }: { page: ProjectPage }) {
   return (
     <article id={`project-${page.slug}`}>
       <header className="flex items-center gap-4">
-        <IconCircle icon={page.icon} emoji={page.emoji} />
+        <IconCircle icon={page.icon} symbol={page.symbol} />
         <div>
           <h1 className="font-display text-title-lg font-bold text-fg">{page.name}</h1>
           <p className="text-meta text-fg-subtle">
