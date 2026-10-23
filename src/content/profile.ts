@@ -50,7 +50,16 @@ const gallery = (slug: string, name: string, count: number, aspect: ImageAspect 
     brief: `${name} 스크린샷 ${i + 1}`,
   }));
 
-const appIcon = (slug: string, name: string): ImageSpec => ({
+// Screen recordings (<n>.mp4 with a <n>.jpg poster), shown before the screenshots.
+const clips = (slug: string, name: string, count: number, aspect: ImageAspect = "phone"): ImageSpec[] =>
+  Array.from({ length: count }, (_, i) => ({
+    src: `/images/projects/${slug}/clips/${i + 1}.mp4`,
+    alt: `${name} 실제 구동 화면 영상 ${i + 1}`,
+    aspect,
+    brief: `${name} 화면 녹화 ${i + 1}`,
+  }));
+
+const appIcon =(slug: string, name: string): ImageSpec => ({
   src: `/images/projects/${slug}/icon.png`,
   alt: `${name} 앱 아이콘`,
   aspect: "square",
@@ -120,7 +129,7 @@ export const featured = {
     brief: "서울대학페스티벌 등 행사 부스 현장 사진",
   } satisfies ImageSpec,
   icon: appIcon("cops-and-robbers", "경찰과도둑"),
-  gallery: gallery("cops-and-robbers", "경찰과도둑", 8),
+  gallery: [...clips("cops-and-robbers", "경찰과도둑", 1), ...gallery("cops-and-robbers", "경찰과도둑", 8)],
 };
 
 export const projects: Project[] = [
@@ -143,7 +152,12 @@ export const projects: Project[] = [
     images: [
       phone("party-passport", 1, "배지 모음 화면", "배지 모음 또는 상호 매칭 결과 화면 (Hack-the-Beat 저장소 docs/images/04-badges.png, 05-result.png 재사용 가능)"),
     ],
-    gallery: gallery("party-passport", "Party Passport", 5),
+    // Recorded against a local stand-in for the event server: real UI, made-up guests and badges.
+    gallery: [
+      { src: "/images/projects/party-passport/clips/1.mp4", alt: "Party Passport 파티 만들기부터 배지 모으기까지 (예시 데이터)", aspect: "phone", brief: "호스트 흐름 녹화" },
+      { src: "/images/projects/party-passport/clips/2.mp4", alt: "Party Passport 파티 종료 후 상호 매칭 (예시 데이터)", aspect: "phone", brief: "매칭 흐름 녹화" },
+      ...gallery("party-passport", "Party Passport", 5),
+    ],
   },
   {
     slug: "tripgether",
@@ -188,7 +202,7 @@ export const projects: Project[] = [
     ],
     images: [phone("block-drag", 1, "퍼즐 플레이 화면", "퍼즐 플레이 화면")],
     icon: appIcon("block-drag", "Block Drag"),
-    gallery: gallery("block-drag", "Block Drag", 8),
+    gallery: [...clips("block-drag", "Block Drag", 4), ...gallery("block-drag", "Block Drag", 8)],
   },
   {
     slug: "rulebook",
@@ -240,7 +254,7 @@ export const projects: Project[] = [
     links: [{ label: "GitHub", href: "https://github.com/SpaceStudyShip" }],
     images: [],
     icon: appIcon("space-study-ship", "우주공부선"),
-    gallery: gallery("space-study-ship", "우주공부선", 6),
+    gallery: [...clips("space-study-ship", "우주공부선", 3), ...gallery("space-study-ship", "우주공부선", 6)],
   },
   {
     slug: "nyangseng",
@@ -257,6 +271,7 @@ export const projects: Project[] = [
     ],
     images: [],
     icon: appIcon("nyangseng", "냥생뭐였니?"),
+    gallery: clips("nyangseng", "냥생뭐였니?", 1),
   },
   {
     slug: "planning",
@@ -285,6 +300,12 @@ export const projects: Project[] = [
     ],
     images: [],
     icon: appIcon("eunsaem", "은샘침례교회"),
+    // Desktop scroll, then a phone walk-through; sermons and 성경통독 need login, so the stills are public pages.
+    gallery: [
+      ...clips("eunsaem", "은샘침례교회", 1, "wide"),
+      { src: "/images/projects/eunsaem/clips/2.mp4", alt: "은샘침례교회 모바일 화면 영상", aspect: "phone", brief: "모바일 화면 녹화" },
+      ...gallery("eunsaem", "은샘침례교회", 4, "wide"),
+    ],
   },
 ];
 

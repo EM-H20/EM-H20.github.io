@@ -42,7 +42,20 @@ export function ImageSlot({
 }) {
   return (
     <div className={`print-block relative overflow-hidden rounded-xl ${ASPECT[image.aspect]} ${className}`}>
-      {imageExists(image.src) ? (
+      {imageExists(image.src) && image.src.endsWith(".mp4") ? (
+        // Screen recording: plays like a GIF; the same-name .jpg is the poster (and what paper shows).
+        <video
+          src={image.src}
+          poster={image.src.replace(/\.mp4$/, ".jpg")}
+          aria-label={image.alt}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload={eager ? "auto" : "metadata"}
+          className="absolute inset-0 size-full object-cover object-top"
+        />
+      ) : imageExists(image.src) ? (
         <>
           <Skeleton className="absolute inset-0" />
           <Image
