@@ -173,6 +173,7 @@ export const projects: Project[] = [
     links: [{ label: "GitHub", href: "https://github.com/EM-H20/Tripgether-FE" }],
     images: [phone("tripgether", 1, "장소 정리 화면", "SNS 게시물 공유 후 장소가 정리된 화면")],
     icon: appIcon("tripgether", "트립게더"),
+    gallery: clips("tripgether", "트립게더", 1),
   },
   {
     slug: "stocker",
