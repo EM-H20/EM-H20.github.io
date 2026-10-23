@@ -185,6 +185,7 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/EM-H20/stocker" },
     ],
     images: [phone("stocker", 1, "학습 메인 화면", "학습/모의투자 메인 화면")],
+    gallery: clips("stocker", "Stocker", 1),
   },
   {
     slug: "block-drag",

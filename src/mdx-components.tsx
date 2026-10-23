@@ -1,4 +1,5 @@
 import type { MDXComponents } from "mdx/types";
+import Image from "next/image";
 import { Children, isValidElement, type ReactNode } from "react";
 import { WorkNote } from "@/components/ui/WorkNote";
 
@@ -43,6 +44,14 @@ const components: MDXComponents = {
   pre: (props) => <pre className="my-6 overflow-x-auto rounded-btn bg-surface p-4 font-mono text-[13px]" {...props} />,
   code: (props) => <code className="font-mono text-[0.9em] text-fg" {...props} />,
   WorkNote,
+  // A photo inside the story (not a screenshot): <Photo src="/images/…" alt="…" width={800} height={1048} caption="…" />
+  Photo: ({ caption, alt, ...image }: { src: string; alt: string; width: number; height: number; caption?: string }) => (
+    // Portrait photos stay phone-sized; landscape ones take the column.
+    <figure className={`print-block my-6 ${image.width > image.height ? "" : "max-w-sm"}`}>
+      <Image {...image} alt={alt} sizes="(min-width: 768px) 720px, 100vw" className="w-full rounded-xl" />
+      {caption && <figcaption className="mt-2 text-meta text-fg-subtle">{caption}</figcaption>}
+    </figure>
+  ),
 };
 
 export function useMDXComponents(): MDXComponents {
