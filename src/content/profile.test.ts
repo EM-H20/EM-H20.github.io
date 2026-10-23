@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import { allImages, ax, featured, hero, heroInfo, heroStats, howIWork, projectPages, projects, shippedNames } from "./profile.ts";
+import { phosphor } from "../components/ui/phosphor.ts";
 
 test("hero stats are derived from awards and shipped apps", () => {
   assert.deepEqual(heroStats(), [
@@ -60,8 +61,8 @@ test("hero info lines are derived from profile data", () => {
   ]);
 });
 
-test("every project has an emoji fallback for its icon", () => {
-  for (const item of [featured, ...projects]) assert.ok(item.emoji.length > 0, item.name);
+test("every detail page has a Phosphor fallback for its icon", () => {
+  for (const page of projectPages()) assert.ok(page.symbol in phosphor, `${page.name}: ${page.symbol}`);
 });
 
 test("app icons point at the committed png files", () => {

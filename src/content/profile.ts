@@ -1,5 +1,7 @@
 // Portfolio content for the home page and /print. Mirrors the GitHub profile README (2026-10-11)
-// and the Hack-the-Beat repository. No imports: `node --test` loads this file directly.
+// and the Hack-the-Beat repository. No runtime imports: `node --test` loads this file directly
+// (a type-only import is erased before it runs).
+import type { PhosphorName } from "@/components/ui/phosphor";
 
 export type ImageAspect = "phone" | "wide" | "square" | "og";
 export type ImageSpec = { src: string; alt: string; aspect: ImageAspect; brief: string };
@@ -9,8 +11,8 @@ export type Project = {
   slug: string;
   tier: 2 | 3;
   name: string;
-  /** Shown in the round icon when no app icon file exists. */
-  emoji: string;
+  /** Phosphor icon shown in the round icon when no app icon file exists. */
+  symbol: PhosphorName;
   summary: string;
   stack: string[];
   period: string;
@@ -50,7 +52,16 @@ const gallery = (slug: string, name: string, count: number, aspect: ImageAspect 
     brief: `${name} 스크린샷 ${i + 1}`,
   }));
 
-const appIcon = (slug: string, name: string): ImageSpec => ({
+// Screen recordings (<n>.mp4 with a <n>.jpg poster), shown before the screenshots.
+const clips = (slug: string, name: string, count: number, aspect: ImageAspect = "phone"): ImageSpec[] =>
+  Array.from({ length: count }, (_, i) => ({
+    src: `/images/projects/${slug}/clips/${i + 1}.mp4`,
+    alt: `${name} 실제 구동 화면 영상 ${i + 1}`,
+    aspect,
+    brief: `${name} 화면 녹화 ${i + 1}`,
+  }));
+
+const appIcon =(slug: string, name: string): ImageSpec => ({
   src: `/images/projects/${slug}/icon.png`,
   alt: `${name} 앱 아이콘`,
   aspect: "square",
@@ -85,7 +96,7 @@ export const education = {
 export const featured = {
   slug: "cops-and-robbers",
   name: "경찰과도둑",
-  emoji: "🚔",
+  symbol: "police-car" as PhosphorName,
   summary: "친구들과 밖에서 노는 GPS 술래잡기, 경도",
   description:
     "친구·동료·가족이 스마트폰으로 함께 즐기는 경찰과 도둑 놀이입니다. 위치 공유부터 QR 체포, 팀 채팅, 게임 판정까지 하나의 앱으로 연결합니다.",
@@ -120,7 +131,7 @@ export const featured = {
     brief: "서울대학페스티벌 등 행사 부스 현장 사진",
   } satisfies ImageSpec,
   icon: appIcon("cops-and-robbers", "경찰과도둑"),
-  gallery: gallery("cops-and-robbers", "경찰과도둑", 8),
+  gallery: [...clips("cops-and-robbers", "경찰과도둑", 1), ...gallery("cops-and-robbers", "경찰과도둑", 8)],
 };
 
 export const projects: Project[] = [
@@ -128,7 +139,7 @@ export const projects: Project[] = [
     slug: "party-passport",
     tier: 2,
     name: "Party Passport",
-    emoji: "🛂",
+    symbol: "confetti",
     summary: "파티에서 QR로 만난 사람을 스탬프로 모으고, 서로 고른 사람만 매칭되는 웹앱",
     stack: ["React", "TypeScript", "Vite"],
     period: "2026.08",
@@ -143,13 +154,18 @@ export const projects: Project[] = [
     images: [
       phone("party-passport", 1, "배지 모음 화면", "배지 모음 또는 상호 매칭 결과 화면 (Hack-the-Beat 저장소 docs/images/04-badges.png, 05-result.png 재사용 가능)"),
     ],
-    gallery: gallery("party-passport", "Party Passport", 5),
+    // Recorded against a local stand-in for the event server: real UI, made-up guests and badges.
+    gallery: [
+      { src: "/images/projects/party-passport/clips/1.mp4", alt: "Party Passport 파티 만들기부터 배지 모으기까지 (예시 데이터)", aspect: "phone", brief: "호스트 흐름 녹화" },
+      { src: "/images/projects/party-passport/clips/2.mp4", alt: "Party Passport 파티 종료 후 상호 매칭 (예시 데이터)", aspect: "phone", brief: "매칭 흐름 녹화" },
+      ...gallery("party-passport", "Party Passport", 5),
+    ],
   },
   {
     slug: "tripgether",
     tier: 2,
     name: "트립게더",
-    emoji: "✈️",
+    symbol: "airplane-tilt",
     summary: "SNS 게시물을 공유하면 장소 정보를 정리하는 AI 여행 가이드",
     stack: ["Flutter"],
     period: "2025.09 – 2025.11",
@@ -162,7 +178,7 @@ export const projects: Project[] = [
     slug: "stocker",
     tier: 2,
     name: "Stocker",
-    emoji: "📈",
+    symbol: "chart-line-up",
     summary: "주식투자를 배우는 핀테크 교육 앱 · 팀 돔황촤 코스피",
     stack: ["Flutter"],
     period: "2025.05 – 2025.11",
@@ -176,7 +192,7 @@ export const projects: Project[] = [
     slug: "block-drag",
     tier: 2,
     name: "Block Drag",
-    emoji: "🧩",
+    symbol: "puzzle-piece",
     summary: "공간 감각을 활용하는 퍼즐 게임",
     stack: ["Flutter", "Supabase"],
     period: "2025.05 – 2025.07",
@@ -188,13 +204,13 @@ export const projects: Project[] = [
     ],
     images: [phone("block-drag", 1, "퍼즐 플레이 화면", "퍼즐 플레이 화면")],
     icon: appIcon("block-drag", "Block Drag"),
-    gallery: gallery("block-drag", "Block Drag", 8),
+    gallery: [...clips("block-drag", "Block Drag", 4), ...gallery("block-drag", "Block Drag", 8)],
   },
   {
     slug: "rulebook",
     tier: 2,
     name: "RuleBook",
-    emoji: "📖",
+    symbol: "book-open",
     summary: "출석·벌칙·벌금을 관리하는 앱",
     stack: ["Flutter"],
     period: "2025.03 – 2025.06",
@@ -212,7 +228,7 @@ export const projects: Project[] = [
     slug: "wanik-sejong",
     tier: 2,
     name: "완익세종",
-    emoji: "🎓",
+    symbol: "graduation-cap",
     summary: "AI 기반 진로-교과목 로드맵 추천 서비스 · 팀 완익세종",
     stack: ["React", "Next.js"],
     period: "2025.12.23 – 2025.12.24",
@@ -232,7 +248,7 @@ export const projects: Project[] = [
     slug: "space-study-ship",
     tier: 3,
     name: "우주공부선",
-    emoji: "🚀",
+    symbol: "rocket-launch",
     summary: "스터디 목표 설정·학습 기록·공유 플랫폼",
     stack: ["Flutter"],
     period: "2025.12 – 2026",
@@ -240,13 +256,13 @@ export const projects: Project[] = [
     links: [{ label: "GitHub", href: "https://github.com/SpaceStudyShip" }],
     images: [],
     icon: appIcon("space-study-ship", "우주공부선"),
-    gallery: gallery("space-study-ship", "우주공부선", 6),
+    gallery: [...clips("space-study-ship", "우주공부선", 3), ...gallery("space-study-ship", "우주공부선", 6)],
   },
   {
     slug: "nyangseng",
     tier: 3,
     name: "냥생뭐였니?",
-    emoji: "🐱",
+    symbol: "cat",
     summary: "고양이를 테마로 한 웹 콘텐츠",
     stack: ["Next.js"],
     period: "2024.11 – 2024.12",
@@ -257,12 +273,13 @@ export const projects: Project[] = [
     ],
     images: [],
     icon: appIcon("nyangseng", "냥생뭐였니?"),
+    gallery: clips("nyangseng", "냥생뭐였니?", 1),
   },
   {
     slug: "planning",
     tier: 3,
     name: "플래닝",
-    emoji: "🤖",
+    symbol: "calendar-check",
     summary: "로스트아크 정보를 제공하는 Discord 봇",
     stack: ["Python", "Oracle Cloud"],
     period: "2024.11 – 2025.01",
@@ -274,7 +291,7 @@ export const projects: Project[] = [
     slug: "eunsaem",
     tier: 3,
     name: "은샘침례교회",
-    emoji: "⛪",
+    symbol: "church",
     summary: "교회 홈페이지와 API 서버 — 실제 운영 중",
     stack: ["Next.js", "TypeScript", "Spring Boot", "PostgreSQL", "Docker", "Oracle Cloud"],
     period: "2026.06 – 2026.09",
@@ -285,6 +302,12 @@ export const projects: Project[] = [
     ],
     images: [],
     icon: appIcon("eunsaem", "은샘침례교회"),
+    // Desktop scroll, then a phone walk-through; sermons and 성경통독 need login, so the stills are public pages.
+    gallery: [
+      ...clips("eunsaem", "은샘침례교회", 1, "wide"),
+      { src: "/images/projects/eunsaem/clips/2.mp4", alt: "은샘침례교회 모바일 화면 영상", aspect: "phone", brief: "모바일 화면 녹화" },
+      ...gallery("eunsaem", "은샘침례교회", 4, "wide"),
+    ],
   },
 ];
 
@@ -328,7 +351,7 @@ export const ax = {
   tool: {
     slug: "second-brain-template",
     name: "Second Brain Template",
-    emoji: "🧠",
+    symbol: "brain" as PhosphorName,
     period: "2026.07 – 2026",
     summary:
       "회의·문서·이슈·결정을 지식으로 쌓고, 코드와의 충돌 감지·리포트·반복 이슈 탐지까지 한 흐름으로 묶는 프로젝트별 세컨드 브레인 템플릿",
@@ -350,27 +373,27 @@ export const ax = {
   applied: [
     {
       name: "경찰과도둑",
-      emoji: "🚔",
+      symbol: "police-car",
       icon: appIcon("cops-and-robbers", "경찰과도둑"),
       summary: "앱·서버·웹 3개 저장소의 회의·이슈·설계를 한 볼트로 관리",
       href: "https://github.com/cops-and-robbers",
     },
     {
       name: "캡스톤 Big-Brother",
-      emoji: "📹",
+      symbol: "security-camera",
       summary: "CCTV 위험 상황 관제와 VLM 자연어 설명 — FE·BE·VLM 지식을 한곳에",
       href: "https://github.com/SJU-Big-Brother",
       slug: "big-brother",
     },
     {
       name: "에브리페스타",
-      emoji: "🎪",
+      symbol: "tent",
       icon: appIcon("festa", "에브리페스타"),
       summary: "대학 축제 정보 서비스 — 결정·이슈·교훈을 기록하고 축제 데이터 볼트를 따로 분리",
       href: "https://github.com/greedy-team/festa-frontend",
       slug: "festa",
     },
-  ] as { name: string; emoji: string; icon?: ImageSpec; summary: string; href?: string; slug?: string }[],
+  ] as { name: string; symbol: PhosphorName; icon?: ImageSpec; summary: string; href?: string; slug?: string }[],
 };
 
 export type WorkRow = { id: string; skill: string; question: string; answer: string; fact: string; slug: string };
@@ -448,7 +471,7 @@ export const howIWork = {
 export type ProjectPage = {
   slug: string;
   name: string;
-  emoji: string;
+  symbol: PhosphorName;
   icon?: ImageSpec;
   period: string;
   /** Platform line for apps; otherwise the stack is shown. */
@@ -469,7 +492,7 @@ export function projectPages(): ProjectPage[] {
     {
       slug: featured.slug,
       name: featured.name,
-      emoji: featured.emoji,
+      symbol: featured.symbol,
       icon: featured.icon,
       period: featured.period,
       meta: featured.platform,
@@ -484,7 +507,7 @@ export function projectPages(): ProjectPage[] {
     ...projects.map((p) => ({
       slug: p.slug,
       name: p.name,
-      emoji: p.emoji,
+      symbol: p.symbol,
       icon: p.icon,
       period: p.period,
       meta: p.stack.join(" · "),
@@ -500,7 +523,7 @@ export function projectPages(): ProjectPage[] {
     {
       slug: ax.tool.slug,
       name: ax.tool.name,
-      emoji: ax.tool.emoji,
+      symbol: ax.tool.symbol,
       period: ax.tool.period,
       meta: "AI 코딩 에이전트용 프로젝트 템플릿",
       summary: ax.tool.summary,
@@ -515,7 +538,7 @@ export function projectPages(): ProjectPage[] {
     {
       slug: "festa",
       name: "에브리페스타",
-      emoji: "🎪",
+      symbol: "tent",
       icon: appIcon("festa", "에브리페스타"),
       period: "2026.08 – 2026",
       meta: "Next.js · TanStack Query",
@@ -533,7 +556,7 @@ export function projectPages(): ProjectPage[] {
     {
       slug: "big-brother",
       name: "Big-Brother",
-      emoji: "📹",
+      symbol: "security-camera",
       period: "2026.09 – 2026",
       meta: "React · Spring Boot",
       summary: "여러 CCTV의 위험 상황을 찾고 VLM이 자연어로 설명하는 관제 시스템 — 4명 캡스톤 프로젝트",

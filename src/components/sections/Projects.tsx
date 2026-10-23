@@ -54,7 +54,7 @@ function FeaturedProject() {
   return (
     <article className="pb-6">
       <div className="flex items-center gap-4">
-        <IconCircle icon={featured.icon} emoji={featured.emoji} />
+        <IconCircle icon={featured.icon} symbol={featured.symbol} />
         <div>
           <h4 className="font-display text-title-lg font-bold text-fg">
             <Link href={`/projects/${featured.slug}`} className={DETAIL_LINK}>
@@ -95,7 +95,7 @@ function FeaturedProject() {
 function MajorRow({ project }: { project: Project }) {
   return (
     <li className="group relative flex gap-4 py-2.5">
-      <IconCircle icon={project.icon} emoji={project.emoji} />
+      <IconCircle icon={project.icon} symbol={project.symbol} />
       <div className="min-w-0 pt-1">
         <h4 className="text-title font-semibold text-fg">
           <Link href={`/projects/${project.slug}`} className={ROW_LINK}>
@@ -122,7 +122,7 @@ function MajorRow({ project }: { project: Project }) {
 function MinorRow({ project }: { project: Project }) {
   return (
     <li className="group relative flex items-center gap-3 py-1.5">
-      <IconCircle icon={project.icon} emoji={project.emoji} size={40} />
+      <IconCircle icon={project.icon} symbol={project.symbol} size={40} />
       <p className="min-w-0 text-base font-medium text-fg">
         <Link href={`/projects/${project.slug}`} className={ROW_LINK}>
           {project.name}

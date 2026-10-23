@@ -10,7 +10,7 @@ export function AxNative() {
       <p className="text-body text-fg-muted">{ax.intro}</p>
 
       <article className="mt-6 flex gap-4">
-        <IconCircle emoji={tool.emoji} />
+        <IconCircle symbol={tool.symbol} />
         <div className="min-w-0 pt-1">
           <h3 className="text-title font-medium text-fg">
             <Link href={`/projects/${tool.slug}`} className="link-draw">
@@ -45,7 +45,7 @@ export function AxNative() {
       <ul className="mt-3">
         {ax.applied.map((project) => (
           <li key={project.name} className="flex items-center gap-3 py-1.5">
-            <IconCircle icon={project.icon} emoji={project.emoji} size={40} />
+            <IconCircle icon={project.icon} symbol={project.symbol} size={40} />
             <p className="min-w-0 text-base font-medium text-fg">
               {project.slug ? (
                 <Link href={`/projects/${project.slug}`} className="link-draw">
