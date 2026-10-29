@@ -162,6 +162,25 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "passql",
+    tier: 2,
+    name: "passQL",
+    symbol: "database",
+    summary: "AI가 함정 오답을 만들고, 보기 SQL을 샌드박스 DB에서 실행해 확인하는 SQLD 학습 앱",
+    stack: ["Flutter", "Riverpod", "React", "TypeScript"],
+    period: "2026.04 – 2026",
+    badges: ["App Store 출시 · 웹 서비스"],
+    links: [
+      { label: "App Store", href: "https://apps.apple.com/kr/app/id6762165005" },
+      { label: "Website", href: "https://passql.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Twin-Fang/passQL" },
+    ],
+    images: [],
+    icon: appIcon("passql", "passQL"),
+    // App Store screenshots from the passQL repo (app/docs/store/promo/ios-6.3), resized to 600px tall.
+    gallery: gallery("passql", "passQL", 7),
+  },
+  {
     slug: "tripgether",
     tier: 2,
     name: "트립게더",
@@ -379,6 +398,14 @@ export const ax = {
       icon: appIcon("cops-and-robbers", "경찰과도둑"),
       summary: "앱·서버·웹 3개 저장소의 회의·이슈·설계를 한 볼트로 관리",
       href: "https://github.com/cops-and-robbers",
+    },
+    {
+      name: "passQL",
+      symbol: "database",
+      icon: appIcon("passql", "passQL"),
+      summary: "웹·앱·서버·AI 모노레포의 이슈 428개와 결정 212개를 한 볼트로",
+      href: "https://github.com/Twin-Fang/passQL",
+      slug: "passql",
     },
     {
       name: "캡스톤 Big-Brother",

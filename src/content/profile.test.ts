@@ -72,6 +72,7 @@ test("app icons point at the committed png files", () => {
     "/images/projects/cops-and-robbers/icon.png",
     "/images/projects/eunsaem/icon.png",
     "/images/projects/nyangseng/icon.png",
+    "/images/projects/passql/icon.png",
     "/images/projects/rulebook/icon.png",
     "/images/projects/space-study-ship/icon.png",
     "/images/projects/tripgether/icon.png",
@@ -84,7 +85,7 @@ test("Second Brain Template lives in AX-Native, not in the project list", () => 
 });
 
 test("AX-Native lists the projects that run a second brain", () => {
-  assert.deepEqual(ax.applied.map((a) => a.name), ["경찰과도둑", "캡스톤 Big-Brother", "에브리페스타"]);
+  assert.deepEqual(ax.applied.map((a) => a.name), ["경찰과도둑", "passQL", "캡스톤 Big-Brother", "에브리페스타"]);
 });
 
 test("featured project links its official website first", () => {
@@ -143,6 +144,6 @@ test("every WorkNote on a project page has a HOW I WORK row for that page", () =
 
 test("AX-Native team projects link to their detail pages", () => {
   const linked = ax.applied.flatMap((a) => (a.slug ? [a.slug] : []));
-  assert.deepEqual(linked, ["big-brother", "festa"]);
+  assert.deepEqual(linked, ["passql", "big-brother", "festa"]);
   for (const slug of linked) assert.ok(pageSlugs().has(slug), slug);
 });
