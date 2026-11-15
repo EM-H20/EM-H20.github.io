@@ -52,6 +52,32 @@ const components: MDXComponents = {
       {caption && <figcaption className="mt-2 text-meta text-fg-subtle">{caption}</figcaption>}
     </figure>
   ),
+  // Before/after pair from a work report: <BeforeAfter title="…" src="/images/…/name" width={300} height={652} video />
+  // Reads <src>-before / <src>-after (.jpg, or .mp4 with a .jpg poster when `video`). Wide strips stack instead of sitting side by side.
+  BeforeAfter: ({ title, src, width, height, video }: { title: string; src: string; width: number; height: number; video?: boolean }) => {
+    const isWide = width > height;
+    return (
+      <figure className="print-block my-6">
+        <div className={isWide ? "grid gap-3" : "grid max-w-md grid-cols-2 gap-3"}>
+          {(["before", "after"] as const).map((side) => {
+            const label = side === "before" ? "수정 전" : "수정 후";
+            const file = `${src}-${side}`;
+            return (
+              <div key={side}>
+                {video ? (
+                  <video src={`${file}.mp4`} poster={`${file}.jpg`} width={width} height={height} autoPlay loop muted playsInline aria-label={`${title} ${label}`} className="h-auto w-full rounded-btn border border-hairline" />
+                ) : (
+                  <Image src={`${file}.jpg`} alt={`${title} ${label}`} width={width} height={height} sizes="(min-width: 768px) 224px, 50vw" className="h-auto w-full rounded-btn border border-hairline" />
+                )}
+                <p className="mt-1 text-meta text-fg-subtle">{label}</p>
+              </div>
+            );
+          })}
+        </div>
+        <figcaption className="mt-2 text-meta text-fg-subtle">{title}</figcaption>
+      </figure>
+    );
+  },
   // A YouTube video played in place. Paper can't play it, so the PDF shows the link instead.
   YouTube: ({ id, title }: { id: string; title: string }) => (
     <figure className="my-6">
