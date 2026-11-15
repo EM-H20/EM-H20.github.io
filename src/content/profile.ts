@@ -169,16 +169,23 @@ export const projects: Project[] = [
     summary: "AI가 함정 오답을 만들고, 보기 SQL을 샌드박스 DB에서 실행해 확인하는 SQLD 학습 앱",
     stack: ["Flutter", "Riverpod", "React", "TypeScript"],
     period: "2026.04 – 2026",
-    badges: ["App Store 출시 · 웹 서비스"],
+    badges: ["Google Play · App Store 출시 · 웹 서비스"],
     links: [
+      { label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.coldredrice.passql" },
       { label: "App Store", href: "https://apps.apple.com/kr/app/id6762165005" },
       { label: "Website", href: "https://passql.vercel.app/" },
       { label: "GitHub", href: "https://github.com/Twin-Fang/passQL" },
     ],
     images: [],
     icon: appIcon("passql", "passQL"),
-    // App Store screenshots from the passQL repo (app/docs/store/promo/ios-6.3), resized to 600px tall.
-    gallery: gallery("passql", "passQL", 7),
+    // Recordings and screenshots: real app on iPhone 17 Pro simulator, production server, 2026-11-15
+    // (idle stretches cut; screenshots resized to 600px tall, ads off for the capture build only).
+    // Gallery alternates light/dark pairs: odd = light, even = the same screen in dark mode.
+    gallery: [
+      { src: "/images/projects/passql/clips/1.mp4", alt: "passQL 로그인부터 오늘의 세트 문제 풀이, AI 해설까지", aspect: "phone", brief: "문제 풀이 흐름 녹화" },
+      { src: "/images/projects/passql/clips/2.mp4", alt: "passQL 당겨서 새로고침 웨이브 점과 하단 탭 전환", aspect: "phone", brief: "새로고침·탭 전환 녹화" },
+      ...gallery("passql", "passQL", 14),
+    ],
   },
   {
     slug: "tripgether",
