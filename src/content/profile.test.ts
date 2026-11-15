@@ -69,8 +69,8 @@ test("app icons point at the committed png files", () => {
   const icons = [featured, ...projects].flatMap((p) => (p.icon ? [p.icon.src] : []));
   assert.deepEqual(icons.sort(), [
     "/images/projects/block-drag/icon.png",
+    "/images/projects/church/icon.png",
     "/images/projects/cops-and-robbers/icon.png",
-    "/images/projects/eunsaem/icon.png",
     "/images/projects/nyangseng/icon.png",
     "/images/projects/passql/icon.png",
     "/images/projects/rulebook/icon.png",

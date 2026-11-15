@@ -309,25 +309,33 @@ export const projects: Project[] = [
     images: [],
   },
   {
-    slug: "eunsaem",
+    slug: "church",
     tier: 3,
-    name: "은샘침례교회",
+    name: "교회 홈페이지",
     symbol: "church",
-    summary: "교회 홈페이지와 API 서버 — 실제 운영 중",
+    summary: "여러 교회가 함께 쓰는 홈페이지와 API 서버 — 은샘교회·새누리교회",
     stack: ["Next.js", "TypeScript", "Spring Boot", "PostgreSQL", "Docker", "Oracle Cloud"],
-    period: "2026.06 – 2026.09",
+    period: "2026.06 – 2026.11",
     badges: [],
     links: [
-      { label: "Website", href: "https://www.eunsaem.com/" },
+      { label: "은샘교회", href: "https://www.eunsaem.com/" },
+      { label: "새누리교회", href: "https://www.snrbtc.com/" },
       { label: "GitHub", href: "https://github.com/church-template" },
     ],
     images: [],
-    icon: appIcon("eunsaem", "은샘침례교회"),
+    icon: appIcon("church", "교회 홈페이지"),
     // Desktop scroll, then a phone walk-through; sermons and 성경통독 need login, so the stills are public pages.
+    // 은샘교회 first, then three 새누리교회 pages (www.snrbtc.com, captured 2026-11-15).
     gallery: [
-      ...clips("eunsaem", "은샘침례교회", 1, "wide"),
-      { src: "/images/projects/eunsaem/clips/2.mp4", alt: "은샘침례교회 모바일 화면 영상", aspect: "phone", brief: "모바일 화면 녹화" },
-      ...gallery("eunsaem", "은샘침례교회", 4, "wide"),
+      ...clips("church", "은샘침례교회", 1, "wide"),
+      { src: "/images/projects/church/clips/2.mp4", alt: "은샘침례교회 모바일 화면 영상", aspect: "phone", brief: "모바일 화면 녹화" },
+      ...gallery("church", "은샘침례교회", 4, "wide"),
+      ...["홈", "미션팀 안내", "예배 시간 안내"].map((page, i): ImageSpec => ({
+        src: `/images/projects/church/saenuri/${i + 1}.jpg`,
+        alt: `새누리교회 ${page} 화면`,
+        aspect: "wide",
+        brief: `새누리교회 ${page} 스크린샷`,
+      })),
     ],
   },
 ];
@@ -434,9 +442,9 @@ export const howIWork = {
   breadth: [
     { label: "기획", slug: "party-passport" },
     { label: "웹", slug: "wanik-sejong" },
-    { label: "서버", slug: "eunsaem" },
-    { label: "DB", slug: "eunsaem" },
-    { label: "클라우드", slug: "eunsaem" },
+    { label: "서버", slug: "church" },
+    { label: "DB", slug: "church" },
+    { label: "클라우드", slug: "church" },
     { label: "AI 에이전트", slug: "second-brain-template" },
   ],
   story: [
